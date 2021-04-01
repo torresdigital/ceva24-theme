@@ -1,0 +1,10 @@
+{
+	"name": "pressx/custom-codes",
+    "description": "Your custom SASS, CSS, JS, PHP and HTML customizations in same directory.",
+    "require": {
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.5",
+        "wp-coding-standards/wpcs": "^2.3"
+    }
+}
