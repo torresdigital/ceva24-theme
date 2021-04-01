@@ -15,9 +15,11 @@ Updated: 2021-03-30 08:45:24
 /*Correção*/
 
     /* produtos na home */
-.thunk-product-content, .thunk-product-hover {padding: 0px 10px;position: relative;}
+    .thunk-product-content, .thunk-product-hover {padding: 0px 10px;position: relative;}
     /*Botao add to Home*/
 .button.th-button.add_to_cart_button.ajax_add_to_cart:hover {background: #5fd300;color: #fff;font-size: 14px;padding: 12px;}
+    /*widgets na home*/
+.th-aboutme, .th-aboutme a {text-align: center;font-weight: 600;}
 /*Padrao*/
 
 /*Head*/
@@ -32,6 +34,8 @@ Updated: 2021-03-30 08:45:24
 
 /*Woocommerce*/
 
+    /*preço pagina do produto*/
+.woocommerce div.product p.price, .woocommerce div.product span.price {color: #1c1d1e;}
 
 /* cetegoty slider number on home*/
     /* cetegoty slider number */
