@@ -15,10 +15,16 @@ Updated: 2021-03-30 08:45:24
 /*Correção*/
 
     /* produtos na home */
-.thunk-product-content, .thunk-product-hover {padding: 0px 10px;position: relative;}
+    .thunk-product-content, .thunk-product-hover {padding: 0px 10px;position: relative;}
     /*Botao add to Home*/
 .button.th-button.add_to_cart_button.ajax_add_to_cart:hover {background: #5fd300;color: #fff;font-size: 14px;padding: 12px;}
+    /*widgets na home*/
+.th-aboutme, .th-aboutme a {text-align: center;font-weight: 600;}
+
 /*Padrao*/
+.thunk-hglt-box .content {padding-left: 15px;text-align: center;} 
+.thunk-hglt-icon {font-size: 25px;}
+.thunk-highlight-col {width: 25%;padding: 0px 11px;}
 
 /*Head*/
 
@@ -27,15 +33,23 @@ Updated: 2021-03-30 08:45:24
 /*Menu*/
 
 /*Home*/
+.open-shop-widget-content .form-content {max-width: 66%;}
 
 /*Blog*/
 
 /*Woocommerce*/
 
+    /*preço pagina do produto*/
+.woocommerce div.product p.price, .woocommerce div.product span.price {color: #1c1d1e;}
 
 /* cetegoty slider number on home*/
+
     /* cetegoty slider number */
 .total-number {font-style: initial;color: #000;font-weight: 600;font-size: inherit;}
+
+    /* wishlist e compare na pagina do produto*/
+.woosc-btn.wooscp-btn.wooscp-btn-13.wooscp-btn-added.woosc-added, .woosw-btn.woosw-btn-13 {border-radius: 50%;}
+
 /*Footer*/
 .widget-footer-col1 {text-align: center;}
 /*Footer*/
