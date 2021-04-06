@@ -17,7 +17,8 @@ Updated: 2021-03-30 08:45:24
     /* produtos na home */
     .thunk-product-content, .thunk-product-hover {padding: 0px 10px;position: relative;}
     /*Botao add to Home*/
-.button.th-button.add_to_cart_button.ajax_add_to_cart:hover {background: #5fd300;color: #fff;font-size: 14px;padding: 12px;}
+.button.th-button.add_to_cart_button.ajax_add_to_cart:hover {background: #FF3815;color: #fff;font-size: 14px;padding: 12px; border: 0;}
+html button.add_to_cart_button.ajax_add_to_cart {background: #5fd300;}
     /*widgets na home*/
 .th-aboutme, .th-aboutme a {text-align: center;font-weight: 600;}
 
