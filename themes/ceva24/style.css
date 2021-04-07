@@ -18,12 +18,12 @@ Updated: 2021-03-30 08:45:24
     .thunk-product-content, .thunk-product-hover {padding: 0px 10px;position: relative;}
     /*Botao add to Home*/
 .button.th-button.add_to_cart_button.ajax_add_to_cart:hover {background: #FF3815;color: #fff;font-size: 14px;padding: 12px; border: 0; top: -3px;}
-.woocommerce .thunk-product-hover a.th-button {background-color: #5fd300;}
+/*.woocommerce .thunk-product-hover a.th-button, .button.th-button.add_to_cart_button.ajax_add_to_cart {background-color: #5fd300; color: #fff}*/
     /*widgets na home*/
 .th-aboutme, .th-aboutme a {text-align: center;font-weight: 600;}
 
 /*Padrao*/
-.thunk-hglt-box .content {padding-left: 15px;text-align: center;} 
+.thunk-hglt-box .content {padding-left: 15px;text-align: center;}
 .thunk-hglt-icon {font-size: 25px;}
 .thunk-highlight-col {width: 25%;padding: 0px 11px;}
 
