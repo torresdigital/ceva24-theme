@@ -17,8 +17,8 @@ Updated: 2021-03-30 08:45:24
     /* produtos na home */
     .thunk-product-content, .thunk-product-hover {padding: 0px 10px;position: relative;}
     /*Botao add to Home*/
-.button.th-button.add_to_cart_button.ajax_add_to_cart:hover {background: #FF3815;color: #fff;font-size: 14px;padding: 12px; border: 0;}
-html button.add_to_cart_button.ajax_add_to_cart {background: #5fd300;}
+.button.th-button.add_to_cart_button.ajax_add_to_cart:hover {background: #FF3815;color: #fff;font-size: 14px;padding: 12px; border: 0; top: -3px;}
+.woocommerce .thunk-product-hover a.th-button {background-color: #5fd300;}
     /*widgets na home*/
 .th-aboutme, .th-aboutme a {text-align: center;font-weight: 600;}
 
@@ -28,6 +28,7 @@ html button.add_to_cart_button.ajax_add_to_cart {background: #5fd300;}
 .thunk-highlight-col {width: 25%;padding: 0px 11px;}
 
 .main-header-col2 { width: 57%; }
+.sticky-header-col2 { width: 54%; }
 .main-header-col3 {width: 20%;}
 
 /*Head*/
