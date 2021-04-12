@@ -31,6 +31,8 @@ Updated: 2021-03-30 08:45:24
 .sticky-header-col2 { width: 54%; }
 .main-header-col3 {width: 20%;}
 
+#move-to-top {bottom: 98px;}
+
 /*Head*/
 .top-header-col1 {font-weight: 600;}
 
@@ -624,4 +626,28 @@ html .xoo-wsc-ft-btn.button:hover {background: #000;color: #fff;}
     src: url('/wp-content/themes/ceva24/fonts/font-ecommerce/fonts/ecommerce.eot?#iefix-co9dpe') format('embedded-opentype'), url('/wp-content/themes/ceva24/fonts/font-ecommerce/fonts/ecommerce.ttf?-co9dpe') format('truetype'), url('/wp-content/themes/ceva24/fonts/font-ecommerce/fonts/ecommerce.woff?-co9dpe') format('woff'), url('/wp-content/themes/ceva24/fonts/font-ecommerce/fonts/ecommerce.svg?-co9dpe#ecommerce') format('svg');
     font-weight: normal;
     font-style: normal;
+}
+
+
+
+
+/*Animação da Cestinha*/
+/* https://stackoverflow.com/questions/38132700/css-wiggle-shake-effect/38133000 */
+
+
+@keyframes wiggle {
+    0% { transform: rotate(0deg); }
+    80% { transform: rotate(0deg); }
+    85% { transform: rotate(5deg); }
+    95% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+}
+
+.xoo-wsc-bki.xoo-wsc-icon-basket1 {
+    display: inline-block;
+    animation: wiggle 1.5s infinite;
+}
+
+.xoo-wsc-bki.xoo-wsc-icon-basket1:hover {
+    animation: none;
 }
