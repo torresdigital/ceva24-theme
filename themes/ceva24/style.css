@@ -14,12 +14,12 @@ Updated: 2021-03-30 08:45:24
 
 /*Correção*/
 
-    /* produtos na home */
-    .thunk-product-content, .thunk-product-hover {padding: 0px 10px;position: relative;}
-    /*Botao add to Home*/
+/* produtos na home */
+.thunk-product-content, .thunk-product-hover {padding: 0px 10px;position: relative;}
+/*Botao add to Home*/
 .button.th-button.add_to_cart_button.ajax_add_to_cart:hover {background: #FF3815;color: #fff;font-size: 14px;padding: 12px; border: 0; top: -3px;}
 /*.woocommerce .thunk-product-hover a.th-button, .button.th-button.add_to_cart_button.ajax_add_to_cart {background-color: #5fd300; color: #fff}*/
-    /*widgets na home*/
+/*widgets na home*/
 .th-aboutme, .th-aboutme a {text-align: center;font-weight: 600;}
 
 /*Padrao*/
@@ -39,7 +39,7 @@ Updated: 2021-03-30 08:45:24
 
 
 /*Menu*/
-.open-shop-menu > li > a {padding-right: 15px;font-size: 12.5px;}
+.open-shop-menu > li > a {padding-right: 15px;font-size: 14px;}
 
 
 /*Home*/
@@ -51,15 +51,15 @@ Updated: 2021-03-30 08:45:24
 /*Woocommerce*/
 
 
-    /*preço pagina do produto*/
+/*preço pagina do produto*/
 .woocommerce div.product p.price, .woocommerce div.product span.price {color: #1c1d1e;}
 
 /* cetegoty slider number on home*/
 
-    /* cetegoty slider number */
+/* cetegoty slider number */
 .total-number {font-style: initial;color: #000;font-weight: 600;font-size: inherit;}
 
-    /* wishlist e compare na pagina do produto*/
+/* wishlist e compare na pagina do produto*/
 .woosc-btn.wooscp-btn.wooscp-btn-13.wooscp-btn-added.woosc-added, .woosw-btn.woosw-btn-13 {border-radius: 50%;}
 
 /*Footer*/
@@ -609,4 +609,19 @@ like a charm in your responsive design!
     (max-device-width: 218px)
     and (max-device-height: 281px) {
 
+}
+
+html .xoo-wsc-bki.xoo-wsc-icon-basket1, html .xoo-wscb-icon.xoo-wsc-icon-bag2 { font-family: 'ecommerce' !important;}
+html .xoo-wsc-icon-basket1::before, html .xoo-wsc-icon-bag2::before {  content: "\e74b"; }
+html .xoo-wsc-ft-btn.button { font-size: 12px; font-weight: 600 }
+html .xoo-wsc-basket {border-radius: 100%;}
+html .xoo-wsc-ft-btn.button:hover {background: #000;color: #fff;}
+
+
+@font-face {
+    font-family: 'ecommerce';
+    src: url('/wp-content/themes/ceva24/fonts/font-ecommerce/fonts/ecommerce.eot?-co9dpe');
+    src: url('/wp-content/themes/ceva24/fonts/font-ecommerce/fonts/ecommerce.eot?#iefix-co9dpe') format('embedded-opentype'), url('/wp-content/themes/ceva24/fonts/font-ecommerce/fonts/ecommerce.ttf?-co9dpe') format('truetype'), url('/wp-content/themes/ceva24/fonts/font-ecommerce/fonts/ecommerce.woff?-co9dpe') format('woff'), url('/wp-content/themes/ceva24/fonts/font-ecommerce/fonts/ecommerce.svg?-co9dpe#ecommerce') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
