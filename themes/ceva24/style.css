@@ -642,7 +642,6 @@ html .xoo-wsc-ft-btn.button:hover {background: #000;color: #fff;}
 /*Animação da Cestinha*/
 /* https://stackoverflow.com/questions/38132700/css-wiggle-shake-effect/38133000 */
 
-
 @keyframes ceva {
     0% { transform: rotate(0deg); }
     80% { transform: rotate(0deg); }
@@ -653,7 +652,7 @@ html .xoo-wsc-ft-btn.button:hover {background: #000;color: #fff;}
 
 .xoo-wsc-bki.xoo-wsc-icon-basket1, .xoo-wsch-top .xoo-wsch-basket {
     display: inline-block;
-    animation: ceva 2.5s infinite;
+    animation: ceva 1.5s infinite;
 }
 
 .xoo-wsc-bki.xoo-wsc-icon-basket1:hover, .xoo-wsch-top .xoo-wsch-basket:hover {
