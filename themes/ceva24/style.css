@@ -37,8 +37,9 @@ html #move-to-top {background-color: #141415;font-size: 18px;border-radius: 50%;
 
 .shipping-calculator-form {display: inline-block !important;}
 
-.shipping-calculator-button {font-size: 14px;text-align: center;color: #fff;font-weight: 600;background: #ff3815;padding: 5px 24px }
+html .shipping-calculator-button {font-size: 12px;text-align: center;color: #fff;font-weight: 600;background: #ff3815;padding: 5px 2px;font-weight: 600;text-transform: initial;}
 .shipping-calculator-form .button:hover {color: black;animation: shadow-pulse 1s infinite;cursor: pointer;box-shadow: 0 0 0 rgba(204,169,44, 0.4);}
+.shipping-calculator-button:hover {color: #fff;}
 
 
 /*Head*/
