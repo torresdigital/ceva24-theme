@@ -33,6 +33,13 @@ Updated: 2021-03-30 08:45:24
 
 #move-to-top {bottom: 98px;}
 
+.openshop-site section.thunk-ribbon-section .content-wrap::before {background: #FF3815;}
+
+.shipping-calculator-form {display: inline-block !important;}
+
+.shipping-calculator-button {font-size: 14px;text-align: center;color: #000;font-weight: 600;background: #ff3815;padding: 5px 10px;border-radius: 14px;}
+
+
 /*Head*/
 .top-header-col1 {font-weight: 600;}
 
@@ -635,19 +642,19 @@ html .xoo-wsc-ft-btn.button:hover {background: #000;color: #fff;}
 /* https://stackoverflow.com/questions/38132700/css-wiggle-shake-effect/38133000 */
 
 
-@keyframes wiggle {
+@keyframes ceva {
     0% { transform: rotate(0deg); }
     80% { transform: rotate(0deg); }
-    85% { transform: rotate(5deg); }
-    95% { transform: rotate(-5deg); }
+    85% { transform: rotate(10deg); }
+    95% { transform: rotate(-10deg); }
     100% { transform: rotate(0deg); }
 }
 
-.xoo-wsc-bki.xoo-wsc-icon-basket1 {
+.xoo-wsc-bki.xoo-wsc-icon-basket1, .xoo-wsch-top .xoo-wsch-basket {
     display: inline-block;
-    animation: wiggle 1.5s infinite;
+    animation: ceva 2.5s infinite;
 }
 
-.xoo-wsc-bki.xoo-wsc-icon-basket1:hover {
+.xoo-wsc-bki.xoo-wsc-icon-basket1:hover, .xoo-wsch-top .xoo-wsch-basket:hover {
     animation: none;
 }
