@@ -43,7 +43,8 @@ html .shipping-calculator-button {font-size: 12px;text-align: center;color: #fff
 
 /*.woocommerce-form.woocommerce-form-login.login {display: block !important;}*/
 
-.woocommerce-info {font-family: "Roboto-Bold", sans-serif;text-align: center;font-size: 20px;}
+.woocommerce-form-login-toggle .woocommerce-info {font-family: "Roboto-Bold", sans-serif;text-align: center;font-size: 20px;}
+.woocommerce-form-coupon-toggle .woocommerce-info {font-size: 14px;}
 
 
 /*Head*/
