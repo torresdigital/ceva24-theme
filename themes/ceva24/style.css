@@ -43,11 +43,14 @@ html .shipping-calculator-button {font-size: 12px;text-align: center;color: #fff
 
 /*.woocommerce-form.woocommerce-form-login.login {display: block !important;}*/
 
+#order_comments {height: 88px;}
+.woocommerce-shipping-totals.shipping {background: #f7f8f9;}
 .woocommerce-form-login-toggle .woocommerce-info a:hover {color: #000}
 /*.woocommerce-form-login-toggle .woocommerce-info a {background: #FF3815;padding: 4px 8px;border-radius: 12px;}*/
 .woocommerce-form-login-toggle .woocommerce-info a {background: #FF3815;padding: 5px 8px;border-radius: 12px;width: 50%;height: 28px;}
 .woocommerce-form-login-toggle .woocommerce-info {font-family: "Roboto-Bold", sans-serif;text-align: center;font-size: 14px;}
 .woocommerce-form-coupon-toggle .woocommerce-info {font-size: 14px;}
+.form-row.form-row-wide.create-account.woocommerce-validated span {font-family: "Roboto-Bold", sans-serif;text-align: center;font-size: 20px; color: #FF3815}
 
 
 /*Head*/
