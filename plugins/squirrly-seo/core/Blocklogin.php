@@ -50,13 +50,15 @@ class SQ_Core_Blocklogin extends SQ_Classes_BlockController {
             if (is_wp_error($responce)) {
                 switch ($responce->get_error_message()) {
                     case 'alreadyregistered':
-                        SQ_Classes_Error::setError(sprintf(esc_html__("We found your email, so it means you already have a Squirrly.co account. %sClick %sI already have an account%s and login. If you forgot your password, click %shere%s", _SQ_PLUGIN_NAME_), '<br />', '<a href="' . SQ_Classes_Helpers_Tools::getAdminUrl('sq_dashboard','login') . '" style="color:yellow">', '</a>','<a href="' . _SQ_DASH_URL_ . '/login?action=lostpassword" target="_blank" style="color:yellow">', '</a>'));
+                        SQ_Classes_Error::setError(sprintf(esc_html__("We found your email, so it means you already have a Squirrly.co account. %sClick %sI already have an account%s and login. If you forgot your password, click %shere%s", _SQ_PLUGIN_NAME_), '<br />', '<a href="' . SQ_Classes_Helpers_Tools::getAdminUrl('sq_dashboard', 'login') . '" style="color:yellow">', '</a>', '<a href="' . _SQ_DASH_URL_ . '/login?action=lostpassword" target="_blank" style="color:yellow">', '</a>'));
                         break;
                     case 'invalidemail':
                         SQ_Classes_Error::setError(esc_html__("Your email is not valid. Please enter a valid email.", _SQ_PLUGIN_NAME_));
                         break;
                     default:
-                        SQ_Classes_Error::setError(esc_html__("We could not create your account. Please enter a valid email.", _SQ_PLUGIN_NAME_));
+                        if (!SQ_Classes_Error::isError()) {
+                            SQ_Classes_Error::setError(esc_html__("We could not create your account. Please enter a valid email.", _SQ_PLUGIN_NAME_));
+                        }
                         break;
                 }
 
@@ -70,19 +72,17 @@ class SQ_Core_Blocklogin extends SQ_Classes_BlockController {
                 if (!$onboarding = SQ_Classes_Helpers_Tools::getOption('sq_onboarding')) {
                     wp_redirect(SQ_Classes_Helpers_Tools::getAdminUrl('sq_onboarding'));
                     die();
-                }else{
+                } else {
                     wp_redirect(SQ_Classes_Helpers_Tools::getAdminUrl('sq_dashboard'));
                     die();
                 }
 
-            } else {
-                if (!SQ_Classes_Error::isError()) {
-                    //if unknown error
-                    SQ_Classes_Error::setError(sprintf(esc_html__("Error: Couldn't connect to host :( . Please contact your site's webhost (or webmaster) and request them to add %s to their  IP whitelist.", _SQ_PLUGIN_NAME_), _SQ_APIV2_URL_));
-                }
+            } elseif (!SQ_Classes_Error::isError()) {
+                //if unknown error
+                SQ_Classes_Error::setError(sprintf(esc_html__("Error: Couldn't connect to host :( . Please contact your site's webhost (or webmaster) and request them to add %s to their IP whitelist.", _SQ_PLUGIN_NAME_), _SQ_APIV2_URL_));
             }
         } else {
-            SQ_Classes_Error::setError(esc_html__("Could not send your information to Squirrly. Please try again.", _SQ_PLUGIN_NAME_));
+            SQ_Classes_Error::setError(esc_html__("Your email is not set. Please enter a valid email.", _SQ_PLUGIN_NAME_));
         }
     }
 
@@ -113,7 +113,9 @@ class SQ_Core_Blocklogin extends SQ_Classes_BlockController {
                         SQ_Classes_Error::setError(esc_html__("You disconnected your website from", _SQ_PLUGIN_NAME_) . ' ' . _SQ_DASH_URL_);
                         break;
                     default:
-                        SQ_Classes_Error::setError(esc_html__("An error occured.", _SQ_PLUGIN_NAME_) . ':' . $responce->get_error_message());
+                        if (!SQ_Classes_Error::isError()) {
+                            SQ_Classes_Error::setError(esc_html__("An error occured.", _SQ_PLUGIN_NAME_) . ':' . $responce->get_error_message());
+                        }
                         break;
                 }
 
@@ -127,17 +129,14 @@ class SQ_Core_Blocklogin extends SQ_Classes_BlockController {
                 if (!$onboarding = SQ_Classes_Helpers_Tools::getOption('sq_onboarding')) {
                     wp_redirect(SQ_Classes_Helpers_Tools::getAdminUrl('sq_onboarding'));
                     die();
-                }else{
+                } else {
                     wp_redirect(SQ_Classes_Helpers_Tools::getAdminUrl('sq_dashboard'));
                     die();
                 }
 
-            } else {
+            } elseif (!SQ_Classes_Error::isError()) {
                 //if unknown error
-                if (!SQ_Classes_Error::isError()) {
-                    //if unknown error
-                    SQ_Classes_Error::setError(sprintf(esc_html__("Error: Couldn't connect to host :( . Please contact your site's webhost (or webmaster) and request them to add %s to their IP whitelist.", _SQ_PLUGIN_NAME_), _SQ_APIV2_URL_));
-                }
+                SQ_Classes_Error::setError(sprintf(esc_html__("Error: Couldn't connect to host :( . Please contact your site's webhost (or webmaster) and request them to add %s to their IP whitelist.", _SQ_PLUGIN_NAME_), _SQ_APIV2_URL_));
             }
 
         } else {

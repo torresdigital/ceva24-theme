@@ -8,6 +8,12 @@
     }
   });
 
+  // quick view
+  $(document).on('click touch', '.woosw-area .woosq-btn', function(e) {
+    woosw_hide();
+    e.preventDefault();
+  });
+
   // add
   $(document).on('click touch', '.woosw-btn', function(e) {
     var $this = $(this);
@@ -85,6 +91,11 @@
                 addClass('woosw-content-loaded-message');
 
             woosw_show();
+          } else if (woosw_vars.button_action === 'no') {
+            // add to wishlist solely
+            $('#woosw-area .woosw-content-mid').
+                removeClass(
+                    'woosw-content-loaded woosw-content-loaded-message');
           }
         }
 

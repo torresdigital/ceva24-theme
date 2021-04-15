@@ -36,7 +36,28 @@ $page = apply_filters('sq_page', SQ_Classes_Helpers_Tools::getValue('page', ''))
 
             <?php if ($page == 'sq_dashboard') { ?>
                 <div class="mt-5">
-                    <?php SQ_Classes_ObjController::getClass('SQ_Core_BlockFeatures')->init(); ?>
+                    <div class="card col-12 my-3 py-3">
+                        <div class="card-body m-0 p-0">
+                            <div class="row text-left m-0 p-0">
+                                <div class="px-5 py-3" style="max-width: 350px;width: 40%;">
+                                    <img src="<?php echo _SQ_ASSETS_URL_ . 'img/squirrly_features.png' ?>" style="width: 250px">
+                                </div>
+                                <div class="col px-2 py-3">
+                                    <div class="col-12 m-0 p-0">
+                                        <h3 class="card-title" style="color: green;"><?php echo esc_html__("What's Included in Squirrly SEO Plugin", _SQ_PLUGIN_NAME_); ?></h3>
+                                    </div>
+
+                                    <div class="sq_separator"></div>
+                                    <div class="col-12 m-2 p-0">
+                                        <div class="card-title-description m-2 text-black-50"><?php echo sprintf(esc_html__("With a total of over %s400%s free in-depth features that only Squirrly can offer.", _SQ_PLUGIN_NAME_), '<strong>', '</strong>'); ?></div>
+                                    </div>
+                                    <div class="col-12 m-0 p-4 text-right">
+                                        <a href="<?php echo SQ_Classes_Helpers_Tools::getAdminUrl('sq_features') ?>" class="btn btn-sm btn-success m-0 py-2 px-4"><?php echo esc_html__("See what features are included in Squirrly SEO", _SQ_PLUGIN_NAME_); ?></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             <?php } ?>
         </div>

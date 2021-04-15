@@ -41,7 +41,7 @@
                                     <h4 class="text-success text-center mt-5 mb-2"><?php echo esc_html__("Add a keyword to Briefcase", _SQ_PLUGIN_NAME_) ?></h4>
                                     <form method="post" class="p-0 m-0">
                                         <div class="col-8 offset-2">
-                                            <input type="text" name="keyword" class="form-control mb-2" value="<?php echo SQ_Classes_Helpers_Tools::getValue('keyword', '') ?>">
+                                            <input type="text" name="keyword" class="form-control mb-2" autofocus value="<?php echo SQ_Classes_Helpers_Tools::getValue('keyword', '') ?>">
                                             <div class="my-2 text-black-50 small text-center"><?php echo esc_html__("It's best if you focus on finding Long-Tail Keywords.", _SQ_PLUGIN_NAME_) ?></div>
                                         </div>
                                         <div class="col-12 mt-3 text-center">
@@ -62,7 +62,7 @@
                                         <h6 class="my-2 text-info">
                                             <strong><?php echo esc_html__("Enter a keyword that matches your business", _SQ_PLUGIN_NAME_) ?>:</strong>
                                         </h6>
-                                        <input type="text" name="sq_input_keyword" class="form-control sq_input_keyword mb-2" value="<?php echo SQ_Classes_Helpers_Tools::getValue('keyword', '') ?>">
+                                        <input type="text" name="sq_input_keyword" autofocus class="form-control sq_input_keyword mb-2" value="<?php echo SQ_Classes_Helpers_Tools::getValue('keyword', '') ?>">
                                         <input type="hidden" name="post_id" value="<?php echo SQ_Classes_Helpers_Tools::getValue('post_id', false) ?>">
                                         <div class="my-2 text-black-50 small text-center"><?php echo esc_html__("Focus on finding Long Tail Keywords.", _SQ_PLUGIN_NAME_) ?></div>
                                         <h4 class="sq_research_error text-warning text-center" style="display: none"><?php echo esc_html__("You need to enter a keyword first", _SQ_PLUGIN_NAME_) ?></h4>

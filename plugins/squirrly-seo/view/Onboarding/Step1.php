@@ -38,6 +38,8 @@
                                                     <option value="news"><?php echo esc_html__("Blog/News", _SQ_PLUGIN_NAME_); ?></option>
                                                     <option value="magazine"><?php echo esc_html__("Magazine", _SQ_PLUGIN_NAME_); ?></option>
                                                     <option value="portofolio"><?php echo esc_html__("Portfolio", _SQ_PLUGIN_NAME_); ?></option>
+                                                    <option value="business"><?php echo esc_html__("Small Business", _SQ_PLUGIN_NAME_); ?></option>
+                                                    <option value="local"><?php echo esc_html__("Local Business", _SQ_PLUGIN_NAME_); ?></option>
                                                     <option value="directory"><?php echo esc_html__("Directory", _SQ_PLUGIN_NAME_); ?></option>
                                                     <option value="other"><?php echo esc_html__("Other", _SQ_PLUGIN_NAME_); ?></option>
                                                 </select>

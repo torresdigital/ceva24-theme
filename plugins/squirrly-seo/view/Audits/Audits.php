@@ -72,10 +72,10 @@
                         </div>
                     </div>
 
-                    <div class="card col-12 bg-cta text-white rounded-0 py-0">
+                    <div class="card col-12 bg-light rounded-0 py-0">
                         <div class="card-body">
-                            <h4 class="text-center text-white">
-                                <?php echo sprintf(esc_html__("Learn how to improve your SEO Audit score over time %sClick Here%s", _SQ_PLUGIN_NAME_), '<a href="https://plugin.squirrly.co/wordpress-seo/what-is-the-site-visibility-score/" target="_blank" style="color: #ffea2a" >', '</a>') ?>
+                            <h4 class="text-center text-dark">
+                                <?php echo sprintf(esc_html__("Learn how to improve your SEO Audit score over time %sClick Here%s", _SQ_PLUGIN_NAME_), '<a href="https://plugin.squirrly.co/wordpress-seo/what-is-the-site-visibility-score/" target="_blank">', '</a>') ?>
                             </h4>
                         </div>
                     </div>

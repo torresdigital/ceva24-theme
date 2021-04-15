@@ -25,8 +25,8 @@ class InstalledVersions
 private static $installed = array (
   'root' => 
   array (
-    'pretty_version' => '1.6.3',
-    'version' => '1.6.3.0',
+    'pretty_version' => '1.6.4',
+    'version' => '1.6.4.0',
     'aliases' => 
     array (
     ),
@@ -46,12 +46,12 @@ private static $installed = array (
     ),
     'codeinwp/gutenberg-blocks' => 
     array (
-      'pretty_version' => '1.6.3',
-      'version' => '1.6.3.0',
+      'pretty_version' => '1.6.4',
+      'version' => '1.6.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '899656c7feca625f0b1e876053895c78a82254f3',
+      'reference' => 'f3fb4b83b459bd759073d18f3ce32496879ef5e3',
     ),
     'codeinwp/gutenberg-css' => 
     array (
@@ -73,8 +73,8 @@ private static $installed = array (
     ),
     'codeinwp/otter-blocks' => 
     array (
-      'pretty_version' => '1.6.3',
-      'version' => '1.6.3.0',
+      'pretty_version' => '1.6.4',
+      'version' => '1.6.4.0',
       'aliases' => 
       array (
       ),
@@ -82,12 +82,12 @@ private static $installed = array (
     ),
     'codeinwp/themeisle-sdk' => 
     array (
-      'pretty_version' => '3.2.19',
-      'version' => '3.2.19.0',
+      'pretty_version' => '3.2.20',
+      'version' => '3.2.20.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'abb31e2382fd8c40bcc18d7c9f3501d14bf48e87',
+      'reference' => 'aeef3f159c1b35451d87672b6984ccde36c0d21d',
     ),
     'masterminds/html5' => 
     array (

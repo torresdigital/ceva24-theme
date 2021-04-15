@@ -9,6 +9,7 @@ class SQ_Core_BlockFeatures extends SQ_Classes_BlockController {
 
     public function getFeatures() {
         $connect = SQ_Classes_Helpers_Tools::getOption('connect');
+        $sitemap = SQ_Classes_Helpers_Tools::getOption('sq_sitemap');
         $features = array(
             array(
                 'title' => "Squirrly Cloud App",
@@ -35,8 +36,8 @@ class SQ_Core_BlockFeatures extends SQ_Classes_BlockController {
                 'details' => 'https://howto.squirrly.co/kb/install-squirrly-seo-plugin/#journey',
             ), //14 Days Journey Course
             array(
-                'title' => "Smart SEO Strategy",
-                'description' => "The Non-Human SEO Consultant with <strong>over 100+ signals</strong> that prepares your goals to take you closer to the first page of Google.",
+                'title' => "Next SEO Goals",
+                'description' => "The AI SEO Consultant with <strong>over 100+ signals</strong> that prepares your goals to take you closer to the first page of Google.",
                 'mode' => "Free",
                 'option' => false,
                 'active' => true,
@@ -243,12 +244,12 @@ class SQ_Core_BlockFeatures extends SQ_Classes_BlockController {
                 'description' => "For a news website it's really important to have a Google News Sitemap. This way you will have <strong>all your News Posts instantly on Google News</strong>.",
                 'mode' => "Free",
                 'option' => false,
-                'active' => true,
+                'active' => ($sitemap['sitemap-news'][1] == 1),
                 'optional' => false,
                 'connection' => false,
                 'logo' => 'news_92.png',
                 'link' => SQ_Classes_Helpers_Tools::getAdminUrl('sq_seosettings', 'sitemap'),
-                'details' => 'https://howto.squirrly.co/kb/sitemap-xml-settings/',
+                'details' => 'https://howto.squirrly.co/kb/sitemap-xml-settings/#news_sitemap',
             ), //Sitemap Instant Indexing
             array(
                 'title' => "JSON-LD Structured Data",
@@ -530,12 +531,12 @@ class SQ_Core_BlockFeatures extends SQ_Classes_BlockController {
                 'title' => "Local SEO",
                 'description' => "Optimize the website for <strong>local audience</strong> to have a huge advantage in front of your competitors.",
                 'mode' => "Free",
-                'option' => false,
-                'active' => true,
-                'optional' => false,
+                'option' => 'sq_auto_jsonld_local',
+                'active' => SQ_Classes_Helpers_Tools::getOption('sq_auto_jsonld_local'),
+                'optional' => true,
                 'connection' => false,
                 'logo' => 'local_92.png',
-                'link' => SQ_Classes_Helpers_Tools::getAdminUrl('sq_seosettings', 'jsonld'),
+                'link' => SQ_Classes_Helpers_Tools::getAdminUrl('sq_seosettings', 'jsonld', array('#localseo')),
                 'details' => 'https://howto.squirrly.co/kb/json-ld-structured-data/#local_seo',
             ), //
             array(

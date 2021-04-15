@@ -236,7 +236,7 @@ class SQ_Controllers_CheckSeo extends SQ_Classes_FrontController {
                     $row = array_merge(array('completed' => false, 'active' => true, 'done' => false, 'positive' => false), $row);
                     $row['status'] = $row['active'] ? (($row['completed'] || $row['done']) ? 'completed' : '') : 'ignore';
 
-                    if ($tasks[$function]['positive'] && $row['status'] == 'completed') {
+                    if ($tasks[$function]['positive'] && in_array($row['status'], array('completed', 'ignore'))) {
                         $row = array_merge($tasks[$function], $row);
                     } else {
                         unset($report[$function]);

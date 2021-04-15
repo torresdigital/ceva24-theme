@@ -3,7 +3,7 @@
  * Plugin Name: Abandoned Cart Lite for WooCommerce
  * Plugin URI: http://www.tychesoftwares.com/store/premium-plugins/woocommerce-abandoned-cart-pro
  * Description: This plugin captures abandoned carts by logged-in users & emails them about it. <strong><a href="http://www.tychesoftwares.com/store/premium-plugins/woocommerce-abandoned-cart-pro">Click here to get the PRO Version.</a></strong>
- * Version: 5.8.7
+ * Version: 5.8.8
  * Author: Tyche Softwares
  * Author URI: http://www.tychesoftwares.com/
  * Text Domain: woocommerce-abandoned-cart
@@ -118,7 +118,11 @@ if ( ! class_exists( 'woocommerce_abandon_cart_lite' ) ) {
 			}
 
 			if ( ! defined( 'WCAL_PLUGIN_VERSION' ) ) {
-				define( 'WCAL_PLUGIN_VERSION', '5.8.7' );
+				define( 'WCAL_PLUGIN_VERSION', '5.8.8' );
+			}
+
+			if ( ! defined( 'WCAL_PLUGIN_PATH' ) ) {
+				define( 'WCAL_PLUGIN_PATH', untrailingslashit( plugin_dir_path( __FILE__ ) ) );
 			}
 			$this->one_hour              = 60 * 60;
 			$this->three_hours           = 3 * $this->one_hour;
@@ -371,15 +375,25 @@ if ( ! class_exists( 'woocommerce_abandon_cart_lite' ) ) {
 
 			</tbody>
 			</table>';
-			$replace_data['admin_phone']   = $admin_phone;
-			$replace_data['site_title']    = get_bloginfo( 'name' );
-			$replace_data['site_url']      = get_option( 'siteurl' );
+
+			$current_time = current_time( 'timestamp' ); // phpcs:ignore
+			$date_format  = date_i18n( get_option( 'date_format' ), $current_time );
+			$time_format  = date_i18n( get_option( 'time_format' ), $current_time );
+
+			$replace_data['admin_phone']    = $admin_phone;
+			$replace_data['site_title']     = get_bloginfo( 'name' );
+			$replace_data['site_url']       = get_option( 'siteurl' );
+			$replace_data['abandoned_date'] = "$date_format $time_format";
+			$replace_data['cart_url']       = wc_get_page_permalink( 'cart' );
 
 			$content = str_ireplace( '{{products.cart}}', $replace_data['products_cart'], $content );
 			$content = str_ireplace( '{{admin.phone}}', $replace_data['admin_phone'], $content );
 			$content = str_ireplace( '{{customer.firstname}}', 'John', $content );
 			$content = str_ireplace( '{{customer.lastname}}', 'Doe', $content );
 			$content = str_ireplace( '{{customer.fullname}}', 'John Doe', $content );
+			$content = str_ireplace( '{{cart.abandoned_date}}', $replace_data['abandoned_date'], $content );
+			$content = str_ireplace( '{{cart.link}}', $replace_data['cart_url'], $content );
+			$content = str_ireplace( '{{cart.unsubscribe}}', '#', $content );
 			$content = str_ireplace( 'site_title', $replace_data['site_title'], $content );
 			$content = str_ireplace( 'site_url', $replace_data['site_url'], $content );
 
@@ -2075,8 +2089,9 @@ if ( ! class_exists( 'woocommerce_abandon_cart_lite' ) ) {
 					WCAL_PLUGIN_VERSION,
 					false
 				);
-				$mode = isset( $_GET['mode'] ) ? sanitize_text_field( wp_unslash( $_GET['mode'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
-				if ( 'emailtemplates' === $action && ( 'addnewtemplate' === $mode || 'edittemplate' === $mode ) ) {
+				$mode         = isset( $_GET['mode'] ) ? sanitize_text_field( wp_unslash( $_GET['mode'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+				$wcal_section = isset( $_GET['wcal_section'] ) ? sanitize_text_field( wp_unslash( $_GET['wcal_section'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification
+				if ( ( 'emailtemplates' === $action && ( 'addnewtemplate' === $mode || 'edittemplate' === $mode ) ) || ( 'emailsettings' === $action && 'wcap_atc_settings' === $wcal_section ) ) {
 					wp_register_script( 'woocommerce_admin', WC()->plugin_url() . '/assets/js/admin/woocommerce_admin.min.js', array( 'jquery', 'jquery-tiptip' ), WCAL_PLUGIN_VERSION, false );
 					wp_enqueue_script( 'woocommerce_admin' );
 					$locale  = localeconv();
@@ -2142,6 +2157,14 @@ if ( ! class_exists( 'woocommerce_abandon_cart_lite' ) ) {
 					);
 
 					wp_enqueue_script(
+						'd3_js',
+						WCAL_PLUGIN_URL . '/assets/js/admin/d3.v3.min.js',
+						'',
+						WCAL_PLUGIN_VERSION,
+						false
+					);
+
+					wp_register_script(
 						'reports_js',
 						plugins_url( '/assets/js/admin/wcal_adv_dashboard.min.js', __FILE__ ),
 						'',
@@ -3231,6 +3254,17 @@ if ( ! class_exists( 'woocommerce_abandon_cart_lite' ) ) {
 							<div> <!-- <div class="postbox" > -->
 								<h3 class="hndle"><?php esc_html_e( $display_message, 'woocommerce-abandoned-cart' ); // phpcs:ignore?></h3>
 								<div>
+									<?php
+									wc_get_template(
+										'html-rules-engine.php',
+										array(
+											'rules' => array(),
+											'match' => 'all',
+										),
+										'woocommerce-abandoned-cart/',
+										WCAL_PLUGIN_PATH . '/includes/templates/rules/'
+									);
+									?>
 									<table class="form-table" id="addedit_template">
 									<tr>
 										<th>

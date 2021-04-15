@@ -162,6 +162,7 @@ class SQ_Classes_Helpers_Tools {
 
             //JsonLD
             'sq_auto_jsonld' => 1,
+            'sq_auto_jsonld_local' => 0,
             'sq_jsonld_type' => 'Organization',
             'sq_jsonld_global_person' => 0,
             'sq_jsonld_breadcrumbs' => 1,

@@ -18,7 +18,7 @@ class Main {
 	 *
 	 * @var string Version string.
 	 */
-	const VERSION = '1.1.6';
+	const VERSION = '1.1.7';
 	/**
 	 * Sites Library API URL.
 	 *
@@ -184,6 +184,28 @@ class Main {
 	private function setup_api() {
 		$api = new Rest_Server();
 		$api->init();
+	}
+
+	/**
+	 * Get meta fields.
+	 *
+	 * @return void
+	 */
+	static public function get_meta_fields( $post_id, $type ) {
+		$fields = apply_filters( 'ti_tpc_template_meta', array(), $post_id, $type );
+		$meta   = array();
+
+		if ( sizeof( $fields ) > 0 ) {
+			foreach ( $fields as $field ) {
+				$value = get_post_meta( $post_id, $field, true );
+
+				if ( ! empty( $value ) ) {
+					$meta[ $field ] = $value;
+				}
+			}
+		}
+
+		return $meta;
 	}
 
 	/**

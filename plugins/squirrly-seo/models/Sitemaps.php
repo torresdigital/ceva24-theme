@@ -50,7 +50,7 @@ class SQ_Models_Sitemaps extends SQ_Models_Abstract_Seo {
         $homes = array();
         $homes['contains'] = array();
 
-        if (function_exists('pll_languages_list')) {
+        if (function_exists('pll_languages_list') && function_exists('pll_home_url')) {
             if (SQ_Classes_Helpers_Tools::getOption('sq_sitemap_combinelangs')) {
                 // print_R(PLL()->model->get_languages_list());
                 foreach (pll_languages_list() as $term) {
@@ -80,13 +80,10 @@ class SQ_Models_Sitemaps extends SQ_Models_Abstract_Seo {
 
                 $xml = array();
                 $xml['loc'] = $post->url;
-
                 $xml['lastmod'] = trim(mysql2date('Y-m-d\TH:i:s+00:00', $this->lastModified($post), false));
                 $xml['changefreq'] = $this->frequency[SQ_Classes_Helpers_Tools::getOption('sq_sitemap_frequency')][$this->type][1];
                 $xml['priority'] = $this->frequency[SQ_Classes_Helpers_Tools::getOption('sq_sitemap_frequency')][$this->type][0];
             }
-
-
             $homes[] = $xml;
             unset($xml);
         }
@@ -253,7 +250,7 @@ class SQ_Models_Sitemaps extends SQ_Models_Abstract_Seo {
                     $xml['loc'] = esc_url($post->url);
 
                     $language = convert_chars(strip_tags(get_bloginfo('language')));
-                    if(strpos($language, '-')) {
+                    if (strpos($language, '-')) {
                         $language = substr($language, 0, strpos($language, '-'));
                     }
                     if ($language == '') {
@@ -444,6 +441,59 @@ class SQ_Models_Sitemaps extends SQ_Models_Abstract_Seo {
         }
 
         return $array;
+    }
+
+    /**
+     * Generate the KML file contents.
+     *
+     * @return array $kml KML file content.
+     */
+    public function getKmlXML() {
+        $xml = array();
+        $jsonld = SQ_Classes_Helpers_Tools::getOption('sq_jsonld');
+
+        if (SQ_Classes_Helpers_Tools::getOption('sq_jsonld_type') == 'Organization') {
+            if ($jsonld['Organization']['place']['geo']['latitude'] <> '' && $jsonld['Organization']['place']['geo']['longitude'] <> '') {
+
+                $xml['name'] = 'Locations for ' . $jsonld['Organization']['name'];
+                $xml['description'] = $jsonld['Organization']['description'];
+                $xml['open'] = 1;
+
+                $xml['Folder']['Placemark']['name'] = $jsonld['Organization']['name'];
+                $xml['Folder']['Placemark']['description'] = $jsonld['Organization']['description'];
+
+                //Add business address
+                $xml['Folder']['Placemark']['address'] = '';
+                if ($jsonld['Organization']['address']['streetAddress'] <> '') {
+                    $xml['Folder']['Placemark']['address'] .= $jsonld['Organization']['address']['streetAddress'];
+                }
+                if ($jsonld['Organization']['address']['addressLocality'] <> '') {
+                    $xml['Folder']['Placemark']['address'] .= ',' . $jsonld['Organization']['address']['addressLocality'];
+                }
+                if ($jsonld['Organization']['address']['postalCode'] <> '') {
+                    $xml['Folder']['Placemark']['address'] .= ',' . $jsonld['Organization']['address']['postalCode'];
+                }
+                if ($jsonld['Organization']['address']['addressCountry'] <> '') {
+                    $xml['Folder']['Placemark']['address'] .= ',' . $jsonld['Organization']['address']['addressCountry'];
+                }
+
+
+                $xml['Folder']['Placemark']['phoneNumber'] = $jsonld['Organization']['contactPoint']['telephone'];
+                //$xml['Folder']['Placemark']['atom:link href="' . get_bloginfo('url') . '"'] = false;
+                $xml['Folder']['Placemark']['LookAt']['latitude'] = $jsonld['Organization']['place']['geo']['latitude'];
+                $xml['Folder']['Placemark']['LookAt']['longitude'] = $jsonld['Organization']['place']['geo']['longitude'];
+                $xml['Folder']['Placemark']['LookAt']['altitude'] = 0;
+                $xml['Folder']['Placemark']['LookAt']['range'] = 0;
+                $xml['Folder']['Placemark']['LookAt']['tilt'] = 0;
+                $xml['Folder']['Placemark']['LookAt']['altitudeMode'] = 'relativeToGround';
+                $xml['Folder']['Placemark']['Point']['altitudeMode'] = 'relativeToGround';
+                $xml['Folder']['Placemark']['Point']['coordinates'] = $jsonld['Organization']['place']['geo']['longitude'];
+                $xml['Folder']['Placemark']['Point']['coordinates'] .= ',' . $jsonld['Organization']['place']['geo']['latitude'];
+                $xml['Folder']['Placemark']['Point']['coordinates'] .= ',0';
+            }
+        }
+
+        return $xml;
     }
 
     /**

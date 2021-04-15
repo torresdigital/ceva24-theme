@@ -117,18 +117,14 @@ class SQ_Classes_RemoteController {
      */
     public static function sq_wpcall($url, $options) {
         $method = $options['method'];
+        //not accepted as option
+        unset($options['method']);
 
         switch ($method) {
             case 'get':
-                //not accepted as option
-                unset($options['method']);
-
                 $response = wp_remote_get($url, $options);
                 break;
             case 'post':
-                //not accepted as option
-                unset($options['method']);
-
                 $response = wp_remote_post($url, $options);
                 break;
             default:

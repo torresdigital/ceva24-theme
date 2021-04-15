@@ -110,6 +110,7 @@
                                                             <input type="checkbox" id="sq_sitemap_home" name="sitemap[sitemap-home]" class="sq-switch" value="1" <?php echo(($sitemap['sitemap-home'][1] == 1) ? 'checked="checked"' : ''); ?> />
                                                             <label for="sq_sitemap_home" class="ml-2"><?php echo esc_html__("Home Page", _SQ_PLUGIN_NAME_); ?></label>
                                                             <div class="offset-2 small text-black-50"><?php echo esc_html__("Build the sitemap for the home page.", _SQ_PLUGIN_NAME_); ?></div>
+                                                            <div class="offset-2 small text-black-50"><?php echo '<a href="' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-home') . '" target="_blank" style="font-size: 13px; text-decoration: none; color: #999;"><strong>' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-home') . '</strong></a>' ?></div>
                                                             <?php
                                                             $pname = 'home';
                                                             if (isset($patterns[$pname]['do_sitemap']) && !$patterns[$pname]['do_sitemap']) { ?>
@@ -131,6 +132,7 @@
                                                                 <a href="https://howto.squirrly.co/kb/sitemap-xml-settings/#news_sitemap" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
                                                             </label>
                                                             <div class="offset-2 small text-black-50"><?php echo sprintf(esc_html__("Only if you have a news website. Make sure you submit your website to %sGoogle News%s first.", _SQ_PLUGIN_NAME_), '<a href="https://partnerdash.google.com/partnerdash/d/news" target="_blank">', '</a>'); ?></div>
+                                                            <div class="offset-2 small text-black-50"><?php echo '<a href="' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-news') . '" target="_blank" style="font-size: 13px; text-decoration: none; color: #999;"><strong>' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-news') . '</strong></a>' ?></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -144,6 +146,7 @@
                                                             <input type="checkbox" id="sq_sitemap_post" name="sitemap[sitemap-post]" class="sq-switch" value="1" <?php echo(($sitemap['sitemap-post'][1] == 1) ? 'checked="checked"' : ''); ?> />
                                                             <label for="sq_sitemap_post" class="ml-2"><?php echo esc_html__("Posts", _SQ_PLUGIN_NAME_); ?></label>
                                                             <div class="offset-2 small text-black-50"><?php echo esc_html__("Build the sitemap for your posts.", _SQ_PLUGIN_NAME_); ?></div>
+                                                            <div class="offset-2 small text-black-50"><?php echo '<a href="' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-posts') . '" target="_blank" style="font-size: 13px; text-decoration: none; color: #999;"><strong>' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-posts') . '</strong></a>' ?></div>
                                                             <?php
                                                             $pname = 'post';
                                                             if (isset($patterns[$pname]['do_sitemap']) && !$patterns[$pname]['do_sitemap']) { ?>
@@ -163,6 +166,7 @@
                                                             <input type="checkbox" id="sq_sitemap_attachment" name="sitemap[sitemap-attachment]" class="sq-switch" value="1" <?php echo(($sitemap['sitemap-attachment'][1] == 1) ? 'checked="checked"' : ''); ?> />
                                                             <label for="sq_sitemap_attachment" class="ml-2"><?php echo esc_html__("Attachments", _SQ_PLUGIN_NAME_); ?></label>
                                                             <div class="offset-2 small text-black-50"><?php echo esc_html__("Only recommended if you have a photography website.", _SQ_PLUGIN_NAME_); ?></div>
+                                                            <div class="offset-2 small text-black-50"><?php echo '<a href="' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-attachment') . '" target="_blank" style="font-size: 13px; text-decoration: none; color: #999;"><strong>' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-attachment') . '</strong></a>' ?></div>
                                                             <?php
                                                             $pname = 'attachment';
                                                             if (isset($patterns[$pname]['do_sitemap']) && !$patterns[$pname]['do_sitemap']) { ?>
@@ -184,6 +188,7 @@
                                                             <input type="checkbox" id="sq_sitemap_category" name="sitemap[sitemap-category]" class="sq-switch" value="1" <?php echo(($sitemap['sitemap-category'][1] == 1) ? 'checked="checked"' : ''); ?> />
                                                             <label for="sq_sitemap_category" class="ml-2"><?php echo esc_html__("Categories", _SQ_PLUGIN_NAME_); ?></label>
                                                             <div class="offset-2 small text-black-50"><?php echo esc_html__("Build the sitemap for your post categories.", _SQ_PLUGIN_NAME_); ?></div>
+                                                            <div class="offset-2 small text-black-50"><?php echo '<a href="' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-category') . '" target="_blank" style="font-size: 13px; text-decoration: none; color: #999;"><strong>' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-category') . '</strong></a>' ?></div>
                                                             <?php
                                                             $pname = 'category';
                                                             if (isset($patterns[$pname]['do_sitemap']) && !$patterns[$pname]['do_sitemap']) { ?>
@@ -204,6 +209,7 @@
                                                             <input type="checkbox" id="sq_sitemap_post_tag" name="sitemap[sitemap-post_tag]" class="sq-switch" value="1" <?php echo(($sitemap['sitemap-post_tag'][1] == 1) ? 'checked="checked"' : ''); ?> />
                                                             <label for="sq_sitemap_post_tag" class="ml-2"><?php echo esc_html__("Tags", _SQ_PLUGIN_NAME_); ?></label>
                                                             <div class="offset-2 small text-black-50"><?php echo esc_html__("Build the sitemap for your post tags.", _SQ_PLUGIN_NAME_); ?></div>
+                                                            <div class="offset-2 small text-black-50"><?php echo '<a href="' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-post_tag') . '" target="_blank" style="font-size: 13px; text-decoration: none; color: #999;"><strong>' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-post_tag') . '</strong></a>' ?></div>
                                                             <?php
                                                             $pname = 'tag';
                                                             if (isset($patterns[$pname]['do_sitemap']) && !$patterns[$pname]['do_sitemap']) { ?>
@@ -225,6 +231,7 @@
                                                             <input type="checkbox" id="sq_sitemap_page" name="sitemap[sitemap-page]" class="sq-switch" value="1" <?php echo(($sitemap['sitemap-page'][1] == 1) ? 'checked="checked"' : ''); ?> />
                                                             <label for="sq_sitemap_page" class="ml-2"><?php echo esc_html__("Pages", _SQ_PLUGIN_NAME_); ?></label>
                                                             <div class="offset-2 small text-black-50"><?php echo esc_html__("Build the sitemap for your pages.", _SQ_PLUGIN_NAME_); ?></div>
+                                                            <div class="offset-2 small text-black-50"><?php echo '<a href="' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-page') . '" target="_blank" style="font-size: 13px; text-decoration: none; color: #999;"><strong>' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-page') . '</strong></a>' ?></div>
                                                             <?php
                                                             $pname = 'page';
                                                             if (isset($patterns[$pname]['do_sitemap']) && !$patterns[$pname]['do_sitemap']) { ?>
@@ -244,6 +251,7 @@
                                                             <input type="checkbox" id="sq_sitemap_archive" name="sitemap[sitemap-archive]" class="sq-switch" value="1" <?php echo(($sitemap['sitemap-archive'][1] == 1) ? 'checked="checked"' : ''); ?> />
                                                             <label for="sq_sitemap_archive" class="ml-2"><?php echo esc_html__("Archive", _SQ_PLUGIN_NAME_); ?></label>
                                                             <div class="offset-2 small text-black-50"><?php echo esc_html__("Build the sitemap for your archive links.", _SQ_PLUGIN_NAME_); ?></div>
+                                                            <div class="offset-2 small text-black-50"><?php echo '<a href="' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-archive') . '" target="_blank" style="font-size: 13px; text-decoration: none; color: #999;"><strong>' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-archive') . '</strong></a>' ?></div>
                                                             <?php
                                                             $pname = 'archive';
                                                             if (isset($patterns[$pname]['do_sitemap']) && !$patterns[$pname]['do_sitemap']) { ?>
@@ -265,6 +273,7 @@
                                                             <input type="checkbox" id="sq_sitemap_custom-tax" name="sitemap[sitemap-custom-tax]" class="sq-switch" value="1" <?php echo(($sitemap['sitemap-custom-tax'][1] == 1) ? 'checked="checked"' : ''); ?> />
                                                             <label for="sq_sitemap_custom-tax" class="ml-2"><?php echo esc_html__("Custom Taxonomies", _SQ_PLUGIN_NAME_); ?></label>
                                                             <div class="offset-2 small text-black-50"><?php echo esc_html__("Build the sitemap for your custom post type categories and tags.", _SQ_PLUGIN_NAME_); ?></div>
+                                                            <div class="offset-2 small text-black-50"><?php echo '<a href="' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-custom-tax') . '" target="_blank" style="font-size: 13px; text-decoration: none; color: #999;"><strong>' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-custom-tax') . '</strong></a>' ?></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -275,6 +284,7 @@
                                                             <input type="checkbox" id="sq_sitemap_custom-post" name="sitemap[sitemap-custom-post]" class="sq-switch" value="1" <?php echo(($sitemap['sitemap-custom-post'][1] == 1) ? 'checked="checked"' : ''); ?> />
                                                             <label for="sq_sitemap_custom-post" class="ml-2"><?php echo esc_html__("Custom Posts", _SQ_PLUGIN_NAME_); ?></label>
                                                             <div class="offset-2 small text-black-50"><?php echo esc_html__("Build the sitemap for your custom post types (other than WP posts and pages).", _SQ_PLUGIN_NAME_); ?></div>
+                                                            <div class="offset-2 small text-black-50"><?php echo '<a href="' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-custom-post') . '" target="_blank" style="font-size: 13px; text-decoration: none; color: #999;"><strong>' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getXmlUrl('sitemap-custom-post') . '</strong></a>' ?></div>
                                                         </div>
                                                     </div>
                                                 </div>

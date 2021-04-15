@@ -16,7 +16,7 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
         parent::__construct();
         $this->posts_limit = SQ_Classes_Helpers_Tools::getOption('sq_sitemap_perpage');
         $this->news_limit = SQ_Classes_Helpers_Tools::getOption('sq_sitemap_perpage');
-        add_filter('sq_sitemap_style', array($this, 'getFeedStyle'));
+        add_filter('sq_sitemap_style', array($this, 'getSquirrlyHeader'));
         add_action('wp', array($this, 'hookPreventRedirect'), 9);
 
         add_filter('user_trailingslashit', array($this, 'untrailingslashit'));
@@ -69,6 +69,14 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
                         die();
                     }
                 }
+            } elseif (strpos($_SERVER['REQUEST_URI'], 'locations.kml') !== false) {
+                if (SQ_Classes_Helpers_Tools::getOption('sq_jsonld_type') == 'Organization') {
+                    $wp_query->is_404 = false;
+                    $wp_query->is_feed = true;
+                    $this->model->type = 'locations';
+                    apply_filters('sq_sitemapxml', $this->showSitemap());
+                    die();
+                }
             }
         }
     }
@@ -97,9 +105,15 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
         global $sq_query;
         $sq_query = array();
 
-        if (isset($request) && strpos($request, 'sitemap') !== false) {
+        if(!isset($request)){
+            return;
+        }
+
+        $this->model->type = $request;
+
+        if (strpos($request, 'sitemap') !== false) {
             $sq_sitemap = SQ_Classes_Helpers_Tools::getOption('sq_sitemap');
-            $this->model->type = $request;
+
             //reset the previous query
             wp_reset_query();
 
@@ -205,8 +219,16 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
 
     }
 
-    public function getFeedStyle() {
-        return '<?xml-stylesheet type="text/xsl" href="/' . _SQ_ASSETS_RELATIVE_URL_ . 'css/sitemap' . ($this->model->type == 'sitemap' ? 'index' : '') . '.xsl"?>' . "\n";
+    public function getSquirrlyHeader($header) {
+        if($this->model->type <> 'locations'){
+            $header =  '<?xml-stylesheet type="text/xsl" href="/' . _SQ_ASSETS_RELATIVE_URL_ . 'css/sitemap' . ($this->model->type == 'sitemap' ? 'index' : '') . '.xsl"?>' . "\n";
+            $header .= '<!-- generated-on="' . date('Y-m-d\TH:i:s+00:00') . '" -->' . "\n";
+            $header .= '<!-- generator="Squirrly SEO Sitemap" -->' . "\n";
+            $header .=  '<!-- generator-url="https://wordpress.org/plugins/squirrly-seo/" -->' . "\n";
+            $header .=  '<!-- generator-version="' . SQ_VERSION . '" -->' . "\n";
+        }
+
+        return $header;
     }
 
     /**
@@ -221,10 +243,7 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
         //Generate header
         echo '<?xml version="1.0" encoding="' . get_bloginfo('charset') . '"?>' . "\n";
         echo apply_filters('sq_sitemap_style', false);
-        echo '<!-- generated-on="' . date('Y-m-d\TH:i:s+00:00') . '" -->' . "\n";
-        echo '<!-- generator="Squirrly SEO Sitemap" -->' . "\n";
-        echo '<!-- generator-url="https://wordpress.org/plugins/squirrly-seo/" -->' . "\n";
-        echo '<!-- generator-version="' . SQ_VERSION . '" -->' . "\n";
+
         echo '' . "\n";
 
         $schema = array(
@@ -238,6 +257,10 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
             $include = array_unique($include);
 
         switch ($this->model->type) {
+            case 'locations':
+                echo '<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">' . "\n";
+                echo '<Document>' . "\n";
+                break;
             case 'sitemap':
                 echo '<sitemapindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
                     . 'xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd" '
@@ -268,6 +291,10 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
      */
     private function showSitemapFooter() {
         switch ($this->model->type) {
+            case 'locations':
+                echo '</Document>' . "\n";
+                echo '</kml>' . "\n";
+                break;
             case 'sitemap':
                 echo '</sitemapindex>' . "\n";
                 break;
@@ -292,8 +319,8 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
                     foreach ($sq_sitemap as $name => $value) {
 
                         //check if available from SEO Automation
-                        $pname = str_replace(array('sitemap-', 'post_'),'',$name);
-                        if(isset($patterns[$pname]['do_sitemap']) && !$patterns[$pname]['do_sitemap'] ){
+                        $pname = str_replace(array('sitemap-', 'post_'), '', $name);
+                        if (isset($patterns[$pname]['do_sitemap']) && !$patterns[$pname]['do_sitemap']) {
                             continue;
                         }
 
@@ -366,6 +393,9 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
             case 'sitemap-attachment':
                 $this->showPackXml($this->model->getListAttachments());
                 break;
+            case 'locations':
+                $this->showPackKml($this->model->getKmlXML());
+                break;
             default:
                 $this->showPackXml($this->model->getListPosts());
                 break;
@@ -399,13 +429,30 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
         unset($xml);
     }
 
+    /**
+     * Pach the XML for each sitemap
+     * @param array $kml
+     * @return void
+     */
+    public function showPackKml($kml = array()) {
+
+        $this->showSitemapHeader();
+        header('Content-Type: application/vnd.google-earth.kml+xml; charset=' . get_bloginfo('charset'), true);
+        echo $this->getRecursiveXml($kml);
+        $this->showSitemapFooter();
+
+        unset($kml);
+    }
+
     public function getRecursiveXml($xml, $pkey = '', $level = 2) {
         $str = '';
         $tab = str_repeat("\t", $level);
         if (is_array($xml)) {
             $cnt = 0;
             foreach ($xml as $key => $data) {
-                if (!is_array($data)) {
+                if ($data === false) {
+                    $str .= $tab . '<' . $key . '>' . "\n";
+                }elseif (!is_array($data) && $data <> '') {
                     $str .= $tab . '<' . $key . ($key == 'video:player_loc' ? ' allow_embed="yes"' : '') . '>' . $data . ((strpos($data, '?') == false && $key == 'video:player_loc') ? '' : '') . '</' . $key . '>' . "\n";
                 } else {
                     if ($this->getRecursiveXml($data) <> '') {
@@ -475,6 +522,25 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
 
         return esc_url(trailingslashit(home_url())) . $sitemap;
     }
+
+    public function getKmlUrl($sitemap, $page = null) {
+        $sq_sitemap = SQ_Classes_Helpers_Tools::getOption('sq_sitemap');
+
+        if (!get_option('permalink_structure')) {
+            $sitemap = '?sq_feed=' . str_replace('.kml', '', $sitemap) . (isset($page) ? '&amp;page=' . $page : '');
+        } else {
+            if (isset($sq_sitemap[$sitemap])) {
+                $sitemap = $sq_sitemap[$sitemap][0] . (isset($page) ? '?page=' . $page : '');
+            }
+
+            if (strpos($sitemap, '.kml') === false) {
+                $sitemap .= '.kml';
+            }
+        }
+
+        return esc_url(trailingslashit(home_url())) . $sitemap;
+    }
+
 
     /**
      * Process the on-time cron if called
@@ -589,7 +655,7 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
         $query->query_fields .= ',p.lastmod';
         $query->query_from .= ' LEFT OUTER JOIN (
             SELECT MAX(post_modified) as lastmod, post_author, COUNT(*) as post_count
-            FROM `'.$wpdb->posts.'`
+            FROM `' . $wpdb->posts . '`
             WHERE post_type = "post" AND post_status = "publish"
             GROUP BY post_author
         ) p ON (wp_users.ID = p.post_author)';
@@ -637,7 +703,7 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
                         WHERE post_date_gmt < NOW()  AND post_status = %s  AND post_type = %s
                         GROUP BY YEAR(post_date_gmt),  MONTH(post_date_gmt)
                         ORDER BY  post_date_gmt DESC
-                    ",'publish','post'));
+                    ", 'publish', 'post'));
         return $archives;
     }
 

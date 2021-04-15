@@ -22,11 +22,13 @@
                     </div>
                     <div id="sq_briefcaselabels" class="card col-12 p-0 tab-panel border-0">
                         <?php do_action('sq_subscription_notices'); ?>
+                        <?php if (is_array($view->labels) && !empty($view->labels)) { ?>
                         <div class="card-body p-0">
-                            <button class="btn btn-lg btn-warning text-white px-5 mx-3" onclick="jQuery('.sq_add_labels_dialog').modal('show')" data-dismiss="modal">
+                            <button class="btn btn-lg btn-primary px-5 mx-3" onclick="jQuery('.sq_add_labels_dialog').modal('show')" data-dismiss="modal">
                                 <i class="fa fa-plus-square-o"></i> <?php echo esc_html__("Add new Label", _SQ_PLUGIN_NAME_); ?>
                             </button>
                         </div>
+                        <?php }?>
 
                         <div class="sq_add_labels_dialog modal" tabindex="-1" role="dialog">
                             <div class="modal-dialog">
@@ -148,6 +150,9 @@
                                     <?php } else { ?>
                                         <div class="card-body">
                                             <h4 class="text-center"><?php echo esc_html__("Welcome to Briefcase Labels", _SQ_PLUGIN_NAME_); ?></h4>
+                                            <div class="col-12 m-2 text-center">
+                                                <button class="btn btn-lg btn-primary" onclick="jQuery('.sq_add_labels_dialog').modal('show')" data-dismiss="modal"><i class="fa fa-plus-square-o"></i> <?php echo esc_html__("Add label to organize the keywords in Briefcase", _SQ_PLUGIN_NAME_); ?></button>
+                                            </div>
                                             <div class="col-12 mt-5 mx-2">
                                                 <h5 class="text-left my-3 text-info"><?php echo esc_html__("TIPS: How Should I Create My Labels?", _SQ_PLUGIN_NAME_); ?></h5>
                                                 <ul>
