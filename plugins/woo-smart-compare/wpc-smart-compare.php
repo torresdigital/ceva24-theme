@@ -3,7 +3,7 @@
 Plugin Name: WPC Smart Compare for WooCommerce
 Plugin URI: https://wpclever.net/
 Description: Smart products compare for WooCommerce.
-Version: 3.5.2
+Version: 3.5.3
 Author: WPClever
 Author URI: https://wpclever.net
 Text Domain: wooscp
@@ -16,7 +16,7 @@ WC tested up to: 5.1
 
 defined( 'ABSPATH' ) || exit;
 
-! defined( 'WOOSCP_VERSION' ) && define( 'WOOSCP_VERSION', '3.5.2' );
+! defined( 'WOOSCP_VERSION' ) && define( 'WOOSCP_VERSION', '3.5.3' );
 ! defined( 'WOOSCP_URI' ) && define( 'WOOSCP_URI', plugin_dir_url( __FILE__ ) );
 ! defined( 'WOOSCP_PATH' ) && define( 'WOOSCP_PATH', plugin_dir_path( __FILE__ ) );
 ! defined( 'WOOSCP_SUPPORT' ) && define( 'WOOSCP_SUPPORT', 'https://wpclever.net/support?utm_source=support&utm_medium=woosc&utm_campaign=wporg' );
@@ -612,6 +612,31 @@ if ( ! function_exists( 'wooscp_init' ) ) {
                                             </td>
                                         </tr>
                                         <tr>
+                                            <th><?php esc_html_e( 'Link to individual product', 'wooscp' ); ?></th>
+                                            <td>
+                                                <select name="_wooscp_link">
+                                                    <option
+                                                            value="yes" <?php echo( get_option( '_wooscp_link', 'yes' ) === 'yes' ? 'selected' : '' ); ?>>
+														<?php esc_html_e( 'Yes, open in the same tab', 'wooscp' ); ?>
+                                                    </option>
+                                                    <option
+                                                            value="yes_blank" <?php echo( get_option( '_wooscp_link', 'yes' ) === 'yes_blank' ? 'selected' : '' ); ?>>
+														<?php esc_html_e( 'Yes, open in the new tab', 'wooscp' ); ?>
+                                                    </option>
+                                                    <option
+                                                            value="yes_popup" <?php echo( get_option( '_wooscp_link', 'yes' ) === 'yes_popup' ? 'selected' : '' ); ?>>
+														<?php esc_html_e( 'Yes, open quick view popup', 'wooscp' ); ?>
+                                                    </option>
+                                                    <option
+                                                            value="no" <?php echo( get_option( '_wooscp_link', 'yes' ) === 'no' ? 'selected' : '' ); ?>>
+														<?php esc_html_e( 'No', 'wooscp' ); ?>
+                                                    </option>
+                                                </select> <span class="description">If you choose "Open quick view popup", please install <a
+                                                            href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=woo-smart-quick-view&TB_iframe=true&width=800&height=550' ) ); ?>"
+                                                            class="thickbox" title="Install WPC Smart Quick View">WPC Smart Quick View</a> to make it work.</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <th scope="row"><?php esc_html_e( 'Freeze first column', 'wooscp' ); ?></th>
                                             <td>
                                                 <select name="_wooscp_freeze_column">
@@ -1092,7 +1117,7 @@ if ( ! function_exists( 'wooscp_init' ) ) {
                                                        value="<?php esc_html_e( 'Update Options', 'wooscp' ); ?>"/>
                                                 <input type="hidden" name="action" value="update"/>
                                                 <input type="hidden" name="page_options"
-                                                       value="_wooscp_open_button,_wooscp_open_button_action,_wooscp_button_type,_wooscp_button_text,_wooscp_button_text_change,_wooscp_button_text_added,_wooscp_button_class,_wooscp_button_archive,_wooscp_button_single,_wooscp_open_bar_immediately,_wooscp_open_immediately,_wooscp_hide_checkout,_wooscp_click_again,_wooscp_close_button,_wooscp_hide_empty,_wooscp_bar_bubble,_wooscp_bar_settings,_wooscp_bar_add,_wooscp_bar_remove,_wooscp_bar_bg_color,_wooscp_bar_btn_text,_wooscp_bar_btn_color,_wooscp_bar_pos,_wooscp_bar_align,_wooscp_click_outside,_wooscp_limit,_wooscp_limit_notice,_wooscp_page_id,_wooscp_fields,_wooscp_attributes,_wooscp_custom_attributes,_wooscp_custom_fields,_wooscp_image_size,_wooscp_freeze_column,_wooscp_freeze_row,_wooscp_search_count,_wooscp_search_cats,_wooscp_menus,_wooscp_menu_action"/>
+                                                       value="_wooscp_open_button,_wooscp_open_button_action,_wooscp_button_type,_wooscp_button_text,_wooscp_button_text_change,_wooscp_button_text_added,_wooscp_button_class,_wooscp_button_archive,_wooscp_button_single,_wooscp_open_bar_immediately,_wooscp_open_immediately,_wooscp_hide_checkout,_wooscp_click_again,_wooscp_close_button,_wooscp_hide_empty,_wooscp_bar_bubble,_wooscp_bar_settings,_wooscp_bar_add,_wooscp_bar_remove,_wooscp_bar_bg_color,_wooscp_bar_btn_text,_wooscp_bar_btn_color,_wooscp_bar_pos,_wooscp_bar_align,_wooscp_click_outside,_wooscp_limit,_wooscp_limit_notice,_wooscp_page_id,_wooscp_fields,_wooscp_attributes,_wooscp_custom_attributes,_wooscp_custom_fields,_wooscp_image_size,_wooscp_link,_wooscp_freeze_column,_wooscp_freeze_row,_wooscp_search_count,_wooscp_search_cats,_wooscp_menus,_wooscp_menu_action"/>
                                             </th>
                                         </tr>
                                     </table>
@@ -1174,6 +1199,8 @@ if ( ! function_exists( 'wooscp_init' ) ) {
 					}
 
 					if ( is_array( $wooscp_products ) && ( count( $wooscp_products ) > 0 ) ) {
+						$_link = get_option( '_wooscp_link', 'yes' );
+
 						if ( is_array( get_option( '_wooscp_fields' ) ) ) {
 							$saved_fields = get_option( '_wooscp_fields' );
 						} else {
@@ -1188,14 +1215,25 @@ if ( ! function_exists( 'wooscp_init' ) ) {
 								continue;
 							}
 
+							$product_name = $product->get_name();
+
 							if ( $product->is_type( 'variation' ) ) {
 								$parent_product = wc_get_product( $product->get_parent_id() );
+								$product_name   = $parent_product->get_formatted_name();
 							}
 
-							$wooscp_products_data[ $wooscp_product ]['title'] = apply_filters( 'wooscp_product_title', '<a href="' . $product->get_permalink() . '" draggable="false">' . wp_strip_all_tags( $product->get_formatted_name() ) . '</a>', $product );
+							if ( $_link !== 'no' ) {
+								$wooscp_products_data[ $wooscp_product ]['title'] = apply_filters( 'wooscp_product_title', '<a ' . ( $_link === 'yes_popup' ? 'class="woosq-btn" data-id="' . $wooscp_product . '"' : '' ) . ' href="' . $product->get_permalink() . '" draggable="false" ' . ( $_link === 'yes_blank' ? 'target="_blank"' : '' ) . '>' . wp_strip_all_tags( $product_name ) . '</a>', $product );
+							} else {
+								$wooscp_products_data[ $wooscp_product ]['title'] = apply_filters( 'wooscp_product_title', wp_strip_all_tags( $product_name ), $product );
+							}
 
 							if ( in_array( 'image', $saved_fields, true ) ) {
-								$wooscp_products_data[ $wooscp_product ]['image'] = apply_filters( 'wooscp_product_image', '<a href="' . $product->get_permalink() . '" draggable="false">' . $product->get_image( get_option( '_wooscp_image_size', 'wooscp-large' ), array( 'draggable' => 'false' ) ) . '</a>', $product );
+								if ( $_link !== 'no' ) {
+									$wooscp_products_data[ $wooscp_product ]['image'] = apply_filters( 'wooscp_product_image', '<a ' . ( $_link === 'yes_popup' ? 'class="woosq-btn" data-id="' . $wooscp_product . '"' : '' ) . ' href="' . $product->get_permalink() . '" draggable="false" ' . ( $_link === 'yes_blank' ? 'target="_blank"' : '' ) . '>' . $product->get_image( get_option( '_wooscp_image_size', 'wooscp-large' ), array( 'draggable' => 'false' ) ) . '</a>', $product );
+								} else {
+									$wooscp_products_data[ $wooscp_product ]['image'] = apply_filters( 'wooscp_product_image', $product->get_image( get_option( '_wooscp_image_size', 'wooscp-large' ), array( 'draggable' => 'false' ) ), $product );
+								}
 							}
 
 							if ( in_array( 'sku', $saved_fields, true ) ) {
@@ -1229,8 +1267,8 @@ if ( ! function_exists( 'wooscp_init' ) ) {
 							if ( in_array( 'additional', $saved_fields, true ) ) {
 								ob_start();
 								wc_display_product_attributes( $product );
-								$additional = ob_get_contents();
-								ob_end_clean();
+								$additional = ob_get_clean();
+
 								$wooscp_products_data[ $wooscp_product ]['additional'] = apply_filters( 'wooscp_product_additional', $additional, $product );
 							}
 

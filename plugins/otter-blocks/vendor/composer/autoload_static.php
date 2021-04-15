@@ -4,12 +4,12 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitaab19aaf08d0aab574023c1d72bc98d3
+class ComposerStaticInit7a5f8bceea1befc0b181f5a54a73989f
 {
     public static $files = array (
+        '4940672e65e7c6c88ed7150711580427' => __DIR__ . '/..' . '/codeinwp/gutenberg-animation/load.php',
         '121493e618f7dac5b708da14e4109f9a' => __DIR__ . '/..' . '/codeinwp/gutenberg-css/load.php',
         '2c2d2fe92db4cd03403dbb108ac263b7' => __DIR__ . '/..' . '/codeinwp/gutenberg-menu-icons/load.php',
-        '4940672e65e7c6c88ed7150711580427' => __DIR__ . '/..' . '/codeinwp/gutenberg-animation/load.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -91,9 +91,9 @@ class ComposerStaticInitaab19aaf08d0aab574023c1d72bc98d3
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitaab19aaf08d0aab574023c1d72bc98d3::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitaab19aaf08d0aab574023c1d72bc98d3::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitaab19aaf08d0aab574023c1d72bc98d3::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit7a5f8bceea1befc0b181f5a54a73989f::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit7a5f8bceea1befc0b181f5a54a73989f::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit7a5f8bceea1befc0b181f5a54a73989f::$classMap;
 
         }, null, ClassLoader::class);
     }

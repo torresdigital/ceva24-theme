@@ -400,6 +400,15 @@ Type a keyword to the right of the screen and start using Squirrly Seo. Enjoy!
 9. Squirrly SEO - Progress & Achievements
 
 == Changelog ==
+= 11.1.01 - 04/04/2021 =
+Update - Added the option to reactivate the ignored success messages
+Update - Make the Local SEO feature more visible while active
+Update - Add the KML download option in GEO Settings
+Update - Add more infos about the Sitemap XML for each post type
+Update - Knowledge base based on each section
+Fixed - Corrected the KML file for Local SEO
+Fixed - Show all keywords link in Briefcase if no keyword is found on search
+
 = 11.1.00 - 03/29/2021 =
 Update - Added SEO Links feature in Squirrly SEO
 Update - Improved UI for Squirrly SEO Settings

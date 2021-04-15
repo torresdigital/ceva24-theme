@@ -25,8 +25,8 @@ class InstalledVersions
 private static $installed = array (
   'root' => 
   array (
-    'pretty_version' => '1.1.6',
-    'version' => '1.1.6.0',
+    'pretty_version' => '1.1.7',
+    'version' => '1.1.7.0',
     'aliases' => 
     array (
     ),
@@ -37,8 +37,8 @@ private static $installed = array (
   array (
     'codeinwp/templates-patterns-collection' => 
     array (
-      'pretty_version' => '1.1.6',
-      'version' => '1.1.6.0',
+      'pretty_version' => '1.1.7',
+      'version' => '1.1.7.0',
       'aliases' => 
       array (
       ),

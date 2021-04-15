@@ -34,7 +34,14 @@ $category_name = apply_filters('sq_page', SQ_Classes_Helpers_Tools::getValue('pa
 
                     <table class="table table-striped my-0">
                         <tbody>
-                        <?php foreach ($view->congratulations as $function => $row) { ?>
+                        <?php
+                        $ignored_success_count = 0;
+                        foreach ($view->congratulations as $function => $row) {
+                            if ($row['status'] == 'ignore') {
+                                $ignored_success_count++;
+                                continue;
+                            }
+                            ?>
                             <tr>
                                 <td class="p-3 text-success text-left" style="width: 150px; vertical-align: middle;  font-size: 16px !important; <?php echo($row['color'] ? 'color:' . esc_attr($row['color']) : '') ?>">
                                     <?php if (isset($row['image']) && $row['image']) { ?>
@@ -74,7 +81,19 @@ $category_name = apply_filters('sq_page', SQ_Classes_Helpers_Tools::getValue('pa
                         </tbody>
                     </table>
                 </div>
+                <div class="col p-0 m-2 mx-0 text-left">
+                    <?php if ((int)$ignored_success_count > 0) { ?>
+                        <form method="post" class="p-0 m-0">
+                            <?php SQ_Classes_Helpers_Tools::setNonce('sq_resetignored', 'sq_nonce'); ?>
+                            <input type="hidden" name="action" value="sq_resetignored"/>
+                            <button type="submit" class="btn btn-link text-black-50 small p-2 px-3 m-0">
+                                <?php echo esc_html__("Show hidden success", _SQ_PLUGIN_NAME_) ?>
+                                <span class="rounded-circle p-1 px-2 text-white bg-danger"><?php echo (int)$ignored_success_count ?></span>
+                            </button>
+                        </form>
+                    <?php } ?>
 
+                </div>
             </div>
         <?php } ?>
 

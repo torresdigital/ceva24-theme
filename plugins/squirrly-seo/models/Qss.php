@@ -99,21 +99,18 @@ class SQ_Models_Qss {
 
     /**
      * Check if the table exists
-     * @return bool
      */
     public function checkTableExists() {
         global $wpdb;
 
-        try {
-            $wpdb->hide_errors();
-            if (!$wpdb->get_var("SELECT COUNT(*) FROM `" . $wpdb->prefix . _SQ_DB_ . "`")) {
-                $this->createTable();
-            }
-            $this->alterTable();
-            $wpdb->show_errors();
-        } catch (Exception $e) {
-        }
+        $wpdb->hide_errors();
+        $query = $wpdb->prepare('SHOW TABLES LIKE %s', $wpdb->prefix . _SQ_DB_);
 
+        if ($wpdb->get_var($query) === $wpdb->prefix . _SQ_DB_) {
+            $this->alterTable();
+        }else {
+            $this->createTable();
+        }
     }
 
     /**
@@ -121,8 +118,8 @@ class SQ_Models_Qss {
      */
     public static function createTable() {
         global $wpdb;
-
-        $sq_table_query = 'CREATE TABLE IF NOT EXISTS `' . $wpdb->prefix . _SQ_DB_ . '` (
+        $collate = $wpdb->get_charset_collate();
+        $sq_table_query = 'CREATE TABLE ' . $wpdb->prefix . _SQ_DB_ . ' (
                       `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
                       `blog_id` INT(10) NOT NULL,
                       `post` VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
@@ -133,16 +130,17 @@ class SQ_Models_Qss {
                       PRIMARY KEY(id),
                       UNIQUE url_hash(url_hash) USING BTREE,
                       INDEX blog_id_url_hash(blog_id, url_hash) USING BTREE
-                      )  CHARACTER SET utf8 COLLATE utf8_general_ci';
+                      )  ' . $collate;
 
-        if (file_exists(ABSPATH . 'wp-admin/includes/upgrade.php')) {
+        try {
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+
             if (function_exists('dbDelta')) {
-                dbDelta($sq_table_query, true);
+                dbDelta($sq_table_query);
             }
+        } catch (Exception $e) {
         }
 
-        self::alterTable();
     }
 
     public static function alterTable() {

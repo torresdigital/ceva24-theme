@@ -18,6 +18,12 @@
     });
   });
 
+  // quick view
+  $(document).on('click touch', '.wooscp_table .woosq-btn', function(e) {
+    wooscpCloseCompareTable();
+    e.preventDefault();
+  });
+
   // settings
   $(document).on('click touch', '.wooscp-bar-settings', function() {
     $('.wooscp-settings').toggleClass('open');

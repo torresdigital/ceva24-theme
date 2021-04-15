@@ -59,7 +59,7 @@ class SQ_Controllers_Overview extends SQ_Classes_FrontController {
 
         if (!SQ_Classes_Helpers_Tools::getOption('sq_seojourney') && SQ_Classes_Helpers_Tools::getOption('sq_alert_journey')) {
             if ((time() - strtotime(SQ_Classes_Helpers_Tools::getOption('sq_installed'))) / (3600 * 24) > 4) { ?>
-                <div class="alert alert-danger text-center m-0 mt-2 p-2">
+                <div class="alert alert-warning text-center m-0 mt-2 p-2">
                     <form method="post" class="p-0 m-0">
                         <?php SQ_Classes_Helpers_Tools::setNonce('sq_alerts_close', 'sq_nonce'); ?>
                         <input type="hidden" name="action" value="sq_alerts_close"/>

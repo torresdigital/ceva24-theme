@@ -55,6 +55,22 @@
                                     </div>
                                 </form>
                             </div>
+                        <?php }else{ ?>
+                            <div class="row px-3">
+                                <form method="get" class="form-inline col-12">
+                                    <input type="hidden" name="page" value="<?php echo SQ_Classes_Helpers_Tools::getValue('page') ?>">
+                                    <input type="hidden" name="tab" value="<?php echo SQ_Classes_Helpers_Tools::getValue('tab') ?>">
+                                    <div class="col-12 p-0 py-2">
+                                        <div class="d-flex flex-row justify-content-end p-0 m-0">
+                                            <input type="search" class="d-inline-block align-middle col-5 p-2 mr-2" id="post-search-input" autofocus name="skeyword" value="<?php echo SQ_Classes_Helpers_Sanitize::escapeKeyword(SQ_Classes_Helpers_Tools::getValue('skeyword')) ?>"/>
+                                            <input type="submit" class="btn btn-primary" value="<?php echo esc_html__("Search Keyword", _SQ_PLUGIN_NAME_) ?>"/>
+                                            <?php if (SQ_Classes_Helpers_Tools::getIsset('skeyword') || SQ_Classes_Helpers_Tools::getIsset('slabel')) { ?>
+                                                <button type="button" class="btn btn-info ml-1 p-v-xs" onclick="location.href = '<?php echo SQ_Classes_Helpers_Tools::getAdminUrl('sq_research', 'briefcase') ?>';" style="cursor: pointer"><?php echo esc_html__("Show All", _SQ_PLUGIN_NAME_) ?></button>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         <?php } ?>
                         <div class="card-body p-0">
                             <div class="col-12 m-0 p-0">
@@ -405,7 +421,7 @@
                                         <?php } ?>
                                     <?php } elseif (SQ_Classes_Helpers_Tools::getIsset('skeyword') || SQ_Classes_Helpers_Tools::getIsset('slabel')) { ?>
                                         <div class="card-body">
-                                            <h3 class="text-center"><?php echo esc_html($view->error); ?></h3>
+                                            <h4 class="text-center"><?php echo $view->error; ?></h4>
                                         </div>
                                     <?php } else { ?>
 

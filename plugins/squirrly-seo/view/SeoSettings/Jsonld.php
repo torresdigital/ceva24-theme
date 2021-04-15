@@ -171,12 +171,13 @@
                                             </div>
 
                                             <a name="localseo"></a>
-                                            <?php if (!SQ_Classes_Helpers_Tools::getOption('sq_seoexpert')) { ?>
-                                                <button type="button" class="show_advanced col-12 btn btn-light py-3 my-3 font-weight-bold border" style="font-size: 20px"><?php echo esc_html__("Setup JSON-LD Schema for Local SEO", _SQ_PLUGIN_NAME_); ?></button>
+                                            <?php if (!SQ_Classes_Helpers_Tools::getOption('sq_auto_jsonld_local')) { ?>
+                                                <button type="button" class="col-12 btn btn-light py-3 my-3 font-weight-bold border" style="font-size: 20px" onclick="jQuery('.sq_locaseo').toggle()"><?php echo esc_html__("Setup JSON-LD Schema for Local SEO", _SQ_PLUGIN_NAME_); ?></button>
                                             <?php } ?>
 
-                                            <div class="sq_advanced">
-                                                <div class="bg-title p-2 mt-5">
+
+                                            <div class="sq_locaseo" <?php if (!SQ_Classes_Helpers_Tools::getOption('sq_auto_jsonld_local')) { ?>style="display: none;" <?php }?>>
+                                                <div class="bg-title p-2 mt-4">
                                                     <h3 class="col-12 card-title"><?php echo esc_html__("GEO Location", _SQ_PLUGIN_NAME_); ?>
                                                         <a href="https://howto.squirrly.co/kb/json-ld-structured-data/#local_seo" target="_blank"><i class="fa fa-question-circle m-0 p-0"></i></a>
                                                     </h3>
@@ -186,14 +187,25 @@
                                                         <?php echo esc_html__("GEO Settings", _SQ_PLUGIN_NAME_); ?>:
                                                         <a href="https://howto.squirrly.co/kb/json-ld-structured-data/#local_seo" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
                                                         <div class="small text-black-50 my-1"><?php echo esc_html__("Latitude & Longitude of your store/business.", _SQ_PLUGIN_NAME_); ?></div>
+                                                        <div class="small text-black-50 my-1">
+                                                            <a href="https://www.latlong.net/convert-address-to-lat-long.html" target="_blank"><?php echo esc_html__("Get GEO Coordonates based on address.", _SQ_PLUGIN_NAME_); ?></a>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-4 py-0 pl-0 pr-2">
-                                                        <input type="text" class="form-control bg-input" name="sq_jsonld[Organization][place][geo][latitude]" value="<?php echo(($jsonld['Organization']['place']['geo']['latitude']) ? $jsonld['Organization']['place']['geo']['latitude'] : '') ?>" placeholder="<?php echo esc_html__("latitude", _SQ_PLUGIN_NAME_); ?>"/>
-                                                    </div>
-                                                    <div class="col-4 py-0 pl-2 pr-0">
-                                                        <input type="text" class="form-control bg-input" name="sq_jsonld[Organization][place][geo][longitude]" value="<?php echo(($jsonld['Organization']['place']['geo']['longitude']) ? $jsonld['Organization']['place']['geo']['longitude'] : '') ?>" placeholder="<?php echo esc_html__("longitude", _SQ_PLUGIN_NAME_); ?>"/>
+                                                    <div class="col-8 p-0">
+                                                        <div class="row px-3">
+                                                            <div class="col-5 py-0 pl-0 pr-2">
+                                                                <input type="text" class="form-control bg-input" name="sq_jsonld[Organization][place][geo][latitude]" value="<?php echo(($jsonld['Organization']['place']['geo']['latitude']) ? $jsonld['Organization']['place']['geo']['latitude'] : '') ?>" placeholder="<?php echo esc_html__("latitude", _SQ_PLUGIN_NAME_); ?>"/>
+                                                            </div>
+                                                            <div class="col-5 py-0 pl-2 pr-0">
+                                                                <input type="text" class="form-control bg-input" name="sq_jsonld[Organization][place][geo][longitude]" value="<?php echo(($jsonld['Organization']['place']['geo']['longitude']) ? $jsonld['Organization']['place']['geo']['longitude'] : '') ?>" placeholder="<?php echo esc_html__("longitude", _SQ_PLUGIN_NAME_); ?>"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row px-3 pt-2">
+                                                            <div class="col-10 text-black-50 p-0"><?php echo sprintf(esc_html__("Download the file %s for GEO Coordonates to import into %s Google Earth %s.", _SQ_PLUGIN_NAME_), '<strong><a href="' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getKmlUrl('locations') . '">' . SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps')->getKmlUrl('locations') . '</a></strong>', '<a href="https://support.google.com/earth/answer/7365595?co=GENIE.Platform%3DDesktop&hl=en" target="_blank" >', '</a>'); ?></div>
+                                                        </div>
                                                     </div>
                                                 </div>
+
 
                                                 <div class="bg-title p-2 mt-5">
                                                     <h3 class="col-12 card-title"><?php echo esc_html__("Opening Hours", _SQ_PLUGIN_NAME_); ?>
@@ -366,7 +378,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-12 row mb-1 ml-1">
+                                            <div class="col-12 row mb-1 ml-1 sq_advanced">
                                                 <div class="checker col-12 row my-2 py-1">
                                                     <div class="col-12 p-0 sq-switch sq-switch-sm">
                                                         <input type="hidden" name="sq_jsonld_product_defaults" value="0"/>
@@ -379,6 +391,8 @@
                                                 </div>
                                             </div>
                                         <?php } ?>
+
+
                                         <div class="col-12 row mb-1 ml-1">
                                             <div class="checker col-12 row my-2 py-1">
                                                 <div class="col-12 p-0 sq-switch sq-switch-sm">
@@ -464,7 +478,7 @@
                         <div class="col-12 my-5 mx-2">
                             <h5 class="text-left my-4 text-info"><?php echo esc_html__("Tips: How to optimize Json-LD Schema on all pages?", _SQ_PLUGIN_NAME_); ?></h5>
                             <ul class="mx-3">
-                                <li style="font-size: 15px; list-style: initial;"><?php echo sprintf(esc_html__("Use the %s SEO Automation %s to setup the Json-LD type based on Post Types.", _SQ_PLUGIN_NAME_), '<a href="' . SQ_Classes_Helpers_Tools::getAdminUrl('sq_seosettings', 'automation') . '">', '</a>'); ?></li>
+                                <li class="sq_advanced" style="font-size: 15px; list-style: initial;"><?php echo sprintf(esc_html__("Use the %s SEO Automation %s to setup the Json-LD type based on Post Types.", _SQ_PLUGIN_NAME_), '<a href="' . SQ_Classes_Helpers_Tools::getAdminUrl('sq_seosettings', 'automation') . '">', '</a>'); ?></li>
                                 <li style="font-size: 15px; list-style: initial;"><?php echo sprintf(esc_html__("Use %s Bulk SEO %s to optimize the JSON-LD in the SEO Snippet for each page on your website.", _SQ_PLUGIN_NAME_), '<a href="' . SQ_Classes_Helpers_Tools::getAdminUrl('sq_bulkseo', 'bulkseo') . '">', '</a>'); ?></li>
                             </ul>
                         </div>

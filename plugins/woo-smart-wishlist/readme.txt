@@ -4,7 +4,7 @@ Donate link: https://wpclever.net
 Tags: woocommerce, woo, wpc, smart, wishlist, wish list
 Requires at least: 4.0
 Tested up to: 5.7
-Stable tag: 2.5.1
+Stable tag: 2.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -108,6 +108,16 @@ Example:
 `echo do_shortcode('[woosw id="99"]');`
 
 == Changelog ==
+
+= 2.6.0 =
+* Added: Action and filter hooks: woosw_wishlist_items_before, woosw_wishlist_item_before, woosw_wishlist_item_image, woosw_wishlist_item_info, woosw_wishlist_item_actions, woosw_wishlist_item_after, woosw_wishlist_items_after
+
+= 2.5.3 =
+* Fixed: Warning on the users page
+
+= 2.5.2 =
+* Added: Enable/disable link to individual product
+* Updated: Optimized the code
 
 = 2.5.1 =
 * Updated: Optimized the code

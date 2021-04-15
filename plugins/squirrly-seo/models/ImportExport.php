@@ -91,6 +91,18 @@ class SQ_Models_ImportExport {
                 'title' => '_seopressor_meta_title',
                 'description' => '_seopressor_meta_description',
             ),
+            'wp-seopress' => array(
+                'title' => '_seopress_titles_title',
+                'description' => '_seopress_titles_desc',
+                'keywords' => '_seopress_analysis_target_kw',
+                'canonical' => '_seopress_robots_canonical',
+                'og_title' => '_seopress_social_fb_title',
+                'og_description' => '_seopress_social_fb_desc',
+                'og_media' => '_seopress_social_fb_img',
+                'tw_title' => '_seopress_social_twitter_title',
+                'tw_description' => '_seopress_social_twitter_desc',
+                'tw_media' => '_seopress_social_twitter_img',
+            ),
             'seo-title-tag' => array(
                 'Custom Doctitle' => 'title_tag',
                 'META Description' => 'meta_description',
@@ -169,6 +181,8 @@ class SQ_Models_ImportExport {
         switch ($path) {
             case 'wordpress-seo':
                 return 'Yoast SEO';
+            case 'wp-seopress':
+                return 'SEO Press';
             default:
                 return ucwords(str_replace('-', ' ', $path));
         }
@@ -702,7 +716,7 @@ class SQ_Models_ImportExport {
                         $fields = explode(",", trim($fields));
 
                         $values = substr($query, strpos($query, 'VALUES') + 6);
-                        if(strpos($query, 'ON DUPLICATE') !== false) {
+                        if (strpos($query, 'ON DUPLICATE') !== false) {
                             $values = substr($values, 0, strpos($values, 'ON DUPLICATE'));
                         }
 

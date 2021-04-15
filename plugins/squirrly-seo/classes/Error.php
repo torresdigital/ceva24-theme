@@ -94,7 +94,6 @@ class SQ_Classes_Error extends SQ_Classes_FrontController {
                         break;
 
                     default:
-
                         self::showError($error['text'], $error['id']);
                 }
             }

@@ -166,7 +166,7 @@ class SQ_Models_CheckSeo {
                 'solution' => esc_html__("How you optimize your tagline can depend on the theme you are using (some themes don't display the tagline automatically). Your best bet is to go to Appearance > Customize from your WP dashboard to access the Customizer. There, you can customize your tagline. Best Practices: Make sure your tagline is catchy and reflects your site as a whole (its niche, purpose, the content that can be found on your site. Include strong keywords in your tagline, and ensure the tagline fits with your overall branding strategy.", _SQ_PLUGIN_NAME_),
                 'goal' => esc_html__("Optimize your tagline so that your site is NOT 'Just another WordPress site' (or: Optimize your tagline to put your site’s best foot forward and encourage visitors to stick around.)", _SQ_PLUGIN_NAME_),
                 'link' => admin_url('options-general.php'),
-                'color' => 'orange',
+                'color' => 'red',
                 'bullet' => false,
                 'priority' => 3,
                 'ignorable' => true,

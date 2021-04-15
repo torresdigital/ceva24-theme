@@ -12,6 +12,20 @@
                             <h3 class="card-title"><?php echo esc_html__("Final Step", _SQ_PLUGIN_NAME_); ?></h3>
                         </div>
                     </div>
+                    <?php if (SQ_Classes_Helpers_Tools::getOption('sq_seoexpert')) { ?>
+                    <div class="card col-12 p-0 m-0 border-0 tab-panel border-0">
+                        <div class="card-body p-3" style="min-height: 230px">
+                            <div class="col-12 m-0 p-0">
+                                <div class="col-12 mx-0 p-0 text-center">
+                                    <div class="p-0">
+                                        <h3 class="card-title text-center"><?php echo esc_html__("You're all set.", _SQ_PLUGIN_NAME_); ?></h3>
+                                        <img src="<?php echo _SQ_ASSETS_URL_ . 'img/settings/success_background.jpg' ?>" class="border" style="width: 550px">
+                                    </div>
+                                    <a class="btn btn-primary m-3 py-2 px-5" href="<?php echo SQ_Classes_Helpers_Tools::getAdminUrl('sq_features') ?>"><?php echo esc_html__("See All Squirrly SEO Features", _SQ_PLUGIN_NAME_) ?></a>
+                                </div>
+                            </div>
+                        </div>
+                    <?php }else{ ?>
                     <div class="card col-12 p-0 m-0 border-0 tab-panel border-0">
                         <div class="card-body p-5" style="min-width: 800px;min-height: 430px">
                             <div class="col-12 m-0 p-0">
@@ -50,7 +64,7 @@
 
                         </div>
                     </div>
-
+                    <?php }?>
                 </div>
 
             </div>

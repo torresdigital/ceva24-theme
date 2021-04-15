@@ -59,7 +59,7 @@
                     </div>
                 <?php } else { ?>
                     <div class="col sq_audit_header">
-                        <a href="<?php echo SQ_Classes_Helpers_Tools::getAdminUrl('sq_audits', 'addpage') ?>" class="btn btn-lg btn-warning text-white mx-1">
+                        <a href="<?php echo SQ_Classes_Helpers_Tools::getAdminUrl('sq_audits', 'addpage') ?>" class="btn btn-lg btn-primary text-white mx-1">
                             <i class="fa fa-plus-square-o"></i> <?php echo esc_html__("Add a new page for Audit", _SQ_PLUGIN_NAME_); ?>
                         </a>
                     </div>
@@ -202,7 +202,7 @@
                                                 echo '<h6 class="col-12 px-0 text-success" style="line-height: 25px;font-size: 14px;"><i class="fa fa-arrow-up" style="font-size: 9px !important;margin: 0 5px;vertical-align: middle;"></i> ' . $value . '</h6>';
                                             }
                                             ?>
-                                        <a class="btn btn-sm btn-success" href="https://twitter.com/intent/tweet?text=<?php echo urlencode('I love the results I get with Squirrly SEO Audit for my website. @SquirrlyHQ #SEO') ?>">Share Your Success</a><?php
+                                        <a class="mt-2 btn btn-sm btn-light border" href="https://twitter.com/intent/tweet?text=<?php echo urlencode('I love the results I get with Squirrly SEO Audit for my website. @SquirrlyHQ #SEO') ?>">Share Your Success</a><?php
                                         } else {
                                             echo '<h4 class="col-12 px-0 text-info">' . esc_html__("No progress found yet", _SQ_PLUGIN_NAME_) . '</h4>';
                                         } ?>

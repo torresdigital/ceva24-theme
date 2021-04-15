@@ -149,7 +149,7 @@
                                     <?php } else { ?>
                                         <div class="card-body">
                                             <h4 class="text-center"><?php echo esc_html__("Welcome to Suggested Keywords", _SQ_PLUGIN_NAME_); ?></h4>
-                                            <h5 class="text-center"><?php echo esc_html__("Once a week, Squirrly checks all the keywords from your briefcase.", _SQ_PLUGIN_NAME_); ?></h5>
+                                            <h5 class="text-center mt-4"><?php echo esc_html__("Once a week, Squirrly checks all the keywords from your briefcase.", _SQ_PLUGIN_NAME_); ?></h5>
                                             <h5 class="text-center"><?php echo esc_html__("If it finds better keywords, they will be listed here", _SQ_PLUGIN_NAME_); ?></h5>
                                             <h6 class="text-center text-black-50 mt-3"><?php echo esc_html__("Until then, add keywords in Briefcase", _SQ_PLUGIN_NAME_); ?>:</h6>
                                             <div class="col-12 my-4 text-center">

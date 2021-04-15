@@ -54,7 +54,7 @@
             <?php if (SQ_Classes_Helpers_Tools::getMenuVisible('show_ads')) { ?>
                 <div class="card col-12 p-0 my-2">
                     <div class="my-3 py-3">
-                        <div class="col-12 row m-0">
+                        <div class="col-12 row p-0 m-0">
                             <div class="checker col-12 row m-0 p-0 text-center">
                                 <div class="col-12 my-2 mx-auto p-0 font-weight-bold" style="font-size: 18px;"><?php echo esc_html__("We Need Your Support", _SQ_PLUGIN_NAME_) ?></div>
 

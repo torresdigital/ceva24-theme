@@ -252,7 +252,7 @@ body.rtl .woosw-area .woosw-inner .woosw-content .woosw-content-top .woosw-close
     box-shadow: none;
 }
 
-.woosw-area .woosw-inner .woosw-content .woosw-content-mid table.woosw-content-items .woosw-content-item .woosw-content-item--title a {
+.woosw-area .woosw-inner .woosw-content .woosw-content-mid table.woosw-content-items .woosw-content-item .woosw-content-item--title, .woosw-area .woosw-inner .woosw-content .woosw-content-mid table.woosw-content-items .woosw-content-item .woosw-content-item--title a {
     font-weight: 700;
 }
 

@@ -3,7 +3,7 @@
 Plugin Name: WPC Smart Wishlist for WooCommerce
 Plugin URI: https://wpclever.net/
 Description: WPC Smart Wishlist is a simple but powerful tool that can help your customer save products for buy later.
-Version: 2.5.1
+Version: 2.6.0
 Author: WPClever
 Author URI: https://wpclever.net
 Text Domain: woosw
@@ -16,7 +16,7 @@ WC tested up to: 5.1
 
 defined( 'ABSPATH' ) || exit;
 
-! defined( 'WOOSW_VERSION' ) && define( 'WOOSW_VERSION', '2.5.1' );
+! defined( 'WOOSW_VERSION' ) && define( 'WOOSW_VERSION', '2.6.0' );
 ! defined( 'WOOSW_URI' ) && define( 'WOOSW_URI', plugin_dir_url( __FILE__ ) );
 ! defined( 'WOOSW_PATH' ) && define( 'WOOSW_PATH', plugin_dir_path( __FILE__ ) );
 ! defined( 'WOOSW_SUPPORT' ) && define( 'WOOSW_SUPPORT', 'https://wpclever.net/support?utm_source=support&utm_medium=woosw&utm_campaign=wporg' );
@@ -446,7 +446,8 @@ if ( ! function_exists( 'woosw_init' ) ) {
 				}
 
 				function admin_menu_content() {
-					$active_tab = isset( $_GET['tab'] ) ? esc_attr( $_GET['tab'] ) : 'settings';
+					add_thickbox();
+					$active_tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : 'settings';
 					?>
                     <div class="wpclever_settings_page wrap">
                         <h1 class="wpclever_settings_page_title"><?php echo 'WPC Smart Wishlist ' . WOOSW_VERSION; ?></h1>
@@ -523,6 +524,31 @@ if ( ! function_exists( 'woosw_init' ) ) {
                                             </td>
                                         </tr>
                                         <tr>
+                                            <th><?php esc_html_e( 'Link to individual product', 'woosw' ); ?></th>
+                                            <td>
+                                                <select name="woosw_link">
+                                                    <option
+                                                            value="yes" <?php echo( get_option( 'woosw_link', 'yes' ) === 'yes' ? 'selected' : '' ); ?>>
+														<?php esc_html_e( 'Yes, open in the same tab', 'woosw' ); ?>
+                                                    </option>
+                                                    <option
+                                                            value="yes_blank" <?php echo( get_option( 'woosw_link', 'yes' ) === 'yes_blank' ? 'selected' : '' ); ?>>
+														<?php esc_html_e( 'Yes, open in the new tab', 'woosw' ); ?>
+                                                    </option>
+                                                    <option
+                                                            value="yes_popup" <?php echo( get_option( 'woosw_link', 'yes' ) === 'yes_popup' ? 'selected' : '' ); ?>>
+														<?php esc_html_e( 'Yes, open quick view popup', 'woosw' ); ?>
+                                                    </option>
+                                                    <option
+                                                            value="no" <?php echo( get_option( 'woosw_link', 'yes' ) === 'no' ? 'selected' : '' ); ?>>
+														<?php esc_html_e( 'No', 'woosw' ); ?>
+                                                    </option>
+                                                </select> <span class="description">If you choose "Open quick view popup", please install <a
+                                                            href="<?php echo esc_url( admin_url( 'plugin-install.php?tab=plugin-information&plugin=woo-smart-quick-view&TB_iframe=true&width=800&height=550' ) ); ?>"
+                                                            class="thickbox" title="Install WPC Smart Quick View">WPC Smart Quick View</a> to make it work.</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
                                             <th scope="row"><?php esc_html_e( 'Show note', 'woosw' ); ?></th>
                                             <td>
                                                 <select name="woosw_show_note">
@@ -536,7 +562,7 @@ if ( ! function_exists( 'woosw_init' ) ) {
                                                     </option>
                                                 </select>
                                                 <span class="description">
-											<?php esc_html_e( 'Show your note on each product for all visitors. Only you can add/edit these notes.', 'woosw' ); ?>
+											<?php esc_html_e( 'Show note on each product for all visitors. Only wishlist owner can add/edit these notes.', 'woosw' ); ?>
 										</span>
                                                 <p style="color: #c9356e">
                                                     This feature is only available on the Premium Version. Click <a
@@ -929,7 +955,7 @@ if ( ! function_exists( 'woosw_init' ) ) {
                                                        value="<?php esc_html_e( 'Update Options', 'woosw' ); ?>"/>
                                                 <input type="hidden" name="action" value="update"/>
                                                 <input type="hidden" name="page_options"
-                                                       value="woosw_disable_unauthenticated,woosw_auto_remove,woosw_show_note,woosw_page_id,woosw_page_share,woosw_page_icon,woosw_page_items,woosw_page_copy,woosw_button_type,woosw_button_text,woosw_button_action,woosw_button_text_added,woosw_button_action_added,woosw_button_class,woosw_button_position_archive,woosw_button_position_single,woosw_cats,woosw_color,woosw_continue_url,woosw_menus,woosw_menu_action"/>
+                                                       value="woosw_disable_unauthenticated,woosw_auto_remove,woosw_link,woosw_show_note,woosw_page_id,woosw_page_share,woosw_page_icon,woosw_page_items,woosw_page_copy,woosw_button_type,woosw_button_text,woosw_button_action,woosw_button_text_added,woosw_button_action_added,woosw_button_class,woosw_button_position_archive,woosw_button_position_single,woosw_cats,woosw_color,woosw_continue_url,woosw_menus,woosw_menu_action"/>
                                             </th>
                                         </tr>
                                     </table>
@@ -1061,11 +1087,14 @@ if ( ! function_exists( 'woosw_init' ) ) {
 				}
 
 				function get_items( $key ) {
-					$items_html = '';
-					$products   = get_option( 'woosw_list_' . $key );
+					$products = get_option( 'woosw_list_' . $key );
+					$link     = get_option( 'woosw_link', 'yes' );
+					ob_start();
 
 					if ( is_array( $products ) && ( count( $products ) > 0 ) ) {
-						$items_html .= '<table class="woosw-content-items">';
+						echo '<table class="woosw-content-items">';
+
+						do_action( 'woosw_wishlist_items_before', $key );
 
 						foreach ( $products as $product_id => $product_data ) {
 							$product = wc_get_product( $product_id );
@@ -1081,31 +1110,84 @@ if ( ! function_exists( 'woosw_init' ) ) {
 								$product_time = date_i18n( get_option( 'date_format' ), $product_data );
 							}
 
-							$items_html .= '<tr class="woosw-content-item woosw-content-item-' . $product_id . '" data-id="' . $product_id . '" data-key="' . $key . '">';
+							if ( is_array( $product_data ) && ! empty( $product_data['note'] ) ) {
+								$product_note = $product_data['note'];
+							} else {
+								$product_note = '';
+							} ?>
 
-							if ( self::can_edit( $key ) ) {
-								$items_html .= '<td class="woosw-content-item--remove"><span></span></td>';
-							}
+                            <tr class="woosw-content-item woosw-content-item-<?php echo esc_attr( $product_id ); ?>"
+                                data-id="<?php echo esc_attr( $product_id ); ?>"
+                                data-key="<?php echo esc_attr( $key ); ?>">
 
-							$items_html .= '<td class="woosw-content-item--image">' . $product->get_image() . '</td>';
-							$items_html .= '<td class="woosw-content-item--info">';
-							$items_html .= '<div class="woosw-content-item--title"><a href="' . $product->get_permalink() . '">' . $product->get_name() . '</a></div>';
-							$items_html .= '<div class="woosw-content-item--price">' . $product->get_price_html() . '</div>';
-							$items_html .= '<div class="woosw-content-item--time">' . $product_time . '</div>';
-							$items_html .= '</td>';
-							$items_html .= '<td class="woosw-content-item--actions">';
-							$items_html .= '<div class="woosw-content-item--stock">' . ( $product->is_in_stock() ? esc_html__( 'In stock', 'woosw' ) : esc_html__( 'Out of stock', 'woosw' ) ) . '</div>';
-							$items_html .= '<div class="woosw-content-item--add">' . do_shortcode( '[add_to_cart id="' . $product_id . '"]' ) . '</div>';
-							$items_html .= '</td>';
-							$items_html .= '</tr>';
-						}
+								<?php do_action( 'woosw_wishlist_item_before', $product, $product_id, $key ); ?>
 
-						$items_html .= '</table>';
-					} else {
-						$items_html = '<div class="woosw-content-mid-notice">' . esc_html__( 'There are no products on the wishlist!', 'woosw' ) . '</div>';
-					}
+								<?php if ( self::can_edit( $key ) ) { ?>
+                                    <td class="woosw-content-item--remove"><span></span></td>
+								<?php } ?>
 
-					return $items_html;
+                                <td class="woosw-content-item--image">
+									<?php if ( $link !== 'no' ) { ?>
+                                        <a <?php echo ( $link === 'yes_popup' ? 'class="woosq-btn" data-id="' . $product_id . '"' : '' ) . ' href="' . $product->get_permalink() . '" ' . ( $link === 'yes_blank' ? 'target="_blank"' : '' ); ?>>
+											<?php echo $product->get_image(); ?>
+                                        </a>
+									<?php } else {
+										echo $product->get_image();
+									}
+
+									do_action( 'woosw_wishlist_item_image', $product, $product_id, $key ); ?>
+                                </td>
+
+                                <td class="woosw-content-item--info">
+                                    <div class="woosw-content-item--title">
+										<?php if ( $link !== 'no' ) { ?>
+                                            <a <?php echo ( $link === 'yes_popup' ? 'class="woosq-btn" data-id="' . $product_id . '"' : '' ) . ' href="' . $product->get_permalink() . '" ' . ( $link === 'yes_blank' ? 'target="_blank"' : '' ); ?>>
+												<?php echo $product->get_name(); ?>
+                                            </a>
+										<?php } else {
+											echo $product->get_name();
+										} ?>
+                                    </div>
+
+                                    <div class="woosw-content-item--price">
+										<?php echo $product->get_price_html(); ?>
+                                    </div>
+
+                                    <div class="woosw-content-item--time">
+										<?php echo $product_time; ?>
+                                    </div>
+
+									<?php do_action( 'woosw_wishlist_item_info', $product, $product_id, $key ); ?>
+                                </td>
+
+                                <td class="woosw-content-item--actions">
+                                    <div class="woosw-content-item--stock">
+										<?php echo( $product->is_in_stock() ? esc_html__( 'In stock', 'woosw' ) : esc_html__( 'Out of stock', 'woosw' ) ); ?>
+                                    </div>
+
+                                    <div class="woosw-content-item--add">
+										<?php echo do_shortcode( '[add_to_cart id="' . $product_id . '"]' ); ?>
+                                    </div>
+
+									<?php do_action( 'woosw_wishlist_item_actions', $product, $product_id, $key ); ?>
+                                </td>
+
+								<?php do_action( 'woosw_wishlist_item_after', $product, $product_id, $key ); ?>
+                            </tr>
+						<?php }
+
+						do_action( 'woosw_wishlist_items_after', $key );
+
+						echo '</table>';
+					} else { ?>
+                        <div class="woosw-content-mid-notice">
+							<?php esc_html_e( 'There are no products on the wishlist!', 'woosw' ); ?>
+                        </div>
+					<?php }
+
+					$items_html = ob_get_clean();
+
+					return apply_filters( 'woosw_wishlist_items', $items_html, $key );
 				}
 
 				function wp_footer() {
@@ -1276,7 +1358,7 @@ if ( ! function_exists( 'woosw_init' ) ) {
 						}
 					}
 
-					return apply_filters( 'woosw_wishlist_url', $url );
+					return apply_filters( 'woosw_wishlist_url', $url, $key );
 				}
 
 				public static function get_count( $key = null ) {
@@ -1284,13 +1366,11 @@ if ( ! function_exists( 'woosw_init' ) ) {
 						$key = self::get_key();
 					}
 
-					$products = array();
-
-					if ( get_option( 'woosw_list_' . $key ) ) {
-						$products = get_option( 'woosw_list_' . $key );
+					if ( ( $key != '' ) && ( $products = get_option( 'woosw_list_' . $key ) ) && is_array( $products ) ) {
+						return apply_filters( 'woosw_wishlist_count', count( $products ), $key );
+					} else {
+						return apply_filters( 'woosw_wishlist_count', 0, $key );
 					}
-
-					return apply_filters( 'woosw_wishlist_count', count( $products ) );
 				}
 
 				function woosw_product_columns( $columns ) {
@@ -1344,16 +1424,13 @@ if ( ! function_exists( 'woosw_init' ) ) {
 				}
 
 				function woosw_user_table_row( $val, $column_name, $user_id ) {
-					if ( $column_name == "woosw" ) {
-						$key      = get_user_meta( $user_id, "woosw_key", true );
-						$products = array();
+					if ( $column_name === 'woosw' ) {
+						$key = get_user_meta( $user_id, 'woosw_key', true );
 
-						if ( $key != "" ) {
-							$products = get_option( "woosw_list_" . $key, true );
-						}
-
-						if ( $count = count( $products ) > 0 ) {
-							$val = '<a href="#" class="woosw_action" data-key="' . $key . '">' . count( $products ) . '</a>';
+						if ( ( $key != '' ) && ( $products = get_option( 'woosw_list_' . $key, true ) ) ) {
+							if ( is_array( $products ) && ( $count = count( $products ) ) ) {
+								$val = '<a href="#" class="woosw_action" data-key="' . $key . '">' . $count . '</a>';
+							}
 						}
 					}
 

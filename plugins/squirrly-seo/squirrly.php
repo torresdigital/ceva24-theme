@@ -8,7 +8,7 @@
  * Description: A.I.-based Private SEO Consultant. In a Plugin. Powered by Machine Learning and Cloud Services. Over 300 functionalities for SEO available when you need them.
  * Author: Squirrly SEO
  * Author URI: https://plugin.squirrly.co
- * Version: 11.1.00
+ * Version: 11.1.01
  * License: GPLv2 or later
  * License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
  * Text Domain: squirrly-seo
@@ -17,9 +17,9 @@
 
 if (!defined('SQ_VERSION')) {
     /* SET THE CURRENT VERSION ABOVE AND BELOW */
-    define('SQ_VERSION', '11.1.00');
+    define('SQ_VERSION', '11.1.01');
     //The last stable version
-    define('SQ_STABLE_VERSION', '11.0.03');
+    define('SQ_STABLE_VERSION', '11.1.00');
     // Call config files
     try {
         require_once(dirname(__FILE__) . '/config/config.php');

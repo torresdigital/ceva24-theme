@@ -102,7 +102,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
             if (isset($briefcase->keywords) && !empty($briefcase->keywords)) {
                 $this->keywords = $briefcase->keywords;
             } else {
-                $this->error = esc_html__("No keyword found.", _SQ_PLUGIN_NAME_);
+                $this->error = sprintf(esc_html__("No keyword found. %s Show all %s keywords from Briefcase.", _SQ_PLUGIN_NAME_),'<a href="'.SQ_Classes_Helpers_Tools::getAdminUrl('sq_research','briefcase').'">','</a>');
             }
 
             if (isset($briefcase->labels)) {
