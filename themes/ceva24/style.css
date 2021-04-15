@@ -70,6 +70,10 @@ html .shipping-calculator-button {font-size: 12px;text-align: center;color: #fff
 
 .ribbon-btn {border: 1px #000 solid;width: 91%;position: relative;display: inline-block;text-align: center;padding: 5px;top: 6px; border-radius: 30px;animation: shadow-pulse 1s infinite;cursor: pointer;box-shadow: 0 0 0 rgba(204,169,44, 0.4);}
 
+html #shipping_method {font-size: 20px;text-align: center;font-family: "Roboto-Bold", sans-serif;background: red;color: #fff;text-shadow: 0px 1px 2px #000; border-radius: 5px}
+
+.woocommerce ul#shipping_method li input {top: 5px;position: relative;}
+.woocommerce ul#shipping_method li {margin: 2px 0;line-height: 1.5em;list-style: none outside;padding: 15px 0;}
 
 /*Head*/
 .top-header-col1 {font-weight: 600;}
