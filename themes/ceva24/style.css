@@ -17,7 +17,8 @@ Updated: 2021-03-30 08:45:24
 /* produtos na home */
 .thunk-product-content, .thunk-product-hover {padding: 0px 10px;position: relative;}
 /*Botao add to Home*/
-.button.th-button.add_to_cart_button.ajax_add_to_cart:hover {background: #FF3815;color: #fff;font-size: 14px;padding: 12px; border: 0; top: -3px;}
+.button.th-button.add_to_cart_button.ajax_add_to_cart:hover,
+.button.product_type_simple.add_to_cart_button.ajax_add_to_cart:hover {background: #FF3815;color: #fff;font-size: 14px;padding: 12px; border: 0; top: -3px;}
 /*.woocommerce .thunk-product-hover a.th-button, .button.th-button.add_to_cart_button.ajax_add_to_cart {background-color: #5fd300; color: #fff}*/
 /*widgets na home*/
 .th-aboutme, .th-aboutme a {text-align: center;font-weight: 600;}
@@ -64,9 +65,10 @@ html .shipping-calculator-button {font-size: 12px;text-align: center;color: #fff
 
 .product-template-default .quantity input, .quantity input {width: 70px !important;}
 
-.onsale, .woocommerce .thunk-woo-product-list span.onsale {background-color: red;animation: shadow-pulse 1s infinite;cursor: pointer;box-shadow: 0 0 0 rgba(204,169,44, 0.4);border-radius: 17px;right: 12px;top: 10px;}
+.onsale, .woocommerce .thunk-woo-product-list span.onsale,
+.woocommerce ul.products li.product .onsale {background-color: red;animation: shadow-pulse 1s infinite;cursor: pointer;box-shadow: 0 0 0 rgba(204,169,44, 0.4);border-radius: 17px;right: 12px;top: 10px;}
 
-.thunk-ribbon-content-col1 h3 {color: #fff;background-color: rgba(0,0,0,0.6);padding: 0 5px;border-radius: 30px;text-align: center;width: 70%;background-position: 12px 12px;position: relative;display: inline-block;}
+.thunk-ribbon-content-col1 h3 {color: #fff;background-color: rgba(0,0,0,0.6);padding: 0 5px;border-radius: 30px;text-align: center;width: 70%;background-position: 12px 12px;position: relative;display: inline-block; text-shadow: 3px 1px 1px #000;}
 
 .ribbon-btn {border: 1px #000 solid;width: 91%;position: relative;display: inline-block;text-align: center;padding: 5px;top: 6px; border-radius: 30px;animation: shadow-pulse 1s infinite;cursor: pointer;box-shadow: 0 0 0 rgba(204,169,44, 0.4);}
 
