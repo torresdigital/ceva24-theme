@@ -39,7 +39,7 @@ html #move-to-top {background-color: #141415;font-size: 18px;border-radius: 50%;
 } */
 
 html .openshop-site section.thunk-ribbon-section .content-wrap::before {
-    background-image: url(https://c8.alamy.com/comp/2C13F0H/smiley-emojis-in-yellow-background-vector-concept-smileys-emoji-avatar-character-in-top-view-with-different-facial-expressions-like-in-love-happy-2C13F0H.jpg);
+    background-image: url(/wp-content/uploads/2021/04/banner_home_emojis.jpg);
     background-size: 81%;
 }
 
@@ -68,7 +68,7 @@ html .shipping-calculator-button {font-size: 12px;text-align: center;color: #fff
 .onsale, .woocommerce .thunk-woo-product-list span.onsale,
 .woocommerce ul.products li.product .onsale {background-color: red;animation: shadow-pulse 1s infinite;cursor: pointer;box-shadow: 0 0 0 rgba(204,169,44, 0.4);border-radius: 17px;right: 12px;top: 10px;}
 
-.thunk-ribbon-content-col1 h3 {color: #fff;background-color: rgba(0,0,0,0.6);padding: 0 5px;border-radius: 30px;text-align: center;width: 70%;background-position: 12px 12px;position: relative;display: inline-block; text-shadow: 3px 1px 1px #000;}
+.thunk-ribbon-content-col1 h3 {color: #fff;background-color: rgba(0,0,0,0.6);padding: 7px 5px;border-radius: 30px;text-align: center;width: 70%;background-position: 12px 12px;position: relative;display: inline-block; text-shadow: 3px 1px 1px #000;}
 
 .ribbon-btn {border: 1px #000 solid;width: 91%;position: relative;display: inline-block;text-align: center;padding: 5px;top: 6px; border-radius: 30px;animation: shadow-pulse 1s infinite;cursor: pointer;box-shadow: 0 0 0 rgba(204,169,44, 0.4);}
 
@@ -80,14 +80,14 @@ html .woocommerce ul#shipping_method li {margin: 2px 0;line-height: 1.5em;list-s
 .thunk-product .woosw-btn::before, .woosw-btn::before {font-size: 13px;background: red;border-radius: 40px;padding: 4px;color: #fff;font-weight: 900;}
 
 .thunk-single-product-summary-wrap .summary.entry-summary {bottom: -32px;position: relative;display: block;}
-.summary .woosw-btn {border-radius: 30px;line-height: 0px;}
+
 
 /*hover lista*/
 html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;cursor: pointer;box-shadow: 0 0 0 rgba(204,169,44, 0.4);}
 
 
 /*Head*/
-.top-header-col1 {font-weight: 600;}
+.top-header-col1 { font-family: "Roboto-Bold", sans-serif;}
 
 
 /*Logo*/
@@ -199,11 +199,20 @@ html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;
 
 }
 
-@media only screen and (max-width : 767px) {
+@media only screen and (max-width : 768px) {
+    
+    .thunk-highlight-col {width: 50%;padding: 7px 33px;text-align: center;display: inline-block;}
 
 }
 
+@media only screen and (max-width : 640px) {
+
+.thunk-highlight-col {width: 50%;padding: 7px 33px;text-align: center;display: inline-block;}
+}
+
 @media only screen and (max-width : 480px) {
+
+    .thunk-highlight-col {width: 100%;padding: 10px 11px;}
 
 }
 
@@ -706,3 +715,14 @@ html .xoo-wsc-ft-btn.button.btn.xoo-wsc-ft-btn-checkout {background: #FF3815;col
 }
 
 @keyframes shadow-pulse{0% {box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2);}100% {box-shadow: 0 0 0 15px rgba(0, 0, 0, 0);}}
+
+
+/*.top-header-col1 .content-html { animation: color-change 3s infinite; }
+
+@keyframes color-change {
+    0% { color: black; }
+    25% { color: red; }
+    50% { color: black; }
+    75% { color: red; }
+    100% { color: black; }
+}*/
