@@ -75,6 +75,12 @@ html #shipping_method {font-size: 20px;text-align: center;font-family: "Roboto-B
 .woocommerce ul#shipping_method li input {top: 5px;position: relative;}
 html .woocommerce ul#shipping_method li {margin: 2px 0;line-height: 1.5em;list-style: none outside;padding: 15px 0;}
 
+.thunk-product .woosw-btn::before, .woosw-btn::before {font-size: 13px;background: red;border-radius: 40px;padding: 4px;color: #fff;font-weight: 900;}
+
+/*hover lista*/
+html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;cursor: pointer;box-shadow: 0 0 0 rgba(204,169,44, 0.4);}
+
+
 /*Head*/
 .top-header-col1 {font-weight: 600;}
 
