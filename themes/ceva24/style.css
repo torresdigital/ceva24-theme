@@ -229,6 +229,7 @@ html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;
 
     .below-header-bar {height: 106px;text-align: center;display: inline-block;}
     #search-box input[type="text"], select#product_cat {padding: 0px 10px;font-size: 11px;width: 80%;}
+    .open-shop-quantity {width: 118px;margin: 0 5px 0 0;}
 
 
 }
@@ -238,6 +239,7 @@ html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;
     h1 {font-size: 20px;margin: 20px 0;border-bottom: 1px solid;padding-bottom: 10px;}
     .below-header-col2 {width: 48%;margin: auto 2px;}
     .header-icon a, .thunk-icon .cart-icon a.cart-contents {margin: 0 1px;}
+    .single_add_to_cart_button.button.alt {margin: 0 2px;margin-right: 2px;}
 
 }
 
