@@ -88,6 +88,7 @@ html .woocommerce ul#shipping_method li {margin: 2px 0;line-height: 1.5em;list-s
 
 /*Lista*/
 /*hover lista*/
+.button.product_type_simple.add_to_cart_button.ajax_add_to_cart {text-align: center;}
 html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;cursor: pointer;box-shadow: 0 0 0 rgba(204,169,44, 0.4);}
 .woosw-copy-btn {margin-left: 12px;}
 
@@ -219,6 +220,15 @@ html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;
 @media only screen and (max-width : 480px) {
 
     .thunk-highlight-col {width: 100%;padding: 10px 11px;}
+
+}
+
+@media only screen and (max-width : 360px) {
+
+.below-header-col2 {width: 83%;margin-bottom: 20px;}
+
+    .below-header-bar {height: 106px;text-align: center;display: inline-block;}
+
 
 }
 
