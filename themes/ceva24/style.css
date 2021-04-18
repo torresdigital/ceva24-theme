@@ -223,6 +223,15 @@ html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;
 
 }
 
+@media only screen and (max-width : 360px) {
+
+.below-header-col2 {width: 83%;margin-bottom: 20px;}
+
+    .below-header-bar {height: 106px;text-align: center;display: inline-block;}
+
+
+}
+
 @media only screen and (max-width : 320px) {
     
     h1 {font-size: 20px;margin: 20px 0;border-bottom: 1px solid;padding-bottom: 10px;}
