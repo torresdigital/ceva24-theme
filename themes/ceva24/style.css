@@ -239,7 +239,10 @@ html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;
     h1 {font-size: 20px;margin: 20px 0;border-bottom: 1px solid;padding-bottom: 10px;}
     .below-header-col2 {width: 48%;margin: auto 2px;}
     .header-icon a, .thunk-icon .cart-icon a.cart-contents {margin: 0 1px;}
-    .single_add_to_cart_button.button.alt {margin: 0 2px;margin-right: 2px;}
+    .open-shop-quantity {width: 108px; margin: 0 2px}
+    .single_add_to_cart_button.button.alt, .woocommerce #respond input#submit.alt, .woocommerce a.button.alt, .woocommerce button.button.alt, .woocommerce input.button.alt, .woocommerce #respond input#submit, .woocommerce button.button, .woocommerce input.button, .woocommerce div.product form.cart .button {line-height: 32px;margin-right: 9px;text-align: center;padding: 0 10px;min-width: 88px;}
+    
+    .thunk-single-product-summary-wrap {height: 570px;}
 
 }
 
