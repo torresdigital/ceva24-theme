@@ -225,9 +225,11 @@ html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;
 
 @media only screen and (max-width : 360px) {
 
-.below-header-col2 {width: 83%;margin-bottom: 20px;}
+.below-header-col2 {width: 47%;margin-bottom: 20px;}
 
     .below-header-bar {height: 106px;text-align: center;display: inline-block;}
+    #search-box input[type="text"], select#product_cat {padding: 0px 10px;font-size: 11px;width: 80%;}
+    .open-shop-quantity {width: 118px;margin: 0 5px 0 0;}
 
 
 }
@@ -235,6 +237,12 @@ html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;
 @media only screen and (max-width : 320px) {
     
     h1 {font-size: 20px;margin: 20px 0;border-bottom: 1px solid;padding-bottom: 10px;}
+    .below-header-col2 {width: 48%;margin: auto 2px;}
+    .header-icon a, .thunk-icon .cart-icon a.cart-contents {margin: 0 1px;}
+    .open-shop-quantity {width: 108px; margin: 0 2px}
+    .single_add_to_cart_button.button.alt, .woocommerce #respond input#submit.alt, .woocommerce a.button.alt, .woocommerce button.button.alt, .woocommerce input.button.alt, .woocommerce #respond input#submit, .woocommerce button.button, .woocommerce input.button, .woocommerce div.product form.cart .button {line-height: 32px;margin-right: 9px;text-align: center;padding: 0 10px;min-width: 88px;}
+    
+    .thunk-single-product-summary-wrap {height: 570px;}
 
 }
 
