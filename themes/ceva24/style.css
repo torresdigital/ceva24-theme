@@ -48,7 +48,7 @@ html .openshop-site section.thunk-ribbon-section .content-wrap::before {
 
 .shipping-calculator-button:hover {color: #fff;}
 .shipping-calculator-form .button:hover {color: black;animation: shadow-pulse 1s infinite;cursor: pointer;box-shadow: 0 0 0 rgba(204,169,44, 0.4);}
-html .shipping-calculator-button {font-size: 12px;text-align: center;color: #fff;font-weight: 600;background: #ff3815;padding: 5px 2px;font-weight: 600;text-transform: initial;}
+html .shipping-calculator-button {font-size: 12px; font-family: "Roboto-Bold", sans-serif; text-align: center;color: #fff;font-weight: 600;background: #ff3815;padding: 5px 2px;font-weight: 600;text-transform: initial;}
 
 /*.woocommerce-form.woocommerce-form-login.login {display: block !important;}*/
 
@@ -96,6 +96,9 @@ html .woocommerce ul#shipping_method li {margin: 2px 0;line-height: 1.5em;list-s
 html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;cursor: pointer;box-shadow: 0 0 0 rgba(204,169,44, 0.4);}
 .woosw-copy-btn {margin-left: 12px;}
 
+.open-shop-menu > li:nth-child(4n-2) .menu-item-description {background: rgb(255, 56, 21);font-size: 12px;font-family: "Roboto-Bold", sans-serif;width: 100%;text-align: center;padding: 8px;}
+
+.open-shop-menu > li:nth-child(4n+2) .menu-item-description::after {border-top: 4px solid rgb(255, 56, 21);}
 
 /*Head*/
 .top-header-col1 { font-family: "Roboto-Bold", sans-serif;}
@@ -216,6 +219,7 @@ html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;
     .thunk-highlight-col {width: 50%;padding: 7px 33px;text-align: center;display: inline-block;}
     .woocommerce div.product div.images .woocommerce-product-gallery__trigger {top: 23px;right: 7px;}
     .xoo-wsc-product {padding: 11px 15px;}
+    .shipping-calculator-form {width: 100%;font-family: "Roboto-Bold", sans-serif;}
 
 
 }
@@ -285,6 +289,10 @@ html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;
     .thunk-single-product-summary-wrap {height: 600px;}
     .xoo-wsc-cart-active .xoo-wsc-basket {right: 239px;}
     .xoo-wsc-container, .xoo-wsc-slider {max-width: 280px;}
+    .sticky-header-col1 {width: 43%;}
+    #menu-btn-stk {border: 1px solid;position: relative;border-radius: 50%;margin-bottom: 6px;margin-right: 0px;animation: shadow-pulse 1s infinite;cursor: pointer;box-shadow: 0 0 0 rgba(204,169,44, 0.4);}
+    html .menu-toggle .icon-bar, .sticky-header-bar .menu-toggle .icon-bar {width: 16px;height: 2px;border-radius: 1px;margin: 5px;}
+    html .menu-close-btn, .sticky-mobile-menu-active .sider.overcenter .menu-close-btn {margin: auto;}
 
 
 
