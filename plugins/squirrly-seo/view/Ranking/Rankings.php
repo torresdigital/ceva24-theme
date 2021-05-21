@@ -14,7 +14,7 @@ echo (string)$view->getScripts();
     <?php do_action('sq_notices'); ?>
     <div class="d-flex flex-row my-0 bg-white" style="clear: both !important;">
         <?php
-        if (!current_user_can('sq_manage_focuspages')) {
+        if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_focuspages')) {
             echo '<div class="col-12 alert alert-success text-center m-0 p-3">' . esc_html__("You do not have permission to access this page. You need Squirrly SEO Admin role.", _SQ_PLUGIN_NAME_) . '</div>';
             return;
         }
@@ -395,9 +395,9 @@ echo (string)$view->getScripts();
                                                                 <div class="col-6"><?php echo esc_html__("Social Shares", _SQ_PLUGIN_NAME_) ?>:</div>
                                                                 <div class="col-6">
                                                                     <?php
-                                                                    echo "<strong>" . number_format($row->facebook, 0, '.', ',') . "</strong>" . ' ' . esc_html__("Facebook Shares", _SQ_PLUGIN_NAME_) . "<br />";
-                                                                    echo "<strong>" . number_format($row->reddit, 0, '.', ',') . "</strong>" . ' ' . esc_html__("Reddit Shares", _SQ_PLUGIN_NAME_) . "<br />";
-                                                                    echo "<strong>" . number_format($row->pinterest, 0, '.', ',') . "</strong>" . ' ' . esc_html__("Pinterest Pins", _SQ_PLUGIN_NAME_) . "<br />";
+                                                                    echo "<strong>" . number_format((int)$row->facebook, 0, '.', ',') . "</strong>" . ' ' . esc_html__("Facebook Shares", _SQ_PLUGIN_NAME_) . "<br />";
+                                                                    echo "<strong>" . number_format((int)$row->reddit, 0, '.', ',') . "</strong>" . ' ' . esc_html__("Reddit Shares", _SQ_PLUGIN_NAME_) . "<br />";
+                                                                    echo "<strong>" . number_format((int)$row->pinterest, 0, '.', ',') . "</strong>" . ' ' . esc_html__("Pinterest Pins", _SQ_PLUGIN_NAME_) . "<br />";
                                                                     ?>
                                                                 </div>
                                                             </li>

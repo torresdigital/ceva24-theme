@@ -35,7 +35,7 @@ function codes_editor_area()
     esc_html_e( 'SELECT EDITOR TYPE', 'custom-codes' );
     ?></option>
 					<optgroup :label="langGroup.name" v-for="langGroup in langGroups" :key="langGroup.id">
-						<option :value="lang.id" v-for="lang in langs.filter(lang => lang.group == langGroup.id)" :key="lang.id">{{ lang.name }}</option>
+						<option :value="lang.id" v-for="lang in langs.filter(lang => lang.group == langGroup.id)" :key="lang.id" :disabled="lang.pro && ! isPremium">{{ lang.name + (lang.pro && ! isPremium ? ' (PRO)' : '') }}</option>
 					</optgroup>
 				</select>
 				<input type="hidden" name="language-group" :value="currentLang.group" v-if="currentLang">

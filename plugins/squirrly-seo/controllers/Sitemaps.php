@@ -105,7 +105,7 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
         global $sq_query;
         $sq_query = array();
 
-        if(!isset($request)){
+        if (!isset($request)) {
             return;
         }
 
@@ -134,7 +134,7 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
                 'post_type' => array('post'),
                 'tax_query' => array(),
                 'post_status' => 'publish',
-                'posts_per_page' => $this->posts_limit,
+                'posts_per_page' => 1000,
                 'paged' => $page,
                 'orderby' => 'date',
                 'order' => 'DESC',
@@ -160,6 +160,7 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
                 switch ($this->model->type) {
                     case 'sitemap-news':
                     case 'sitemap-post':
+                        $sq_query['posts_per_page'] = $this->posts_limit;
                         break;
                     case 'sitemap-category':
                     case 'sitemap-post_tag':
@@ -169,6 +170,7 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
                         break;
                     case 'sitemap-page':
                         $sq_query['post_type'] = array('page');
+                        $sq_query['posts_per_page'] = $this->posts_limit;
                         break;
                     case 'sitemap-attachment':
                         $sq_query['post_type'] = array('attachment');
@@ -206,6 +208,8 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
                             $types = array('custom-post');
                         }
                         $sq_query['post_type'] = $types;
+                        $sq_query['posts_per_page'] = $this->posts_limit;
+
                         break;
                     case 'sitemap-archive':
                         add_filter('sq-sitemap-archive', array($this, 'archiveFilter'), 5);
@@ -220,12 +224,12 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
     }
 
     public function getSquirrlyHeader($header) {
-        if($this->model->type <> 'locations'){
-            $header =  '<?xml-stylesheet type="text/xsl" href="/' . _SQ_ASSETS_RELATIVE_URL_ . 'css/sitemap' . ($this->model->type == 'sitemap' ? 'index' : '') . '.xsl"?>' . "\n";
+        if ($this->model->type <> 'locations') {
+            $header = '<?xml-stylesheet type="text/xsl" href="/' . _SQ_ASSETS_RELATIVE_URL_ . 'css/sitemap' . ($this->model->type == 'sitemap' ? 'index' : '') . '.xsl"?>' . "\n";
             $header .= '<!-- generated-on="' . date('Y-m-d\TH:i:s+00:00') . '" -->' . "\n";
             $header .= '<!-- generator="Squirrly SEO Sitemap" -->' . "\n";
-            $header .=  '<!-- generator-url="https://wordpress.org/plugins/squirrly-seo/" -->' . "\n";
-            $header .=  '<!-- generator-version="' . SQ_VERSION . '" -->' . "\n";
+            $header .= '<!-- generator-url="https://wordpress.org/plugins/squirrly-seo/" -->' . "\n";
+            $header .= '<!-- generator-version="' . SQ_VERSION . '" -->' . "\n";
         }
 
         return $header;
@@ -369,6 +373,7 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
                                     }
                                 }
                             }
+
                         }
                     }
                 $this->showSitemapFooter();
@@ -452,7 +457,7 @@ class SQ_Controllers_Sitemaps extends SQ_Classes_FrontController {
             foreach ($xml as $key => $data) {
                 if ($data === false) {
                     $str .= $tab . '<' . $key . '>' . "\n";
-                }elseif (!is_array($data) && $data <> '') {
+                } elseif (!is_array($data) && $data <> '') {
                     $str .= $tab . '<' . $key . ($key == 'video:player_loc' ? ' allow_embed="yes"' : '') . '>' . $data . ((strpos($data, '?') == false && $key == 'video:player_loc') ? '' : '') . '</' . $key . '>' . "\n";
                 } else {
                     if ($this->getRecursiveXml($data) <> '') {

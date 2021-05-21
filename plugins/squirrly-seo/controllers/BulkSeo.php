@@ -69,7 +69,7 @@ class SQ_Controllers_BulkSeo extends SQ_Classes_FrontController {
                 SQ_Classes_Helpers_Tools::setHeader('json');
 
                 $response = array();
-                if (!current_user_can('sq_manage_snippet')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     echo wp_json_encode($response);
                     exit();

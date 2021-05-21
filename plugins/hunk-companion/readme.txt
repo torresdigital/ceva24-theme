@@ -2,8 +2,8 @@
 Contributors: themehunk
 Author URI: : https://www.themehunk.com/
 Tags: themehunk, customizer, gogo, Testimonial, Team, service
-Tested up to: 5.7
-Stable tag: 1.4.11
+Tested up to: 5.7.1
+Stable tag: 1.4.13
 License: GPLv3 License URI: https://www.gnu.org/licenses/gpl-3.0.en.html
 
 Adds customizer settings and controls to the Gogo Theme.
@@ -58,6 +58,20 @@ Yes this plugin is specially make for ThemeHunk themes like Gogo. You can instal
 2. screenshot-2.png
 
 == Changelog ==
+
+= 1.4.13 =
+* Product loop Improved .
+* Front Product limit option Add Product style Section in Customizer.
+* Slider Speed added.
+* Repeater modal issue resolved.
+Open Shop
+* Product loop Improved .
+* Front Product limit option Add Product style Section in Customizer.
+* Slider Speed added.
+* Repeater modal issue resolved.
+
+= 1.4.12 =
+Fix : New Theme notify add.
 
 = 1.4.11 =
 Fix : gogolite style issue fixed.

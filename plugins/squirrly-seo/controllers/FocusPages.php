@@ -323,7 +323,7 @@ class SQ_Controllers_FocusPages extends SQ_Classes_FrontController {
                 echo wp_json_encode($json);
                 exit();
             case 'sq_focuspages_addnew':
-                if (!current_user_can('sq_manage_focuspages')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_focuspages')) {
                     return;
                 }
 
@@ -366,7 +366,7 @@ class SQ_Controllers_FocusPages extends SQ_Classes_FrontController {
                 }
                 break;
             case 'sq_focuspages_update':
-                if (!current_user_can('sq_manage_focuspages')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_focuspages')) {
                     return;
                 }
 
@@ -405,7 +405,7 @@ class SQ_Controllers_FocusPages extends SQ_Classes_FrontController {
                 }
                 break;
             case 'sq_focuspages_delete':
-                if (!current_user_can('sq_manage_focuspages')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_focuspages')) {
                     return;
                 }
 

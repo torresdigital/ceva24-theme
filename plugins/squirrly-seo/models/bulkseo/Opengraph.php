@@ -65,6 +65,8 @@ class SQ_Models_Bulkseo_Opengraph extends SQ_Models_Abstract_Assistant {
                 if (isset($image['src'])) {
                     $this->_og_media = $image['src'];
                 }
+            }elseif (SQ_Classes_Helpers_Tools::getOption('sq_og_image')) {
+                $this->_og_media = SQ_Classes_Helpers_Tools::getOption('sq_og_image');
             }
         }
 

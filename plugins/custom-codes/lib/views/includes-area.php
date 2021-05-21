@@ -19,7 +19,7 @@ function codes_create_includes_box()
     if ( empty($current_language) ) {
         return;
     }
-    $pro_link = ( !codes_fs()->is_premium() ? '<a href="' . esc_url( codes_fs()->get_upgrade_url() ) . '" target="_blank"><b>PRO Feature</b></a>' : '' );
+    $pro_link = ( !codes_fs()->is_premium() ? '<a href="' . esc_url( codes_fs()->get_upgrade_url() ) . '" target="_blank"><b>' . __( 'PRO Feature', 'custom-codes' ) . '</b></a>' : '' );
     add_meta_box(
         'codes_includes_box',
         // Unique ID.
@@ -50,28 +50,42 @@ function codes_includes_box_html( $post )
     echo  esc_js( $current_language ) ;
     ?>' == '' && currentLang)">
 
-		<p>You can simply include a file or URL to this code instead of writing snippets inside of the editor.</p>
+		<p><?php 
+    esc_html_e( 'You can simply include a file or URL to this code instead of writing snippets inside of the editor.', 'custom-codes' );
+    ?></p>
 
 		<table class="wp-list-table widefat fixed striped table-view-list">
 			<thead>
 				<tr>
 					<th scope="col" class="column-primary" width="180">
-						<span>Type</span>
+						<span><?php 
+    esc_html_e( 'Type', 'custom-codes' );
+    ?></span>
 					</th>
 					<th scope="col" class="column-primary">
-						<span>Code or URL</span>
+						<span><?php 
+    esc_html_e( 'Code or URL', 'custom-codes' );
+    ?></span>
 					</th>
 					<th scope="col" class="column-postss">
-						<span>Editor</span>
+						<span><?php 
+    esc_html_e( 'Editor', 'custom-codes' );
+    ?></span>
 					</th>
 					<th scope="col" class="column-posts">
-						<span>Placement</span>
+						<span><?php 
+    esc_html_e( 'Placement', 'custom-codes' );
+    ?></span>
 					</th>
 					<th scope="col" class="column-posts num">
-						<span>Order</span>
+						<span><?php 
+    esc_html_e( 'Order', 'custom-codes' );
+    ?></span>
 					</th>
 					<th scope="col" class="column-posts">
-						<span class="screen-reader-text">Delete</span>
+						<span class="screen-reader-text"><?php 
+    esc_html_e( 'Delete', 'custom-codes' );
+    ?></span>
 					</th>
 			</thead>
 
@@ -79,7 +93,9 @@ function codes_includes_box_html( $post )
 				<?php 
     ?>
 				<tr v-if="! includes.length">
-					<td colspan="6">No file or URL has been included yet.</td>
+					<td colspan="6"><?php 
+    esc_html_e( 'No file or URL has been included yet.', 'custom-codes' );
+    ?></td>
 				</tr>
 			</tbody>
 
@@ -90,12 +106,16 @@ function codes_includes_box_html( $post )
     ?>
 				<a href="<?php 
     echo  esc_url( codes_fs()->get_upgrade_url() ) ;
-    ?>" target="_blank" class="button tooltip-not-contained dark-tooltip" :data-tooltip="!isPremium ? 'Click here to upgrade' : null"> + Include a File or URL</a>
+    ?>" target="_blank" class="button tooltip-not-contained dark-tooltip" :data-tooltip="!isPremium ? 'Click here to upgrade' : null"> <?php 
+    esc_html_e( '+ Include a File or URL', 'custom-codes' );
+    ?></a>
 			<?php 
     ?>
 			<span class="codes-pro-link" v-if="!isPremium"><a href="<?php 
     echo  esc_url( codes_fs()->get_upgrade_url() ) ;
-    ?>" target="_blank"><b>Upgrade Now</b></a></span>
+    ?>" target="_blank"><b><?php 
+    esc_html_e( 'Upgrade Now', 'custom-codes' );
+    ?></b></a></span>
 		</p>
 
 	</div>

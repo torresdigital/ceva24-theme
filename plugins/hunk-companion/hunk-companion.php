@@ -3,14 +3,14 @@
  Plugin Name: Hunk Companion
  Plugin URI: https://themehunk.com/hunk-companion/
  Description: Hunk companion plugin is an essential plugin to add features of Front page sections in your site. An easy to use plugin with ThemeHunk WordPress themes.
- Version: 1.4.11
+ Version: 1.4.13
  Author: ThemeHunk
  Text Domain: hunk-companion
  Author URI: https://themehunk.com/
  */
 if ( ! defined( 'ABSPATH' ) ) exit;
 // Version constant for easy CSS refreshes
-define('HUNK_COMPANION', '1.4.11');
+define('HUNK_COMPANION', '1.4.13');
 define('HUNK_COMPANION_EXT_FILE', __FILE__ );
 define('HUNK_COMPANION_PLUGIN_DIR_URL', plugin_dir_url(HUNK_COMPANION_EXT_FILE));
 define('HUNK_COMPANION_BASENAME', plugin_basename(HUNK_COMPANION_EXT_FILE) );
@@ -98,6 +98,7 @@ wp_enqueue_script( 'thunk-open-shop-custom-js', HUNK_COMPANION_PLUGIN_DIR_URL.'o
 wp_enqueue_script( 'thunk-open-shop-woo-js', HUNK_COMPANION_PLUGIN_DIR_URL.'open-shop/open-shop-admin/woo/js/woocommerce.js', array( 'jquery' ), '',true );
 $openshoplocalize = array(
 				'open_shop_top_slider_optn' => get_theme_mod('open_shop_top_slider_optn',false),
+				'open_shop_top_slider_speed' => get_theme_mod('open_shop_top_slider_speed',1000),
 				'open_shop_move_to_top_optn' => get_theme_mod('open_shop_move_to_top',false),
 			);
 wp_localize_script( 'thunk-open-shop-custom-js', 'open_shop',  $openshoplocalize);
@@ -131,6 +132,7 @@ wp_enqueue_script( 'thunk-top-store-woo-js', HUNK_COMPANION_PLUGIN_DIR_URL.'top-
 $openshoplocalize = array(
 				'top_store_top_slider_optn' => get_theme_mod('top_store_top_slider_optn',false),
 				'top_store_move_to_top_optn' => get_theme_mod('top_store_move_to_top',false),
+				'top_store_top_slider_speed' => get_theme_mod('top_store_top_slider_speed',1000),
 				'top_store_sidebar_front_option' => get_theme_mod('top_store_sidebar_front_option','active-sidebar'),
 			);
 wp_localize_script( 'thunk-top-store-custom-js', 'top_store',  $openshoplocalize);

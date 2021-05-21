@@ -51,6 +51,13 @@ class SQ_Models_Services_TwitterCard extends SQ_Models_Abstract_Seo {
                 $this->_setMedia($tw);
             }
 
+            //Get the default global image for Open Graph
+            if (SQ_Classes_Helpers_Tools::getOption('sq_tc_image')) {
+                if (!isset($tw['twitter:image'])) {
+                    $tw['twitter:image'] = SQ_Classes_Helpers_Tools::getOption('sq_tc_image');
+                }
+            }
+
             $tw['twitter:domain'] = get_bloginfo('title');
             $tw['twitter:card'] = ($this->_post->sq->tw_type <> '' ? $this->_post->sq->tw_type : $this->_post->socials->twitter_card_type);
 

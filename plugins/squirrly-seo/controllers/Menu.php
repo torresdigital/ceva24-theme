@@ -40,6 +40,7 @@ class SQ_Controllers_Menu extends SQ_Classes_FrontController {
                         $sq_fullscreen = true;
                     }
 
+                    //dequeue other css when on Squirrly Settings page
                     add_action('admin_enqueue_scripts', array(SQ_Classes_ObjController::getClass('SQ_Models_Compatibility'), 'fixEnqueueErrors'), PHP_INT_MAX);
                     add_action('admin_head', array($this, 'setViewport'), PHP_INT_MAX);
                 }
@@ -62,7 +63,7 @@ class SQ_Controllers_Menu extends SQ_Classes_FrontController {
     public function hookInit() {
 
         /* add the plugin menu in admin */
-        if (current_user_can('manage_options')) {
+        if (SQ_Classes_Helpers_Tools::userCan('manage_options')) {
             try {
                 //check if activated
                 if (get_transient('sq_activate') == 1) {
@@ -112,7 +113,7 @@ class SQ_Controllers_Menu extends SQ_Classes_FrontController {
     public function hookTopmenuDashboard($wp_admin_bar) {
         global $sq_fullscreen;
 
-        if (is_user_logged_in()) {
+        if (function_exists('is_user_logged_in') && is_user_logged_in()) {
             if (isset($sq_fullscreen) && $sq_fullscreen) {
                 $wp_admin_bar->add_node(array(
                     'parent' => 'site-name',
@@ -137,13 +138,13 @@ class SQ_Controllers_Menu extends SQ_Classes_FrontController {
 
         if (is_admin()) {
 
-            if (current_user_can('edit_posts')) {
+            if (SQ_Classes_Helpers_Tools::userCan('edit_posts')) {
                 //Get count local SEO errors
                 $errors = apply_filters('sq_seo_errors', 0);
 
                 $wp_admin_bar->add_node(array(
                     'id' => 'sq_toolbar',
-                    'title' => '<span class="sq_logo" style="margin-right: 2px"></span>' . esc_html__("Squirrly SEO", _SQ_PLUGIN_NAME_) . (($errors) ? '<span class="sq_errorcount">' . $errors . '</span>' : ''),
+                    'title' => '<span class="sq_logo" style="margin-right: 2px"></span>' . apply_filters('sq_menu_name', _SQ_MENU_NAME_) . (($errors) ? '<span class="sq_errorcount">' . $errors . '</span>' : ''),
                     'href' => SQ_Classes_Helpers_Tools::getAdminUrl('sq_dashboard'),
                     'parent' => false
                 ));
@@ -166,7 +167,7 @@ class SQ_Controllers_Menu extends SQ_Classes_FrontController {
                         }
 
                         //make sure the user has the capabilities
-                        if (current_user_can($item['capability'])) {
+                        if (SQ_Classes_Helpers_Tools::userCan($item['capability'])) {
                             $wp_admin_bar->add_node(array(
                                 'id' => $menuid,
                                 'title' => $item['title'],
@@ -197,7 +198,7 @@ class SQ_Controllers_Menu extends SQ_Classes_FrontController {
             $post = get_post();
             if ('post' == $current_screen->base
                 && ($post_type_object = get_post_type_object($post->post_type))
-                && (current_user_can('edit_post', $post->ID) || current_user_can('sq_manage_snippets'))
+                && (SQ_Classes_Helpers_Tools::userCan('edit_post', $post->ID) || SQ_Classes_Helpers_Tools::userCan('sq_manage_snippets'))
                 && ($post_type_object->public)) {
             } elseif ('edit' == $current_screen->base
                 && ($post_type_object = get_post_type_object($current_screen->post_type))
@@ -212,22 +213,16 @@ class SQ_Controllers_Menu extends SQ_Classes_FrontController {
             }
 
             $this->model->addMeta(array('sq_blocksnippet',
-                ucfirst(_SQ_NAME_) . ' ' . esc_html__("SEO Snippet", _SQ_PLUGIN_NAME_),
+                esc_html__("SEO Snippet", _SQ_PLUGIN_NAME_),
                 array(SQ_Classes_ObjController::getClass('SQ_Controllers_Snippet'), 'init'),
                 null,
                 'normal',
                 'high'
             ));
 
-            //Dev Kit images
-            $style = '';
-            if (SQ_Classes_Helpers_Tools::getOption('sq_devkit_logo')) {
-                $style = '<style>.sq_logo{background-image:url("' . SQ_Classes_Helpers_Tools::getOption('sq_devkit_logo') . '") !important;background-size: 100%;}</style>';
-            }
-
             $wp_admin_bar->add_node(array(
                 'id' => 'sq_bar_menu',
-                'title' => $style . '<span class="sq_logo"></span> ' . esc_html__("Custom SEO", _SQ_PLUGIN_NAME_),
+                'title' => '<span class="sq_logo"></span> ' . esc_html__("Custom SEO", _SQ_PLUGIN_NAME_),
                 'parent' => 'top-secondary',
             ));
 
@@ -259,6 +254,11 @@ class SQ_Controllers_Menu extends SQ_Classes_FrontController {
         $dashboard = $wp_meta_boxes['dashboard']['normal']['core'];
         $ours = array('sq_dashboard_widget' => $dashboard['sq_dashboard_widget']);
         $wp_meta_boxes['dashboard']['normal']['core'] = array_merge($ours, $dashboard);
+    }
+
+    public function hookNetworkMenu(){
+        //Check the Dev Kit settings
+        SQ_Classes_ObjController::getClass('SQ_Classes_Helpers_DevKit');
     }
 
     /**
@@ -315,12 +315,14 @@ class SQ_Controllers_Menu extends SQ_Classes_FrontController {
 
             //Update the external links in the menu
             global $submenu;
-            foreach ($submenu['sq_dashboard'] as &$item) {
-                if (isset($mainmenu[$item[2]]['href']) && $mainmenu[$item[2]]['href']) {
-                    if (parse_url($mainmenu[$item[2]]['href'], PHP_URL_HOST) !== parse_url(home_url(), PHP_URL_HOST)) {
-                        $item[0] .= '<i class="dashicons dashicons-external" style="font-size:12px;vertical-align:-2px;height:10px;"></i>';
+            if(!empty($submenu['sq_dashboard'])) {
+                foreach ($submenu['sq_dashboard'] as &$item) {
+                    if (isset($mainmenu[$item[2]]['href']) && $mainmenu[$item[2]]['href']) {
+                        if (parse_url($mainmenu[$item[2]]['href'], PHP_URL_HOST) !== parse_url(home_url(), PHP_URL_HOST)) {
+                            $item[0] .= '<i class="dashicons dashicons-external" style="font-size:12px;vertical-align:-2px;height:10px;"></i>';
+                        }
+                        $item[2] = $mainmenu[$item[2]]['href'];
                     }
-                    $item[2] = $mainmenu[$item[2]]['href'];
                 }
             }
         }
@@ -460,7 +462,7 @@ class SQ_Controllers_Menu extends SQ_Classes_FrontController {
      */
     public function getCloudMenu($url, $path) {
         if (function_exists('wp_get_current_user') && SQ_Classes_Helpers_Tools::getOption('sq_api')) {
-            if (SQ_Classes_Helpers_Tools::getMenuVisible('show_panel') && current_user_can('sq_manage_settings')) {
+            if (SQ_Classes_Helpers_Tools::getMenuVisible('show_panel') && SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                 $url .= 'login/?token=' . SQ_Classes_Helpers_Tools::getOption('sq_api') . '&user_url=' . apply_filters('sq_homeurl', get_bloginfo('url')) . '&redirect_to=' . _SQ_DASH_URL_ . 'user/' . $path;
             }
         }

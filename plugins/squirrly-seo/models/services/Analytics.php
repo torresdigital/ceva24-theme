@@ -14,14 +14,20 @@ class SQ_Models_Services_Analytics extends SQ_Models_Abstract_Seo {
                 return;
             }
 
+            //Do not track the logged users
             if (function_exists('is_user_logged_in') && is_user_logged_in() && !SQ_Classes_Helpers_Tools::getOption('sq_tracking_logged_users')) {
+                return;
+            }
+
+            //Do not track Squirrly Crawler
+            if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER'] == 'https://www.squirrly.co') {
                 return;
             }
 
             if (SQ_Classes_Helpers_Tools::getOption('sq_auto_amp') && SQ_Classes_Helpers_Tools::isAMPEndpoint()) {
                 add_filter('sq_google_analytics', array($this, 'generateGoogleAnalyticsAMP'));
                 add_filter('sq_google_analytics_amp', array($this, 'packGoogleAnalyticsAMP'));
-            }else{
+            } else {
                 add_filter('sq_google_analytics', array($this, 'generateGoogleAnalytics'));
                 add_filter('sq_google_analytics', array($this, 'packGoogleAnalytics'), 99);
             }

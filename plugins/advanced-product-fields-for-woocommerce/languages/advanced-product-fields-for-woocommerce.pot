@@ -606,7 +606,7 @@ msgid "Add option"
 msgstr ""
 
 #: dist/views/admin/settings/options.php:54, dist/views/admin/settings/pricing.php:42
-msgid "<p>please note the pricing option in the free version has some limitations:</p><ul style='list-style: disc;margin-left:30px;'><li>Add-on pricing is not quantity-based. This means if the user changes the product quantity, the price does not multiply, but stays the same.</li><li>You can only use the \"flat fee\" option.</li></ul><p><a target=\"_blank\" href=\"https://www.studiowombat.com/kb-article/all-pricing-options-explained/?ref=wapf_lite\">See which other pricing options</a> are available in the premium verion.</p>"
+msgid "<p>please note the pricing option in the free version has some limitations:</p><ul style='list-style: disc;margin-left:30px;'><li>Add-on pricing is not quantity-based. This means if the user changes the product quantity, the price does not multiply, but stays the same.</li><li>You can only use the \"flat fee\" option.</li></ul><p><a target=\"_blank\" href=\"https://www.studiowombat.com/knowledge-base/all-pricing-options-explained/?ref=wapf_lite\">See which other pricing options</a> are available in the premium verion.</p>"
 msgstr ""
 
 #: dist/views/admin/settings/options.php:54, dist/views/admin/settings/options.php:54, dist/views/admin/settings/pricing.php:42, dist/views/admin/settings/pricing.php:42

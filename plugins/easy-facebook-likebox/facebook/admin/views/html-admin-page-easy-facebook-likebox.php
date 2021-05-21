@@ -11,6 +11,19 @@ $FTA = new Feed_Them_All();
 $ESF_Admin = new ESF_Admin();
 
 $fta_settings = $FTA->fta_get_settings();
+if( isset($fta_settings['hide_plugin'] ) ){
+	$hide_plugin = $fta_settings['hide_plugin'];
+}
+
+if( isset($fta_settings['hide_upgrade'] ) ){
+	$hide_upgrade = $fta_settings['hide_upgrade'];
+}
+
+if( isset( $hide_plugin ) && isset( $hide_upgrade ) ){
+    $hide_sidebar_class = 'esf-sidebar-is-hide';
+}else{
+	$hide_sidebar_class = '';
+}
 
 $app_ID = [ '405460652816219', '222116127877068' ];
 
@@ -31,7 +44,7 @@ $auth_url = esc_url( add_query_arg( [
             <div class="loader efbl_loader"></div>
         </div>
     </div>
-<div class="fta_wrap_outer" <?php if( efl_fs()->is_free_plan() || efl_fs()->is_plan( 'instagram_premium', true ) ){?> style="width: 78%" <?php } ?>>
+<div class="fta_wrap_outer <?php echo $hide_sidebar_class; ?>" <?php if( efl_fs()->is_free_plan() || efl_fs()->is_plan( 'instagram_premium', true ) ){?> style="width: 78%" <?php } ?>>
     <div class="efbl_wrap z-depth-1">
         <div class="efbl_wrap_inner">
 
@@ -49,8 +62,17 @@ $auth_url = esc_url( add_query_arg( [
                             </a>
                         </li>
                         <li class="tab col s3">
-                            <a class="active" href="#efbl-skins">
+                            <a class="" href="#efbl-skins">
                                 <span><?php esc_html_e( "3", 'easy-facebook-likebox' ); ?>. <?php esc_html_e( "Customize (skins)", 'easy-facebook-likebox' ); ?></span>
+                            </a>
+                        </li>
+                        <li class="tab col s3 efbl-moderate-tab-li">
+                            <a class="" href="#efbl-moderate">
+                                <span><?php esc_html_e( "Moderate", 'easy-facebook-likebox' );
+                                    if ( efl_fs()->is_free_plan() || efl_fs()->is_plan( 'instagram_premium', true ) ){ ?>
+                                        (<?php esc_html_e( "Pro", 'easy-facebook-likebox' ); ?>)
+                                  <?php } ?>
+                                </span>
                             </a>
                         </li>
                         <li class="tab col s3">
@@ -58,6 +80,7 @@ $auth_url = esc_url( add_query_arg( [
                                 <span><?php esc_html_e( "Facebook Like box(Page Plugin)", 'easy-facebook-likebox' ); ?></span>
                             </a>
                         </li>
+	                    <?php do_action('efbl_admin_tab', $fta_settings ); ?>
                         <li class="tab col s3">
                             <a class="active" href="#efbl-cached">
                                 <span><?php esc_html_e( "Clear Cache", 'easy-facebook-likebox' ); ?></span>
@@ -76,12 +99,15 @@ $auth_url = esc_url( add_query_arg( [
 					<?php } ?>
                 </div>
             </div>
+	        <?php do_action('efbl_admin_after_tabs', $fta_settings); ?>
             <div class="efbl_tab_c_holder">
 				<?php include_once EFBL_PLUGIN_DIR . 'admin/views/html-authenticate-tab.php'; ?>
 				<?php include_once EFBL_PLUGIN_DIR . 'admin/views/html-how-to-use-tab.php'; ?>
+				<?php include_once EFBL_PLUGIN_DIR . 'admin/views/html-moderate-tab.php'; ?>
 				<?php include_once EFBL_PLUGIN_DIR . 'admin/views/html-skins-tab.php'; ?>
 				<?php include_once EFBL_PLUGIN_DIR . 'admin/views/html-likebox-tab.php'; ?>
 				<?php include_once EFBL_PLUGIN_DIR . 'admin/views/html-clear-cache-tab.php'; ?>
+				<?php do_action('efbl_admin_tab_content', $fta_settings); ?>
             </div>
         </div>
     </div>
@@ -89,15 +115,17 @@ $auth_url = esc_url( add_query_arg( [
 </div>
 
 <?php if ( efl_fs()->is_free_plan() || efl_fs()->is_plan( 'instagram_premium', true ) ) {
+if( !isset( $hide_plugin ) && !isset( $hide_upgrade ) ){
 
 	$mt_plugins = $ESF_Admin->mt_plugins_info();
 	?>
     <div class="fta-other-plugins-sidebar">
-		<?php if ( $mt_plugins ) { ?>
+		<?php if ( $mt_plugins && !isset( $fta_settings['hide_plugin']) ) { ?>
 
-            <div class="fta-other-plugins-wrap z-depth-1">
+            <div class="fta-other-plugins-wrap z-depth-1 esf-hide-plugin">
 
                 <div class="fta-other-plugins-head">
+                    <div class="dashicons dashicons-no-alt esf-hide-free-sidebar" data-id="plugin"></div>
                     <h5><?php esc_html_e( 'Love this plugin?', 'easy-facebook-likebox' ); ?></h5>
                     <p><?php esc_html_e( 'Then why not try our other FREE plugins.', 'easy-facebook-likebox' ); ?></p>
                 </div>
@@ -159,8 +187,10 @@ $auth_url = esc_url( add_query_arg( [
 
 		<?php } ?>
 
-	    <?php       $banner_info = $ESF_Admin->esf_upgrade_banner(); ?>
-        <div class="espf-upgrade z-depth-2">
+	    <?php       $banner_info = $ESF_Admin->esf_upgrade_banner();
+	    if( !isset( $fta_settings['hide_upgrade']) ){ ?>
+        <div class="espf-upgrade z-depth-2 esf-hide-upgrade">
+            <div class="dashicons dashicons-no-alt esf-hide-free-sidebar" data-id="upgrade"></div>
             <h2><?php  esc_html_e( $banner_info['name'] ); ?>
                 <b><?php  esc_html_e( $banner_info['bold'] ); ?></b></h2>
             <p><?php  esc_html_e( $banner_info['fb-description'] ); ?></p>
@@ -170,10 +200,12 @@ $auth_url = esc_url( add_query_arg( [
                class="waves-effect waves-light btn"><i class="material-icons right">lock_open</i><?php esc_html_e( $banner_info['button-text'] ); ?>
             </a>
         </div>
+        <?php } ?>
     </div>
 
     </div>
-<?php } ?>
+<?php }
+} ?>
 
     <!-- Popup starts<!-->
     <div id="fta-auth-error" class="modal">

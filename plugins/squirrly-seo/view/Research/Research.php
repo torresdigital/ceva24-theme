@@ -187,8 +187,8 @@
                                     <div class="sq_loading_step8 sq_loading_step"><?php echo esc_html__("Piecing all the keywords together now after analyzing each individual keyword.", _SQ_PLUGIN_NAME_) ?></div>
                                     <div class="sq_loading_step9 sq_loading_step"><?php echo esc_html__("Preparing the results.", _SQ_PLUGIN_NAME_) ?></div>
 
-                                    <div class="center-block mx-auto my-4 text-center" style="max-width: 700px;">
-                                        <img src="<?php echo _SQ_ASSETS_URL_ . 'img/settings/kr_multiple.png' ?>" style="width: 100%">
+                                    <div class="center-block mx-auto my-4 text-center" style="max-width: 700px; height: 50px;">
+                                        <h5 class="text-black-50"><?php echo esc_html__("Did you know that you can open multiple browsers tabs with Squirrly's Keyword Research, so you can do more researches as the same time?", _SQ_PLUGIN_NAME_) ?></h5>
                                     </div>
                                 </div>
                                 <h4 class="sq_research_success text-success text-center my-2" style="display: none"><?php echo esc_html__("Step 4/4: We found some relevant keywords for you", _SQ_PLUGIN_NAME_) ?></h4>

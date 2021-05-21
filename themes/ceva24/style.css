@@ -4,7 +4,7 @@ Theme URI: https://torresdigital.com.br
 Template: open-shop
 Author: Torres Digital
 Author URI: https://torresdigital.com.br
-Description: Ceva e Putaria 24Hs por Dia !
+Description: Ceva 24Hs por Dia !
 Tags: e-commerce,blog,grid-layout,one-column,two-columns,three-columns,four-columns,left-sidebar,right-sidebar,custom-background,custom-colors,custom-logo,custom-menu,featured-image-header,featured-images,custom-header,footer-widgets,full-width-template,sticky-post,theme-options,threaded-comments,translation-ready
 Version: 2021 - 1.0
 Updated: 2021-03-30 08:45:24
@@ -75,10 +75,10 @@ html .shipping-calculator-button {font-size: 12px; font-family: "Roboto-Bold", s
 
 .ribbon-btn {border: 1px #000 solid;width: 91%;position: relative;display: inline-block;text-align: center;padding: 5px;top: 6px; border-radius: 30px;animation: shadow-pulse 1s infinite;cursor: pointer;box-shadow: 0 0 0 rgba(204,169,44, 0.4);}
 
-html #shipping_method {font-size: 20px;text-align: center;font-family: "Roboto-Bold", sans-serif;background: #ee3e80;color: #fff;text-shadow: 0px 1px 2px #000; border-radius: 5px}
+html #shipping_method {font-size: 20px;text-align: center;font-family: "Roboto-Bold", sans-serif;/*background: #ee3e80;*/color: #fff;text-shadow: 0px 1px 2px #000; border-radius: 5px}
 
 .woocommerce ul#shipping_method li input {top: 5px;position: relative;}
-html .woocommerce ul#shipping_method li {margin: 2px 0;line-height: 1.5em;list-style: none outside;padding: 15px 0;}
+html .woocommerce ul#shipping_method li {margin: 10px 0;line-height: 1.5em;list-style: none outside;padding: 5px 0;background: #ee3e80;}
 
 .thunk-product .woosw-btn::before, .woosw-btn::before {font-size: 13px;background: red;border-radius: 40px;padding: 4px;color: #fff;font-weight: 900;} .woosw-btn.woosw-added::before {color: #fff}
 

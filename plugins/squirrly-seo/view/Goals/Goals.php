@@ -39,7 +39,7 @@ if ($countdone == count($view->report)) {
                 </h3>
             </div>
             <div class="col m-0 p-0 text-center">
-                <?php if (current_user_can('sq_manage_snippets')) { ?>
+                <?php if (SQ_Classes_Helpers_Tools::userCan('sq_manage_snippets')) { ?>
                     <button type="button" class="btn btn-warning  m-2 py-2 px-5 center-block sq_seocheck_submit" <?php echo($refresh ? 'data-action="trigger"' : '') ?> >
                         <?php echo esc_html__("Run SEO Test", _SQ_PLUGIN_NAME_) ?> >>
                     </button>
@@ -129,7 +129,7 @@ if ($countdone == count($view->report)) {
                     <?php if (!$row['completed']) { ?>
                         <td class="p-1 pr-0" style="width: 150px; vertical-align: middle;">
                             <div class="text-right mx-1">
-                                <?php if (current_user_can('sq_manage_snippets')) {
+                                <?php if (SQ_Classes_Helpers_Tools::userCan('sq_manage_snippets')) {
                                     $dbtasks = json_decode(get_option(SQ_TASKS), true);
                                     ?>
                                     <div class="col p-0 m-1 mx-1">
@@ -190,7 +190,7 @@ if ($countdone == count($view->report)) {
                             </div>
                         </td>
                         <td class="sq_save_ajax" style="width: 10px; vertical-align: middle;  padding-left: 0; padding-right: 0; margin: 0">
-                            <?php if (current_user_can('sq_manage_snippets')) { ?>
+                            <?php if (SQ_Classes_Helpers_Tools::userCan('sq_manage_snippets')) { ?>
                                 <input type="hidden" id="sq_ignore_<?php echo esc_attr($function) ?>" value="0">
                                 <button type="button" class="float-right btn btn-sm btn-link text-black-50 p-2 px-3 m-0" id="sq_ignore" data-input="sq_ignore_<?php echo esc_attr($function) ?>" data-name="<?php echo esc_attr($category_name) ?>|<?php echo esc_attr($function) ?>" data-action="sq_ajax_assistant" data-javascript="javascript:void(0);" data-confirm="<?php echo esc_html__("Do you want to ignore this goal?", _SQ_PLUGIN_NAME_) ?>">
                                     <i class="fa fa-close"></i>

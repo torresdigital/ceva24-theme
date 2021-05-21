@@ -1,10 +1,10 @@
-====== WP Popup Builder - Popup Forms &  Newsletter ========
+====== WP Popup Builder - Popup Forms , Marketing PoPuP &  Newsletter ========
 Contributors: ThemeHunk
 Author URI: : https://www.themehunk.com/
 Tags: popup,wp popup, popup maker, popup builder, popups,marketing
-Requires at least: 5.0
-Tested up to: 5.7
-Stable tag: 1.1.10
+Requires at least: 5.5
+Tested up to: 5.7.1
+Stable tag: 1.1.11
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -102,6 +102,9 @@ Just upload the `wp-popup-builder.zip` to the `/wp-content/plugins/` directory, 
 
 
 == Changelog ==
+
+= 1.1.11 =
+* update : notify image and text update.
 
 = 1.1.10 =
 * fix : Scrolling design.

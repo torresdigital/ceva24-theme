@@ -6,7 +6,7 @@
         <div class="sq_flex flex-grow-1 mx-0 px-2">
             <?php $view->getJourneyNotification(); ?>
             <?php SQ_Classes_ObjController::getClass('SQ_Core_BlockStats')->init(); ?>
-            <?php if (current_user_can('sq_manage_snippets')) { ?>
+            <?php if (SQ_Classes_Helpers_Tools::userCan('sq_manage_snippets')) { ?>
                 <?php if (SQ_Classes_Helpers_Tools::getMenuVisible('show_seogoals')) { ?>
                     <?php SQ_Classes_ObjController::getClass('SQ_Controllers_CheckSeo')->init(); ?>
                 <?php } ?>
@@ -42,7 +42,7 @@
         <div class="sq_col_side sticky">
             <div class="card col-12 p-0 my-2">
                 <?php echo SQ_Classes_ObjController::getClass('SQ_Core_BlockSupport')->init(); ?>
-                <?php if (SQ_Classes_Helpers_Tools::getMenuVisible('show_panel') && current_user_can('manage_options')) { ?>
+                <?php if (SQ_Classes_Helpers_Tools::getMenuVisible('show_panel') && SQ_Classes_Helpers_Tools::userCan('manage_options')) { ?>
                     <div class="sq_account_info" style="min-height: 20px;"></div>
                 <?php } ?>
             </div>

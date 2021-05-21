@@ -26,8 +26,6 @@ class THWCFD_Admin {
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
-		//add_action('admin_notices', array($this, 'output_premium_version_notice'));
 	}
 	
 	public function enqueue_styles_and_scripts($hook) {
@@ -76,47 +74,54 @@ class THWCFD_Admin {
 	public function plugin_action_links($links) {
 		$settings_link = '<a href="'.admin_url('admin.php?page=checkout_form_designer').'">'. __('Settings', 'woo-checkout-field-editor-pro') .'</a>';
 		array_unshift($links, $settings_link);
+		$pro_link = '<a style="color:green; font-weight:bold" target="_blank" href="https://www.themehigh.com/product/woocommerce-checkout-field-editor-pro/?utm_source=free&utm_medium=plugin_action_link&utm_campaign=wcfe_upgrade_link">'. __('Get Pro', 'woo-checkout-field-editor-pro') .'</a>';
+		array_push($links,$pro_link);
 		return $links;
-	}
-	
-	public function output_premium_version_notice(){
-		$is_dismissed = get_transient('thwcfd_upgrade_notice_dismissed');
-		if($is_dismissed){
-			return;
-		}
-		?>
-        <div id="message" class="notice notice-success is-dismissible thpladmin-notice" data-nonce="<?php echo wp_create_nonce( 'thwcfd_upgrade_notice'); ?>">
-            <div class="squeezer">
-            	<table>
-                	<tr>
-                    	<td width="70%">
-                        	<p><strong><i>WooCommerce Checkout Field Editor Pro</i></strong> premium version provides more features to design your checkout page.</p>
-                            <ul>
-                            	<li>17 field types available,  (<i>Text, Hidden, Password, Telephone, Email, Number, Textarea, Radio, Checkbox, Checkbox Group, Select, Multi-select, Date Picker, Time Picker, File Upload, Heading, Label</i>).</li>
-                                <li>Conditionally display fields based on cart items and other field(s) values.</li>
-                                <li>Add an extra cost to the cart total based on field selection.</li>
-                                <li>Custom validation rules using RegEx.</li>
-                                <li>Option to add more sections in addition to the core sections (billing, shipping and additional) in checkout page.</li>
-                            </ul>
-                        </td>
-                        <td>
-                        	<a target="_blank" href="https://www.themehigh.com/product/woocommerce-checkout-field-editor-pro/">
-                            	<img src="<?php echo THWCFD_ASSETS_URL_ADMIN ?>css/upgrade-btn.png" />
-                            </a>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-        <?php
 	}
 
 	private function output_review_request_link(){
-		?>
-		<p>If you like our <strong>Checkout Field Editor</strong> plugin please leave us a <a href="https://wordpress.org/support/plugin/woo-checkout-field-editor-pro/reviews?rate=5#new-post" target="_blank" aria-label="five star" data-rated="Thanks :)">★★★★★</a> rating. A huge thanks in advance!</p>
-		<?php
+		$is_dismissed = get_transient('thwcfd_review_request_notice_dismissed');
+		if($is_dismissed){
+			return;
+		}
 
+		$is_skipped = get_transient('thwcfd_skip_review_request_notice');
+		if($is_skipped){
+			return;
+		}
+
+		$thwcfd_since = get_option('thwcfd_since');
+		if(!$thwcfd_since){
+			$now = time();
+			update_option('thwcfd_since', $now, 'no' );
+		}else{
+			$now = time();
+			$diff_seconds = $now - $thwcfd_since;
+
+			if($diff_seconds > apply_filters('thwcfd_show_review_request_notice_after', 10 * DAY_IN_SECONDS)){
+				$this->render_review_request_notice();
+			}
+		}
 		//If you find this plugin useful please show your support and rate it ★★★★★ on WordPress.org - much appreciated! :)
+	}
+
+	private function render_review_request_notice(){
+		?>
+		<div id="thwcfd_review_request_notice" class="notice notice-info is-dismissible  thpladmin-notice" data-nonce="<?php echo wp_create_nonce( 'thwcfd_review_request_notice'); ?>" data-action="dismiss_thwcfd_review_request_notice" style="display:none">
+			<h3>
+				Just wanted to say thank you for using Checkout Field Editor plugin in your store.
+			</h3>
+			<p>We hope you had a great experience. Please leave us with your feedback to serve best to you and others. Cheers!</p>
+			<p class="action-row">
+		        <button type="button" class="button button-primary" onclick="window.open('https://wordpress.org/support/plugin/woo-checkout-field-editor-pro/reviews?rate=5#new-post', '_blank')">Review Now</button>
+		        <button type="button" class="button" onclick="thwcfdHideReviewRequestNotice(this)">Remind Me Later</button>
+            	<span class="logo"><a target="_blank" href="https://www.themehigh.com">
+                	<img src="<?php echo THWCFD_ASSETS_URL_ADMIN ?>css/logo.svg" />
+                </a></span>
+
+			</p>
+		</div>
+		<?php
 	}
 
 	public function get_current_tab(){
@@ -124,7 +129,8 @@ class THWCFD_Admin {
 	}
 	
 	public function output_settings(){
-		$this->output_premium_version_notice();
+		echo '<div class="wrap">';
+		echo '<h2></h2>';
 		$this->output_review_request_link();
 
 		$tab = $this->get_current_tab();
@@ -132,20 +138,32 @@ class THWCFD_Admin {
 		echo '<div class="thwcfd-wrap">';
 		if($tab === 'advanced_settings'){			
 			$advanced_settings = THWCFD_Admin_Settings_Advanced::instance();	
-			$advanced_settings->render_page();		
+			$advanced_settings->render_page();
+		}elseif($tab === 'pro'){
+			$pro_details = THWCFD_Admin_Settings_Pro::instance();	
+			$pro_details->render_page();
 		}else{
 			$general_settings = THWCFD_Admin_Settings_General::instance();	
 			$general_settings->init();
 		}
-		echo '</div">';
+		echo '</div>';
+		echo '</div>';
 	}
 
-	public function dismiss_thwcfd_upgrade_notice(){
-		if(! check_ajax_referer( 'thwcfd_upgrade_notice', 'security' )){
+	public function dismiss_thwcfd_review_request_notice(){
+		if(! check_ajax_referer( 'thwcfd_review_request_notice', 'security' )){
 			die();
 		}
-		set_transient('thwcfd_upgrade_notice_dismissed', true, 4 * WEEK_IN_SECONDS);
+		set_transient('thwcfd_review_request_notice_dismissed', true, apply_filters('thwcfd_dismissed_review_request_notice_lifespan', 1 * YEAR_IN_SECONDS));
 	}
+
+	public function skip_thwcfd_review_request_notice(){
+		if(! check_ajax_referer( 'thwcfd_review_request_notice', 'security' )){
+			die();
+		}
+		set_transient('thwcfd_skip_review_request_notice', true, apply_filters('thwcfd_skip_review_request_notice_lifespan', 1 * DAY_IN_SECONDS));
+	}
+
 }
 
 endif;

@@ -1,108 +1,42 @@
 <?php 
 if ( ! defined( 'ABSPATH' ) ) exit; 
-
+if(!function_exists('top_store_product_query')){
+    function top_store_product_query($term_id,$prdct_optn){
+    $limit_product = get_theme_mod('top_store_prd_shw_no','20');
+    // product filter
+    $args = array('limit' => $limit_product, 'visibility' => 'catalog');
+    if($term_id){
+        $term_args = array('hide_empty' => 1,'slug'    => $term_id);
+        $product_categories = get_terms( 'product_cat', $term_args);
+    $product_cat_slug =  $product_categories[0]->slug;
+    $args['category'] = $product_cat_slug;
+    }
+    if($prdct_optn=='random'){
+      $args['orderby'] = 'rand';
+    }elseif($prdct_optn=='featured'){
+          $args['featured'] = true;
+    }
+    if(get_option('woocommerce_hide_out_of_stock_items')=='yes'){ 
+            $args['stock_status'] = 'instock';
+    }
+    return $args;
+    }
+}
 /********************************/
 //product cat filter loop
 /********************************/
 function top_store_product_cat_filter_default_loop($term_id,$prdct_optn){
-// product filter 
-if(empty($term_id[0])){   
- $taxquery = array(
-  array(
-                                'taxonomy'  => 'product_visibility',
-                                'terms'     => array( 'exclude-from-catalog' ),
-                                'field'     => 'name',
-                                'operator'  => 'NOT IN',
-                            )
-);
-}else{
- // category filter  
-      $args1 = array(
-            'orderby'    => 'title',
-            'order'      => 'ASC',
-            'hide_empty' => 1,
-            'slug'    => $term_id
-        );
-$product_categories = get_terms( 'product_cat', $args1);
-$product_cat_slug =  $product_categories[0]->slug;
-$taxquery = array(
-  'relation' => 'AND',
-                          array(
-                              'taxonomy' => 'product_cat',
-                              'field' => 'slug',
-                              'terms' =>  $product_cat_slug
-                          ),array(
-                                'taxonomy'  => 'product_visibility',
-                                'terms'     => array( 'exclude-from-catalog' ),
-                                'field'     => 'name',
-                                'operator'  => 'NOT IN',
-                            )
-);
-}
-
-  if($prdct_optn=='random'){  
-     $args = array(
-                      
-                      'tax_query' => $taxquery,
-                      'post_type' => 'product',
-                      'orderby' => 'rand',
-                      'meta_query' => array(
-                              array(
-                                  'key' => '_stock_status',
-                                  'value' => 'instock'
-                              ),
-                              array(
-                                  'key' => '_backorders',
-                                  'value' => 'no'
-                              ),
-                          )
-    );
-}elseif($prdct_optn=='featured'){
-    $args = array(
-                      
-                      'tax_query' => $taxquery,
-                      'post_type' => 'product',
-                      'post__in'  => wc_get_featured_product_ids(),
-                      'meta_query' => array(
-                              array(
-                                  'key' => '_stock_status',
-                                  'value' => 'instock'
-                              ),
-                              array(
-                                  'key' => '_backorders',
-                                  'value' => 'no'
-                              ),
-                          )
-    );
-}else{
-    $args = array(
-                      
-                      'tax_query' => $taxquery,
-                      'post_type' => 'product',
-                      'orderby' => 'date',
-                      'meta_query' => array(
-                              array(
-                                  'key' => '_stock_status',
-                                  'value' => 'instock'
-                              ),
-                              array(
-                                  'key' => '_backorders',
-                                  'value' => 'no'
-                              ),
-                          )
-    );
-}
-    $products = new WP_Query( $args );
-    if ( $products->have_posts() ){
-      while ( $products->have_posts() ) : $products->the_post();
-      global $product;
+$args = top_store_product_query($term_id,$prdct_optn);
+    $products = wc_get_products( $args );
+    if (!empty($products)) {
+    foreach ($products as $product) {
       $pid =  $product->get_id();
       ?>
-        <div <?php post_class(); ?>>
+        <div <?php post_class('product'); ?>>
           <div class="thunk-product-wrap">
           <div class="thunk-product">
                <div class="thunk-product-image">
-                <a href="<?php the_permalink(); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                <a href="<?php echo get_permalink($pid); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
                 <?php $sale = get_post_meta( $pid, '_sale_price', true);
                     if( $sale) {
                       // Get product prices
@@ -111,8 +45,7 @@ $taxquery = array(
                         $saving_price = wc_price( $regular_price - $sale_price );
                         echo $sale = '<span class="onsale">-'.$saving_price.'</span>';
                     }?>
-                 <?php 
-                      the_post_thumbnail(); 
+                  <?php echo get_the_post_thumbnail( $pid, 'medium' );
                       $hover_style = get_theme_mod( 'top_store_woo_product_animation' );
                          // the_post_thumbnail();
                         if ( 'swap' === $hover_style ){
@@ -135,7 +68,7 @@ $taxquery = array(
                     if(get_theme_mod( 'top_store_woo_quickview_enable', true )){
 
                   ?>
-        <div class="thunk-quik"><a href="<?php the_permalink(); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+        <div class="thunk-quik"><a href="<?php echo get_permalink($pid); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
                    </a>
                    <div class="thunk-quickview">
                                <span class="quik-view">
@@ -150,11 +83,11 @@ $taxquery = array(
                       <?php }
 
   if( class_exists( 'YITH_WCWL' ) && (! class_exists( 'WPCleverWoosw' ))){
-    echo top_store_whish_list();
+    echo top_store_whish_list($pid);
     }
 
   if( ( class_exists( 'WPCleverWoosw' )) && function_exists( 'top_store_wpc_whish_list' )){
-     echo top_store_wpc_whish_list();          
+     echo top_store_wpc_whish_list($pid);          
     }
 
   if( ( class_exists( 'YITH_Woocompare' )) && (! class_exists( 'WPCleverWooscp' ))){
@@ -162,14 +95,14 @@ $taxquery = array(
     }
 
   if( ( class_exists( 'WPCleverWooscp' )) && function_exists( 'top_store_wpc_add_to_compare_fltr' )){
-      echo top_store_wpc_add_to_compare_fltr();
+      echo top_store_wpc_add_to_compare_fltr($pid);
     }
                        ?>
                    </div>
                    </div>
             <div class="thunk-product-content">
               <h2 class="woocommerce-loop-product__title">
-                <a href="<?php the_permalink(); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><?php the_title(); ?></a>
+                <a href="<?php echo get_permalink($pid); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><?php echo $product->get_title(); ?></a>
               </h2>
                   <div class="price"><?php echo $product->get_price_html(); ?></div>
             </div>
@@ -183,25 +116,24 @@ $taxquery = array(
           </div>
         </div>
         </div>
-   <?php endwhile;
+   <?php }
     } else {
       echo __( 'No products found','top-store' );
     }
-    wp_reset_postdata();
+   wp_reset_query();
 }
 
 function top_store_product_filter_loop($args){  
-    $products = new WP_Query( $args );
-    if ( $products->have_posts() ){
-      while ( $products->have_posts() ) : $products->the_post();
-      global $product;
+    $products = wc_get_products( $args );
+    if (!empty($products)) {
+    foreach ($products as $product) {
       $pid =  $product->get_id();
       ?>
-        <div <?php post_class(); ?>>
+        <div <?php post_class('product',$pid); ?>>
           <div class="thunk-product-wrap">
           <div class="thunk-product">
                <div class="thunk-product-image">
-                <a href="<?php the_permalink(); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                <a href="<?php echo get_permalink($pid); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
                 <?php $sale = get_post_meta( $pid, '_sale_price', true);
                     if( $sale) {
                       // Get product prices
@@ -211,7 +143,7 @@ function top_store_product_filter_loop($args){
                         echo $sale = '<span class="onsale">-'.$saving_price.'</span>';
                     }?>
                  <?php 
-                      the_post_thumbnail(); 
+                      echo get_the_post_thumbnail( $pid, 'medium' );
                       $hover_style = get_theme_mod( 'top_store_woo_product_animation' );
                          // the_post_thumbnail();
                         if ( 'swap' === $hover_style ){
@@ -234,7 +166,7 @@ function top_store_product_filter_loop($args){
                     if(get_theme_mod( 'top_store_woo_quickview_enable', true )){
 
                   ?>
-        <div class="thunk-quik"><a href="<?php the_permalink(); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+        <div class="thunk-quik"><a href="<?php echo get_permalink($pid); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
                    </a>
                    <div class="thunk-quickview">
                                <span class="quik-view">
@@ -248,11 +180,11 @@ function top_store_product_filter_loop($args){
                       </div> 
                       <?php } 
   if( class_exists( 'YITH_WCWL' ) && (! class_exists( 'WPCleverWoosw' ))){
-    echo top_store_whish_list();
+    echo top_store_whish_list($pid);
     }
 
   if( ( class_exists( 'WPCleverWoosw' )) && function_exists( 'top_store_wpc_whish_list' )){
-     echo top_store_wpc_whish_list();          
+     echo top_store_wpc_whish_list($pid);          
     }
 
   if( ( class_exists( 'YITH_Woocompare' )) && (! class_exists( 'WPCleverWooscp' ))){
@@ -260,14 +192,14 @@ function top_store_product_filter_loop($args){
     }
 
   if( ( class_exists( 'WPCleverWooscp' )) && function_exists( 'top_store_wpc_add_to_compare_fltr' )){
-      echo top_store_wpc_add_to_compare_fltr();
+      echo top_store_wpc_add_to_compare_fltr($pid);
     }
                 ?>
                </div> 
              </div>
               <div class="thunk-product-content">
               <h2 class="woocommerce-loop-product__title">
-                <a href="<?php the_permalink(); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><?php the_title(); ?></a>
+                <a href="<?php echo get_permalink($pid); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link"><?php echo $product->get_title(); ?></a>
               </h2>
                   <div class="price"><?php echo $product->get_price_html(); ?></div>
             </div>
@@ -279,31 +211,30 @@ function top_store_product_filter_loop($args){
           </div>
         </div>
       </div>
-   <?php endwhile;
+   <?php }
     } else {
       echo __( 'No products found','top-store' );
     }
-    wp_reset_postdata();
+    wp_reset_query();
 }
 /*********************/
 // Product for list view
 /********************/
 function top_store_product_list_filter_loop($args){  
-    $products = new WP_Query( $args );
-    if ( $products->have_posts() ){
-      while ( $products->have_posts() ) : $products->the_post();
-      global $product;
+    $products = wc_get_products( $args );
+    if (!empty($products)) {
+    foreach ($products as $product) {
       $pid =  $product->get_id();
       ?>
-        <div <?php post_class(); ?>>
+        <div <?php post_class('product',$pid); ?>>
           <div class="thunk-list">
                <div class="thunk-product-image">
-                <a href="<?php the_permalink(); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                 <?php the_post_thumbnail(); ?>
+                <a href="<?php echo get_permalink($pid); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                 <?php echo get_the_post_thumbnail( $pid, 'medium' ); ?>
                   </a>
                </div>
                <div class="thunk-product-content">
-                  <a href="<?php the_permalink(); ?>" class="woocommerce-LoopProduct-title woocommerce-loop-product__link"><?php the_title(); ?></a>
+                  <a href="<?php echo get_permalink($pid); ?>" class="woocommerce-LoopProduct-title woocommerce-loop-product__link"><?php echo $product->get_title(); ?></a>
                   <?php 
                         $rat_product = wc_get_product($pid);
                         $rating_count =  $rat_product->get_rating_count();
@@ -314,11 +245,11 @@ function top_store_product_list_filter_loop($args){
                </div>
           </div>
        </div>
-   <?php endwhile;
+   <?php }
     } else {
       echo __( 'No products found','top-store' );
     }
-    wp_reset_postdata();
+    wp_reset_query();
 }
 
 
@@ -499,109 +430,21 @@ if( $iPod || $iPhone ){
 //product slider loop
 /********************************/
 function top_store_product_slide_list_loop($term_id,$prdct_optn){  
- // product filter 
-if(empty($term_id) ){  
-$taxquery= array(
-
-                  array(
-                                'taxonomy'  => 'product_visibility',
-                                'terms'     => array( 'exclude-from-catalog' ),
-                                'field'     => 'name',
-                                'operator'  => 'NOT IN',
-    )
-);
-}else{
- // category filter  
-      $args1 = array(
-            'orderby'    => 'title',
-            'order'      => 'ASC',
-            'hide_empty' => 1,
-            'slug'    => $term_id
-        );
-$product_categories = get_terms( 'product_cat', $args1);
-$product_cat_slug =  $product_categories[0]->slug;
-$taxquery = array(
-  'relation' => 'AND',
-                          array(
-                              'taxonomy' => 'product_cat',
-                              'field' => 'slug',
-                              'terms' =>  $product_cat_slug
-                          ),array(
-                                'taxonomy'  => 'product_visibility',
-                                'terms'     => array( 'exclude-from-catalog' ),
-                                'field'     => 'name',
-                                'operator'  => 'NOT IN',
-                            )
-);
-}
-
-  if($prdct_optn=='random'){  
-     $args = array(
-                      
-                      'tax_query' => $taxquery,
-                      'post_type' => 'product',
-                      'orderby' => 'rand',
-                      'meta_query' => array(
-                              array(
-                                  'key' => '_stock_status',
-                                  'value' => 'instock'
-                              ),
-                              array(
-                                  'key' => '_backorders',
-                                  'value' => 'no'
-                              ),
-                          )
-    );
-}elseif($prdct_optn=='featured'){
-    $args = array(
-                      
-                      'tax_query' => $taxquery,
-                      'post_type' => 'product',
-                      'post__in'  => wc_get_featured_product_ids(),
-                      'meta_query' => array(
-                              array(
-                                  'key' => '_stock_status',
-                                  'value' => 'instock'
-                              ),
-                              array(
-                                  'key' => '_backorders',
-                                  'value' => 'no'
-                              ),
-                          )
-    );
-}else{
-    $args = array(
-                      
-                      'tax_query' => $taxquery,
-                      'post_type' => 'product',
-                      'orderby' => 'date',
-                      'meta_query' => array(
-                              array(
-                                  'key' => '_stock_status',
-                                  'value' => 'instock'
-                              ),
-                              array(
-                                  'key' => '_backorders',
-                                  'value' => 'no'
-                              ),
-                          )
-    );
-}
-    $products = new WP_Query( $args );
-    if ( $products->have_posts() ){
-      while ( $products->have_posts() ) : $products->the_post();
-      global $product;
+ $args = top_store_product_query($term_id,$prdct_optn);
+    $products = wc_get_products( $args );
+    if (!empty($products)) {
+    foreach ($products as $product) {
       $pid =  $product->get_id();
       ?>
-        <div <?php post_class(); ?>>
+        <div <?php post_class('product'); ?>>
           <div class="thunk-list">
                <div class="thunk-product-image">
-                <a href="<?php the_permalink(); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
-                 <?php the_post_thumbnail(); ?>
+                <a href="<?php echo get_permalink($pid); ?>" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                 <?php echo get_the_post_thumbnail( $pid, 'medium' ); ?>
                   </a>
                </div>
                <div class="thunk-product-content">
-                  <a href="<?php the_permalink(); ?>" class="woocommerce-LoopProduct-title woocommerce-loop-product__link"><?php the_title(); ?></a>
+                  <a href="<?php echo get_permalink($pid); ?>" class="woocommerce-LoopProduct-title woocommerce-loop-product__link"><?php echo $product->get_title(); ?></a>
                   <?php 
                         $rat_product = wc_get_product($pid);
                         $rating_count =  $rat_product->get_rating_count();
@@ -611,10 +454,10 @@ $taxquery = array(
                   <div class="price"><?php echo $product->get_price_html(); ?></div>
                </div>
           </div>
-        </div>
-   <?php endwhile;
+       </div>
+   <?php }
     } else {
       echo __( 'No products found','top-store' );
     }
-    wp_reset_postdata();
+    wp_reset_query();
 }

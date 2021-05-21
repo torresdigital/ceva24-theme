@@ -117,6 +117,23 @@ $wp_customize->add_control(
   ) ) );
 
 
+$wp_customize->add_setting('open_shop_top_slider_speed', array(
+            'default'           => 1000,
+            'capability'        => 'edit_theme_options',
+            'sanitize_callback' =>'open_shop_sanitize_number',
+        )
+    );
+    $wp_customize->add_control('open_shop_top_slider_speed', array(
+            'type'        => 'number',
+            'section'     => 'open_shop_top_slider_section',
+            'label'       => __( 'Slider Speed', 'open-shop' ),
+            'input_attrs' => array(
+                'min'  => 100,
+                'step' => 1,
+                'max'  => 20000,
+            ),
+        )
+    );
 // slider-layout-2
 $wp_customize->add_setting('open_shop_lay2_adimg', array(
         'default'       => '',

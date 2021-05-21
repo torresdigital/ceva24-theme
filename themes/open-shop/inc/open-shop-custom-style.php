@@ -17,7 +17,7 @@ $open_shop_style.= open_shop_responsive_slider_funct( 'open_shop_logo_width', 'o
     $open_shop_style.= open_shop_responsive_slider_funct( 'open_shop_abv_hdr_botm_brd', 'open_shop_abv_hdr_botm_brd_responsive');
     $open_shop_abv_header_background_image = esc_html(get_theme_mod('header_image',''));
 
-if($open_shop_abv_header_background_image!==''){ 
+if($open_shop_abv_header_background_image!=='' && $open_shop_abv_header_background_image != 'remove-header'){ 
 $open_shop_style.= ".top-header{background-image:url($open_shop_abv_header_background_image);
  } 
  .top-header:before {

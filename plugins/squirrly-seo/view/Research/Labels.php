@@ -107,7 +107,7 @@
                                                     ?>
                                                     <tr id="sq_row_<?php echo (int)$row->id ?>">
                                                         <td style="width: 10px;">
-                                                            <?php if (current_user_can('sq_manage_settings')) { ?>
+                                                            <?php if (SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) { ?>
                                                                 <input type="checkbox" name="sq_edit[]" class="sq_bulk_input" value="<?php echo (int)$row->id ?>"/>
                                                             <?php } ?>
                                                         </td>
@@ -129,7 +129,7 @@
                                                                             <i class="sq_icons_small sq_labels_icon"></i>
                                                                             <?php echo esc_html__("Edit Label", _SQ_PLUGIN_NAME_) ?>
                                                                         </li>
-                                                                        <?php if (current_user_can('sq_manage_settings')) { ?>
+                                                                        <?php if (SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) { ?>
                                                                             <li class="sq_delete_label m-0 p-1 py-2" data-id="<?php echo (int)$row->id ?>">
                                                                                 <i class="sq_icons_small fa fa-trash-o"></i>
                                                                                 <?php echo esc_html__("Delete Label", _SQ_PLUGIN_NAME_) ?>

@@ -1,5 +1,5 @@
 <?php defined('ABSPATH') || die('Cheatin\' uh?'); ?>
-<?php if (current_user_can('sq_manage_snippets')) { ?>
+<?php if (SQ_Classes_Helpers_Tools::userCan('sq_manage_snippets')) { ?>
     <div class="card col-12 p-0 m-0 border-0">
         <div class="card-body px-2 py-1">
             <div id="sq_assistant_sq_seosettings" class="sq_assistant">

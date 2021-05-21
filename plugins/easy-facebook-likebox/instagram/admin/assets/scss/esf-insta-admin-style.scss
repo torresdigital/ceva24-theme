@@ -314,6 +314,53 @@
         }
       }
 
+      #mif-moderate-wrap.tab-content{
+        .mif-moderate-type-wrap{
+          .mif-moderate-type{
+            margin-bottom: 10px;
+          }
+        }
+        .mif-get-moderate-feed{
+          margin-top: 10px;
+        }
+        .mif-moderate-visual-wrap{
+          margin-top: 20px;
+        }
+        .mif-moderate-visual-wrap.mif-moderate-free-view{
+          .esf-insta-grid-skin .esf-insta-grid-wrapper .esf_insta_feed_fancy_popup .esf-insta-overlay{
+            opacity: 1 !important;
+            background: rgb(230 205 205 / 46%) !important;
+          }
+        }
+        .mif-moderate-pro{
+          margin-top: 20px;
+          a.btn{
+            background-color: #ff8c00;
+            margin-top: -3px;
+            padding: 6px 20px;
+            height: auto;
+          }
+          .trial-btn{
+            border: 1px solid #ff8c00;
+            color: #ff8c00;
+            padding: 14px 20px;
+            display: inline-block;
+            margin-right: 10px;
+            border-radius: 2px;
+          }
+          p{
+            margin-bottom: 0;
+          }
+        }
+
+        .col.input-field{
+          padding:0;
+          label{
+            left: 0;
+          }
+        }
+      }
+
       .row.auth-row {
         margin-bottom: 0;
       }
@@ -493,6 +540,40 @@
           float: left;
           width: 100%;
           margin-top: 10px;
+          .profile_picture_label{
+            position: relative;
+            float: left;
+            margin-bottom: 30px;
+          }
+          .esf-uploaded-image{
+            max-width: 100%;
+            border: 1px dashed #c3c4c7;
+            padding: 5px;
+            max-height: 200px;
+            float: left;
+            margin-bottom: 10px;
+            display: none;
+            clear: both;
+          }
+          .esf_image_upload{
+            border: 1px dashed #c3c4c7;
+            box-sizing: border-box;
+            cursor: pointer;
+            line-height: 1.6;
+            padding: 9px 0;
+            position: relative;
+            text-align: center;
+            width: 200px;
+            clear: both;
+            float: left;
+            background: #f0f0f1;
+            &:focus{
+              background: #f0f0f1;
+            }
+            &:hover{
+              background: transparent;
+            }
+          }
         }
 
         .mif_generated_shortcode {

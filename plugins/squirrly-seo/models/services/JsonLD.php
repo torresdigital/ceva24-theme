@@ -20,6 +20,7 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
             }
 
             //If not yet set
+            $this->_post->sq->jsonld_types = array_filter((array)$this->_post->sq->jsonld_types);
             if (empty($this->_post->sq->jsonld_types)) {
                 //If not set, get the type saved by Open Graph
                 if ($this->_post->sq->og_type <> '') {
@@ -28,12 +29,6 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
             }
 
             if (!empty($this->_post->sq->jsonld_types)) {
-//                if ($this->_post->ID > 0) {
-//                    foreach ($this->_post->sq->jsonld_types as $type) {
-//                        add_filter('sq_jsonld_' . strtolower($type) . '_markup', array($this, 'setCustomJsonLd'), 10, 3);
-//                    }
-//                }
-
                 add_filter('sq_json_ld', array($this, 'generateStructuredData'), 10);
 
                 add_filter('sq_json_ld', array($this, 'generateJsonLd'));
@@ -78,7 +73,7 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
                         if ($_sq_jsonld_custom = get_post_meta($this->_post->ID, '_sq_jsonld_custom', true)) {
                             if (strpos($_sq_jsonld_custom, 'application/ld+json') !== false) {
                                 return $_sq_jsonld_custom;
-                            }else{
+                            } else {
                                 return '<script type="application/ld+json">' . $_sq_jsonld_custom . '</script>';
                             }
                         }
@@ -162,7 +157,7 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
         $data = $types ? array_values(array_intersect_key($data, array_flip($types))) : array_values($data);
 
         if (!empty($data)) {
-            $data = count((array)$data) > 1 ? array('@context' => 'https://schema.org', '@graph' => $data) : $data[0];
+            $data = array('@context' => 'https://schema.org', '@graph' => $data);
         }
         return $data;
     }
@@ -263,6 +258,9 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
             $this->_markups[] = $this->getArticleMarkup('Article');
         }
 
+        if (in_array('QA Page', $this->_post->sq->jsonld_types)) {
+            $this->_markups[] = $this->getQAMarkup();
+        }
 
         if (in_array('question', $this->_post->sq->jsonld_types) || in_array('FAQ page', $this->_post->sq->jsonld_types)) {
             $this->_markups[] = $this->getQuestionMarkup();
@@ -270,6 +268,10 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
 
         if (in_array('movie', $this->_post->sq->jsonld_types)) {
             $this->_markups[] = $this->getMovieMarkup();
+        }
+
+        if (in_array('video', $this->_post->sq->jsonld_types)) {
+            $this->_markups[] = $this->getVideoMarkup();
         }
 
         if (in_array('recipe', $this->_post->sq->jsonld_types)) {
@@ -364,7 +366,7 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
                 "@type" => "ImageObject",
                 "url" => $this->_post->sq->og_media,
                 "height" => 500,
-                "width" => 700,
+                "width" => 500,
             );
         } else {
             $this->_setMedia($markup);
@@ -381,6 +383,42 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
         }
 
         return apply_filters('sq_jsonld_article_markup', $markup, $this->_post, $post_type);
+    }
+
+    /**
+     * Get Question Markup
+     *
+     * @return mixed
+     */
+    public function getQAMarkup() {
+        $type = 'QAPage';
+
+        $markup = array();
+        $markup['@type'] = $type;
+        $markup['@id'] = $this->_post->url . '#' . strtolower($type);
+        $markup['url'] = $this->_post->url;
+
+        if (isset($this->_post->sq->title) && isset($this->_post->sq->description)) {
+            $markup['mainEntity'][] = array(
+                "@type" => "Question",
+                "name" => $this->cleanText($this->_post->sq->title),
+                "text" => $this->cleanText($this->_post->sq->title),
+                "answerCount" => 1,
+                "upvoteCount" => 0,
+                "dateCreated" => date('c', strtotime($this->_post->post_date)),
+                "author" => $this->getAuthorMarkup(),
+                "acceptedAnswer" => array(
+                    "@type" => "Answer",
+                    "text" => $this->cleanText($this->_post->sq->description),
+                    "upvoteCount" => 0,
+                    "url" => $this->_post->url,
+                    "author" => $this->getAuthorMarkup(),
+                    "dateCreated" => date('c', strtotime($this->_post->post_date)),
+                )
+            );
+        }
+
+        return apply_filters('sq_jsonld_' . strtolower($type) . '_markup', $markup, $this->_post, $type);
     }
 
     /**
@@ -414,6 +452,48 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
      * Get Movie Markup
      * @return mixed
      */
+    public function getVideoMarkup() {
+        $type = 'VideoObject';
+
+        $markup = array();
+        $markup['@type'] = $type;
+        $markup['@id'] = $this->_post->url . '#' . strtolower($type);
+        $markup['url'] = $this->_post->url;
+
+        if (isset($this->_post->sq->title)) {
+            $markup['name'] = $this->cleanText($this->truncate($this->_post->sq->title, 0, $this->_post->sq->jsonld_title_maxlength));
+        }
+
+        if (isset($this->_post->sq->description)) {
+            $markup['description'] = $this->cleanText($this->truncate($this->_post->sq->description, 0, $this->_post->sq->jsonld_description_maxlength));
+        }
+
+        if (isset($this->_post->post_date)) {
+            $markup['uploadDate'] = date('c', strtotime($this->_post->post_date));
+        }
+
+        if ($videos = $this->getPostVideos()) {
+            foreach ($videos as $index => $video) {
+                if ($video['src'] <> '') {
+                    $markup['thumbnailUrl'] = array(
+                        $video['thumbnail']
+                    );
+
+                    $markup['embedUrl'] = $video['src'];
+                }
+            }
+
+        }
+
+        $markup['publisher'] = $this->getPublisherMarkup('Organization');
+
+        return apply_filters('sq_jsonld_' . strtolower($type) . '_markup', $markup, $this->_post, $type);
+    }
+
+    /**
+     * Get Movie Markup
+     * @return mixed
+     */
     public function getMovieMarkup() {
         $type = 'Movie';
 
@@ -439,7 +519,7 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
                 "@type" => "ImageObject",
                 "url" => $this->_post->sq->og_media,
                 "height" => 500,
-                "width" => 700,
+                "width" => 500,
             );
         } else {
             $this->_setMedia($markup);
@@ -465,6 +545,8 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
 
         if (isset($this->_post->sq->title)) {
             $markup['name'] = $this->cleanText($this->truncate($this->_post->sq->title, 0, $this->_post->sq->jsonld_title_maxlength));
+            $markup['headline'] = $this->cleanText($this->truncate($this->_post->sq->title, 0, $this->_post->sq->jsonld_title_maxlength));
+            $markup['keywords'] = $this->cleanText($this->truncate($this->_post->sq->title, 0, $this->_post->sq->jsonld_title_maxlength));
         }
 
         if (isset($this->_post->sq->description)) {
@@ -480,10 +562,46 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
                 "@type" => "ImageObject",
                 "url" => $this->_post->sq->og_media,
                 "height" => 500,
-                "width" => 700,
+                "width" => 500,
             );
         } else {
             $this->_setMedia($markup);
+        }
+
+        $markup['mainEntityOfPage'] = array(
+            '@type' => 'WebPage',
+            'url' => $this->_post->url
+        );
+
+        $markup['prepTime'] = 'PT10M';
+        $markup['cookTime'] = 'PT20M';
+        $markup['totalTime'] = 'PT30M';
+        $markup['nutrition'] = array(
+            '@type' => 'NutritionInformation',
+            'calories' => '0 calories'
+        );
+
+        if ($this->_post->sq->keywords <> '') {
+            $markup['keywords'] = $this->_post->sq->keywords;
+        }
+
+        if ($videos = $this->getPostVideos()) {
+            foreach ($videos as $index => $video) {
+                if ($video['src'] <> '') {
+                    $markup['video'] = array(
+                        "@type" => "VideoObject",
+                        "embedUrl" => $videos['src'],
+                        "name" => (isset($markup['name']) ? $markup['name'] : ''),
+                        "description" => (isset($markup['description']) ? $markup['description'] : ''),
+                        "thumbnailUrl" => array(
+                            $video['thumbnail']
+                        ),
+                        "height" => 500,
+                        "width" => 500,
+                    );
+                    break;
+                }
+            }
         }
 
         $markup['author'] = $this->getAuthorMarkup();
@@ -607,6 +725,10 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
                 }
 
                 if ($value) {
+                    //create cuisine array
+                    if ($key == 'servesCuisine' && is_string($value)) {
+                        $value = explode(',', $value);
+                    }
                     $markup[$key] = $value;
                 }
             }
@@ -744,7 +866,7 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
             );
 
             foreach ($jsonld[$jsonld_type] as $key => $value) {
-
+                if ($key == 'place') continue; //don't show geo for the organization schema
                 if (is_array($value)) {
                     $value = @array_filter($value);
 
@@ -820,84 +942,170 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
      * Generates BreadcrumbList structured data.
      */
     public function getBreadcrumbsMarkup() {
-        $crumbs = $markup = array();
-        ///////////////////////////// Home Page
-        $post = SQ_Classes_ObjController::getClass('SQ_Models_Snippet')->setHomePage();
+        $root = $crumbs = $lists = $markup = array();
 
-        if ($post->ID == 0 || $this->_post->ID <> $post->ID) {
-            $crumbs[] = array(
-                ($post->sq->title <> '' ? $post->sq->title : $post->post_title),
-                $post->url,
-            );
-        }
+        //show the breadcrumbs
+        if ($this->_post->post_type <> 'home') {
+            ///////////////////////////// Home Page
+            $post = SQ_Classes_ObjController::getClass('SQ_Models_Snippet')->setHomePage();
 
-        if ($this->_post->post_type == 'category' && isset($this->_post->term_id) && isset($this->_post->taxonomy)) {
-            $parents = get_ancestors($this->_post->term_id, $this->_post->taxonomy);
-            if (!empty($parents)) {
-                $parents = array_reverse($parents);
-
-                foreach ($parents as $parent) {
-                    $parent = get_term($parent);
-                    if (!is_wp_error($parent)) {
-                        $crumbs[] = array(
-                            $parent->name,
-                            get_term_link($parent->term_id, $this->_post->taxonomy),
-                        );
-                    }
-                }
+            if ($post->ID == 0 || $this->_post->ID <> $post->ID) {
+                $root[] = array(
+                    ($post->sq->title <> '' ? $post->sq->title : $post->post_title),
+                    $post->url,
+                );
             }
-        } else {
-            /////////////////////// Parent Categories
-            $categories = get_the_category($this->_post->ID);
-            if (!empty($categories)) {
-                foreach ($categories as $category) {
-                    $parents = get_ancestors($category->term_id, $category->taxonomy);
 
-                    if (!empty($parents)) {
-                        $parents = array_reverse($parents);
+            if ($this->_post->post_type == 'category' && isset($this->_post->term_id) && isset($this->_post->taxonomy)) {
+                $parents = get_ancestors($this->_post->term_id, $this->_post->taxonomy);
+                if (!empty($parents)) {
+                    $parents = array_reverse($parents);
 
-                        foreach ($parents as $parent) {
-                            $parent = get_term($parent);
-                            if (!is_wp_error($parent)) {
-                                $crumbs[] = array(
-                                    $parent->name,
-                                    get_term_link($parent->term_id, $category->taxonomy),
-                                );
-                            }
+                    foreach ($parents as $parent) {
+                        $parent = get_term($parent);
+                        if (!is_wp_error($parent)) {
+                            $crumbs[] = array(
+                                $parent->name,
+                                get_term_link($parent->term_id, $this->_post->taxonomy),
+                            );
                         }
                     }
 
-                    if (!is_wp_error(get_term_link($category->term_id, $category->taxonomy))) {
-                        $crumbs[] = array(
-                            $category->name,
-                            get_term_link($category->term_id, $category->taxonomy),
-                        );
+                    $lists[] = $crumbs;
+                }
+            } elseif ($this->_post->post_type == 'product') {
+                if (class_exists('WC_Product')) {
+                    $product = new WC_Product($this->_post->ID);
+
+                    //Get all categories
+                    if ($product instanceof WC_Product) {
+                        $taxonomy = 'product_cat';
+
+                        if ((int)$this->_post->sq->primary_category > 0) {
+                            //check if the primary category was selected by the client
+                            $category_ids = array((int)$this->_post->sq->primary_category);
+                        } else {
+                            $category_ids = $product->get_category_ids();
+                        }
+
+                        if (!empty($category_ids)) {
+                            foreach ($category_ids as $category) {
+                                //$crumbs = [];
+                                $parents = get_ancestors($category, $taxonomy);
+
+                                if (!empty($parents)) {
+
+                                    foreach ($parents as $parent) {
+                                        $parent = get_term($parent);
+                                        if (!is_wp_error($parent)) {
+                                            $crumbs[] = array(
+                                                $parent->name,
+                                                get_term_link($parent->term_id, $taxonomy),
+                                            );
+                                        }
+                                    }
+
+                                    $category = get_term($category, $taxonomy);
+                                    if (isset($category->name) && $category->name <> '') {
+                                        $crumbs[] = array(
+                                            $category->name,
+                                            get_term_link($category->term_id, $taxonomy),
+                                        );
+                                    }
+
+                                    $lists[] = $crumbs;
+                                } else {
+
+                                    $category = get_term($category, $taxonomy);
+                                    if (isset($category->name) && $category->name <> '') {
+                                        $crumbs[] = array(
+                                            $category->name,
+                                            get_term_link($category->term_id, $taxonomy),
+                                        );
+                                    }
+
+                                    $lists[] = $crumbs;
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                /////////////////////// Parent Categories
+                if ((int)$this->_post->sq->primary_category > 0) {
+                    $categories = array(get_category((int)$this->_post->sq->primary_category));
+                } else {
+                    $categories = get_the_category($this->_post->ID);
+                }
+
+                if (!empty($categories)) {
+                    foreach ($categories as $category) {
+                        $crumbs = [];
+                        $parents = get_ancestors($category->term_id, $category->taxonomy);
+
+                        if (!empty($parents)) {
+                            $parents = array_reverse($parents);
+
+                            foreach ($parents as $parent) {
+                                $parent = get_term($parent);
+                                if (isset($parent->name) && $parent->name <> '') {
+                                    $crumbs[] = array(
+                                        $parent->name,
+                                        get_term_link($parent->term_id, $category->taxonomy),
+                                    );
+                                }
+                            }
+
+                            if (isset($category->name) && $category->name <> '') {
+                                $crumbs[] = array(
+                                    $category->name,
+                                    get_term_link($category->term_id, $category->taxonomy),
+                                );
+                            }
+
+                            $lists[] = $crumbs;
+                        } elseif (isset($category->name) && $category->name <> '') {
+                            $crumbs[] = array(
+                                $category->name,
+                                get_term_link($category->term_id, $category->taxonomy),
+                            );
+
+                            $lists[] = $crumbs;
+                        }
                     }
                 }
             }
-        }
-        if ($this->_post->post_type <> 'home') {
-            ////////////////////// Current post
-            $crumbs[] = array(
-                ($this->_post->sq->title <> '' ? $this->_post->sq->title : $this->_post->post_title),
-                $this->_post->url,
-            );
+
 
             if (!empty($crumbs)) {
                 $markup['@type'] = 'BreadcrumbList';
                 $markup['@id'] = $this->_post->url . '#' . 'breadcrumblist';
                 $markup['itemListElement'] = array();
 
-                foreach ($crumbs as $key => $crumb) {
-                    $markup['itemListElement'][$key] = array(
-                        '@type' => 'ListItem',
-                        'position' => $key + 1,
-                        'item' => array(
-                            '@id' => $crumb[1],
-                            'name' => $this->cleanText($crumb[0])
-                        ),
+                foreach ($lists as $list) {
+                    //merge and reset the keys
+                    $list = array_merge($root, $list);
+                    $list = array_values($list);
+
+                    ////////////////////// Current post
+                    $list[] = array(
+                        ($this->_post->sq->title <> '' ? $this->_post->sq->title : $this->_post->post_title),
+                        $this->_post->url,
                     );
 
+                    $itemListElement = array();
+                    foreach ($list as $key => $crumb) {
+                        $itemListElement[$key] = array(
+                            '@type' => 'ListItem',
+                            'position' => $key + 1,
+                            'item' => array(
+                                '@id' => $crumb[1],
+                                'name' => $this->cleanText($crumb[0])
+                            ),
+                        );
+                    }
+
+                    $markup['itemListElement'][] = $itemListElement;
                 }
             }
         }
@@ -918,7 +1126,7 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
                     "@type" => "ImageObject",
                     "url" => $image['src'],
                     "height" => 500,
-                    "width" => 700,
+                    "width" => 500,
                 );
                 if (isset($image['width'])) {
                     $markup['image']["width"] = $image['width'];
@@ -955,6 +1163,10 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
             $shop_name = get_bloginfo('name');
             $shop_url = home_url();
             $currency = get_woocommerce_currency();
+
+            $sq_woocommerce = get_post_meta($this->_post->ID, '_sq_woocommerce', true);
+            $wc_fields = array('mpn' => 'mpn', 'gtin' => 'gtin', 'ean' => 'gtin13', 'upc' => 'gtin12', 'isbn' => 'isbn');
+
             $markup = array();
             $markup['@type'] = 'Product';
             $markup['url'] = get_permalink($product->get_id());
@@ -976,14 +1188,17 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
                 }
             }
 
-            if (method_exists($product, 'get_date_on_sale_to') && $product->get_date_on_sale_to()) {
-                if (method_exists($product->get_date_on_sale_to(), 'getTimestamp')) {
-                    $price_valid_until = date('Y-m-d', $product->get_date_on_sale_to()->getTimestamp());
-                } else {
-                    $price_valid_until = date('Y-m-d', strtotime('+12 Month'));
+            //By default, set the price available for 1 year
+            $price_valid_until = date('Y-m-d', strtotime('+12 Month'));
+            if (method_exists($product, 'get_date_on_sale_to') && method_exists($product, 'get_date_on_sale_from')) {
+                if ($product->get_date_on_sale_from() && method_exists($product->get_date_on_sale_from(), 'getTimestamp')) {
+                    if ($product->get_date_on_sale_from() && date('Y-m-d', $product->get_date_on_sale_from()->getTimestamp()) <= gmdate('Y-m-d')) {
+                        if (method_exists($product->get_date_on_sale_to(), 'getTimestamp')) {
+                            //Set the price available until the offer ends
+                            $price_valid_until = date('Y-m-d', $product->get_date_on_sale_to()->getTimestamp());
+                        }
+                    }
                 }
-            } else {
-                $price_valid_until = date('Y-m-d', strtotime('+12 Month'));
             }
 
             $markup_offer = array(
@@ -993,8 +1208,8 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
                 'url' => get_permalink($product->get_id()),
                 'priceCurrency' => $currency,
                 'availability' => 'https://schema.org/' . $stock = ($product->is_in_stock() ? 'InStock' : 'OutOfStock'),
-                'sku' => (method_exists($product, 'get_sku')) ? $product->get_sku() : '',
-                'image' => (method_exists($product, 'get_image_id')) ? wp_get_attachment_url($product->get_image_id()) : '',
+                'sku' => (method_exists($product, 'get_sku')) ? ($product->get_sku() <> '' ? $product->get_sku() : '') : '',
+                'image' => (method_exists($product, 'get_image_id')) ? wp_get_attachment_url($product->get_image_id()) : '-',
                 'description' => (method_exists($product, 'get_description') ? $this->cleanText($product->get_description()) : $this->cleanText($product->get_title())),
                 'seller' => array(
                     '@type' => 'Organization',
@@ -1003,78 +1218,115 @@ class SQ_Models_Services_JsonLD extends SQ_Models_Abstract_Seo {
                 ),
             );
 
+
             //Get the variation prices
             if ($product->is_type('variable') && method_exists($product, 'get_variation_prices')) {
                 $prices = $product->get_variation_prices();
 
-                $markup_offer['priceSpecification'] = array(
-                    'price' => wc_format_decimal($product->get_price(), wc_get_price_decimals()),
-                    'minPrice' => wc_format_decimal(current($prices['price']), wc_get_price_decimals()),
-                    'maxPrice' => wc_format_decimal(end($prices['price']), wc_get_price_decimals()),
-                    'priceCurrency' => $currency,
-                );
-            }
-
-            //Get all categories
-            $categories = $product->get_category_ids();
-            if (!empty($categories)) {
-                foreach ($categories as $category) {
-                    $category = get_term($category, 'product_cat');
-                    if (!is_wp_error($category)) {
-                        $markup['brand'] = array(
-                            '@type' => 'Thing',
-                            'name' => $category->name,
-                        );
-                    }
+                if (isset($prices['price'])) {
+                    $markup_offer['priceSpecification'] = array(
+                        'price' => wc_format_decimal($product->get_price(), wc_get_price_decimals()),
+                        'minPrice' => wc_format_decimal(current($prices['price']), wc_get_price_decimals()),
+                        'maxPrice' => wc_format_decimal(end($prices['price']), wc_get_price_decimals()),
+                        'priceCurrency' => $currency,
+                    );
                 }
             }
 
-            $markup['sku'] = (method_exists($product, 'get_sku')) ? $product->get_sku() : '-';
-            $markup['mpn'] = $markup['sku'];
+            $markup['sku'] = (method_exists($product, 'get_sku')) ? ($product->get_sku() <> '' ? $product->get_sku() : '') : '';
+
+
+            //Set default values if WooCommerce default is active
+            if (SQ_Classes_Helpers_Tools::getOption('sq_jsonld_product_defaults')) {
+                //Get all categories
+                $categories = $product->get_category_ids();
+                if (!empty($categories)) {
+                    foreach ($categories as $category) {
+                        $category = get_term($category, 'product_cat');
+                        if (isset($category->name) && $category->name <> '') {
+                            $markup['brand'] = array(
+                                '@type' => 'Brand',
+                                'name' => $category->name,
+                            );
+                        }
+                    }
+                }
+
+                if ($markup['sku'] == '') $markup['sku'] = '-';
+                if ($markup_offer['sku'] == '') $markup_offer['sku'] = '-';
+                $markup['mpn'] = '-';
+                $markup_offer['mpn'] = '-';
+            }
+
+            //Set custom values if WooCommerce custom is active
+            if (SQ_Classes_Helpers_Tools::getOption('sq_jsonld_product_custom')) {
+
+                foreach ($wc_fields as $field => $jsonkey) {
+                    if (isset($sq_woocommerce[$field]) && $sq_woocommerce[$field] <> '') {
+                        $markup[$jsonkey] = $sq_woocommerce[$field];
+                        $markup_offer[$jsonkey] = $sq_woocommerce[$field];
+                    }
+                }
+
+                if (isset($sq_woocommerce['brand']) && $sq_woocommerce['brand'] <> '') {
+                    $markup['brand'] = array(
+                        '@type' => 'Brand',
+                        'name' => $sq_woocommerce['brand'],
+                    );
+                }
+            }
 
             if (function_exists('wc_prices_include_tax')) {
+                $markup_offer['priceSpecification']['price'] = wc_format_decimal($product->get_price(), wc_get_price_decimals());
+                $markup_offer['priceSpecification']['priceCurrency'] = $currency;
                 $markup_offer['priceSpecification']['valueAddedTaxIncluded'] = wc_prices_include_tax() ? 'true' : 'false';
             }
 
             //Set the offer
             $markup['offers'] = $markup_offer;
 
-            //If rating and reviews
-            if (method_exists($product, 'get_rating_count') && $product->get_rating_count()) {
+            if (SQ_Classes_Helpers_Tools::getOption('sq_jsonld_product_defaults')) {
+                //If rating and reviews
+                if (method_exists($product, 'get_rating_count') && $product->get_rating_count()) {
 
-                $markup['aggregateRating'] = array(
-                    '@type' => 'AggregateRating',
-                    'ratingValue' => $product->get_average_rating(),
-                    'ratingCount' => $product->get_rating_count(),
-                    'reviewCount' => $product->get_review_count(),
-                );
+                    //Only if it's set in Squirrly to remove duplicates
+                    //otherwise let Woocommerce show the reviews
+                    if (SQ_Classes_Helpers_Tools::getOption('sq_jsonld_clearcode')) {
+                        $markup['aggregateRating'] = array(
+                            '@type' => 'AggregateRating',
+                            'ratingValue' => $product->get_average_rating(),
+                            'ratingCount' => $product->get_rating_count(),
+                            'reviewCount' => $product->get_review_count(),
+                        );
 
-                //Set the reviews
-                $markup['review'] = $this->getProductReviewMarkup($product);
+                        //Set the reviews
+                        $markup['review'] = $this->getProductReviewMarkup($product);
+                    }
 
-            } elseif (SQ_Classes_Helpers_Tools::getOption('sq_jsonld_product_defaults')) { //add default datas?
+                } else { //add default datas?
 
-                //Add data if no reviews for Google validation
-                $markup['aggregateRating'] = array(
-                    '@type' => 'AggregateRating',
-                    'ratingValue' => 5,
-                    'ratingCount' => 1,
-                    'reviewCount' => 1,
-                );
-
-                $markup['review'][] = array(
-                    '@type' => 'Review',
-                    'reviewRating' => array(
-                        '@type' => 'Rating',
+                    //Add data if no reviews for Google validation
+                    $markup['aggregateRating'] = array(
+                        '@type' => 'AggregateRating',
                         'ratingValue' => 5,
-                    ),
-                    'author' => array(
-                        '@type' => 'Person',
-                        'name' => '',
-                    ),
-                    'reviewBody' => '',
-                    'datePublished' => (method_exists($product, 'get_date_created') && method_exists($product->get_date_created(), 'getTimestamp')) ? date('Y-m-d', $product->get_date_created()->getTimestamp()) : '',
-                );
+                        'ratingCount' => 1,
+                        'reviewCount' => 1,
+                    );
+
+                    $markup['review'][] = array(
+                        '@type' => 'Review',
+                        'reviewRating' => array(
+                            '@type' => 'Rating',
+                            'ratingValue' => 5,
+                        ),
+                        'author' => array(
+                            '@type' => 'Person',
+                            'name' => '',
+                        ),
+                        'reviewBody' => '',
+                        'datePublished' => (method_exists($product, 'get_date_created') && $product->get_date_created() && method_exists($product->get_date_created(), 'getTimestamp')) ? date('Y-m-d', $product->get_date_created()->getTimestamp()) : '',
+                    );
+                }
             }
 
             $otherbrands = array();

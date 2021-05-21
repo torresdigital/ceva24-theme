@@ -4,7 +4,7 @@
     <?php do_action('sq_notices'); ?>
     <div class="d-flex flex-row my-0 bg-white" style="clear: both !important;">
         <?php
-        if (!current_user_can('sq_manage_settings')) {
+        if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
             echo '<div class="col-12 alert alert-success text-center m-0 p-3">' . esc_html__("You do not have permission to access this page. You need Squirrly SEO Admin role.", _SQ_PLUGIN_NAME_) . '</div>';
             return;
         }
@@ -42,7 +42,7 @@
                                                     <input type="hidden" name="sq_load_css" value="0"/>
                                                     <input type="checkbox" id="sq_load_css" name="sq_load_css" class="sq-switch" <?php echo(SQ_Classes_Helpers_Tools::getOption('sq_load_css') ? 'checked="checked"' : '') ?> value="1"/>
                                                     <label for="sq_load_css" class="ml-2"><?php echo esc_html__("Load Squirrly Frontend CSS", _SQ_PLUGIN_NAME_); ?>
-                                                        <a href="https://howto.squirrly.co/kb/website-favicon-settings/#frontend_css" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
+                                                        <a href="https://howto.squirrly.co/kb/advanced-seo-settings/#frontend_css" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
                                                     </label>
                                                     <div class="offset-1 small text-black-50"><?php echo esc_html__("Load Squirrly SEO CSS for Twitter and Article inserted from Squirrly Blogging Assistant.", _SQ_PLUGIN_NAME_); ?></div>
                                                 </div>
@@ -55,7 +55,7 @@
                                                     <input type="hidden" name="sq_minify" value="0"/>
                                                     <input type="checkbox" id="sq_minify" name="sq_minify" class="sq-switch" <?php echo(SQ_Classes_Helpers_Tools::getOption('sq_minify') ? 'checked="checked"' : '') ?> value="1"/>
                                                     <label for="sq_minify" class="ml-2"><?php echo esc_html__("Minify Squirrly SEO Metas", _SQ_PLUGIN_NAME_); ?>
-                                                        <a href="https://howto.squirrly.co/kb/website-favicon-settings/#minify_metas" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
+                                                        <a href="https://howto.squirrly.co/kb/advanced-seo-settings/#minify_metas" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
                                                     </label>
                                                     <div class="offset-1 small text-black-50"><?php echo esc_html__("Minify the metas in source code to optimize the page loading.", _SQ_PLUGIN_NAME_); ?></div>
                                                     <div class="offset-1 small text-black-50"><?php echo esc_html__("Remove comments and newlines from Squirrly SEO Metas.", _SQ_PLUGIN_NAME_); ?></div>
@@ -70,7 +70,7 @@
                                                     <input type="hidden" name="sq_laterload" value="0"/>
                                                     <input type="checkbox" id="sq_laterload" name="sq_laterload" class="sq-switch" <?php echo(SQ_Classes_Helpers_Tools::getOption('sq_laterload') ? 'checked="checked"' : '') ?> value="1"/>
                                                     <label for="sq_laterload" class="ml-2"><?php echo esc_html__("Squirrly SEO Late Buffer", _SQ_PLUGIN_NAME_); ?>
-                                                        <a href="https://howto.squirrly.co/kb/website-favicon-settings/#late_loading_buffer" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
+                                                        <a href="https://howto.squirrly.co/kb/advanced-seo-settings/#late_loading_buffer" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
                                                     </label>
                                                     <div class="offset-1 small text-black-50"><?php echo esc_html__("Wait all plugins to load before loading Squirrly SEO frontend buffer.", _SQ_PLUGIN_NAME_); ?></div>
                                                     <div class="offset-1 small text-black-50"><?php echo esc_html__("For compatibility with some Cache and CDN plugins.", _SQ_PLUGIN_NAME_); ?></div>
@@ -86,7 +86,7 @@
                                                     <input type="hidden" name="sq_complete_uninstall" value="0"/>
                                                     <input type="checkbox" id="sq_complete_uninstall" name="sq_complete_uninstall" class="sq-switch" <?php echo(SQ_Classes_Helpers_Tools::getOption('sq_complete_uninstall') ? 'checked="checked"' : '') ?> value="1"/>
                                                     <label for="sq_complete_uninstall" class="ml-2"><?php echo esc_html__("Delete Squirrly SEO Table on Uninstall", _SQ_PLUGIN_NAME_); ?>
-                                                        <a href="https://howto.squirrly.co/kb/website-favicon-settings/#delete_uninstall" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
+                                                        <a href="https://howto.squirrly.co/kb/advanced-seo-settings/#delete_uninstall" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
                                                     </label>
                                                     <div class="offset-1 small text-black-50"><?php echo esc_html__("Delete Squirrly SEO table and options on uninstall.", _SQ_PLUGIN_NAME_); ?></div>
                                                 </div>

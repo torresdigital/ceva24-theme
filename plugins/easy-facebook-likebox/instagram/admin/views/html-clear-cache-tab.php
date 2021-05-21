@@ -26,12 +26,18 @@ $mif_trans_posts = [];
 
 $mif_trans_bio = [];
 
+$mif_trans_stories = [];
+
 
 if ( $mif_trans_results ) {
 	foreach ( $mif_trans_results as $mif_trans_result ) {
 
 		if ( strpos( $mif_trans_result->name, 'esf_insta' ) !== false && strpos( $mif_trans_result->name, 'posts' ) !== false && strpos( $mif_trans_result->name, 'timeout' ) == false ) {
 			$mif_trans_posts[ $mif_trans_result->name ] = $mif_trans_result->value;
+		}
+
+		if ( strpos( $mif_trans_result->name, 'esf_insta' ) !== false && strpos( $mif_trans_result->name, 'stories' ) !== false && strpos( $mif_trans_result->name, 'timeout' ) == false ) {
+			$mif_trans_stories[ $mif_trans_result->name ] = $mif_trans_result->value;
 		}
 
 
@@ -58,6 +64,33 @@ if ( $mif_trans_results ) {
                 </li>
 
 				<?php foreach ( $mif_trans_bio as $key => $value ) {
+					$pieces     = explode( '-', $key );
+					$trans_name = array_pop( $pieces );
+
+					?>
+
+                    <li class="collection-item <?php echo $key; ?>">
+                        <div><?php echo $trans_name; ?>
+                            <a href="javascript:void(0);"
+                               data-mif_collection="mif_bio_collection"
+                               data-mif_trans="<?php echo $key; ?>"
+                               class="secondary-content mif_del_trans"><i
+                                        class="material-icons">delete</i></a>
+                        </div>
+                    </li>
+				<?php } ?>
+
+            </ul>
+
+		<?php }
+		if ( $mif_trans_stories ) { ?>
+
+            <ul class="collection with-header mif_bio_collection">
+                <li class="collection-header">
+                    <h5><?php esc_html_e( "Stories", 'easy-facebook-likebox' ); ?></h5>
+                </li>
+
+				<?php foreach ( $mif_trans_stories as $key => $value ) {
 					$pieces     = explode( '-', $key );
 					$trans_name = array_pop( $pieces );
 

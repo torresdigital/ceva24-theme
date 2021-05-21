@@ -2,6 +2,10 @@
 
 (function($) {
   $(document).ready(function() {
+    if (woosw_get_cookie('woosw_key') == '') {
+      woosw_set_cookie('woosw_key', woosw_get_key(), 7);
+    }
+
     if ($('.woosw-custom-menu-item').length) {
       // load the count if have a custom menu item
       woosw_load_count();
@@ -419,5 +423,49 @@
         replace(/</g, '&lt;').
         replace(/>/g, '&gt;').
         replace(/"/g, '&quot;');
+  }
+
+  function woosw_get_key() {
+    var result = [];
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    var charactersLength = characters.length;
+
+    for (var i = 0; i < 6; i++) {
+      result.push(characters.charAt(Math.floor(Math.random() *
+          charactersLength)));
+    }
+
+    return result.join('');
+  }
+
+  function woosw_set_cookie(cname, cvalue, exdays) {
+    var d = new Date();
+
+    d.setTime(d.getTime() + (
+        exdays * 24 * 60 * 60 * 1000
+    ));
+
+    var expires = 'expires=' + d.toUTCString();
+
+    document.cookie = cname + '=' + cvalue + '; ' + expires + '; path=/';
+  }
+
+  function woosw_get_cookie(cname) {
+    var name = cname + '=';
+    var ca = document.cookie.split(';');
+
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+
+      if (c.indexOf(name) == 0) {
+        return decodeURIComponent(c.substring(name.length, c.length));
+      }
+    }
+
+    return '';
   }
 })(jQuery);

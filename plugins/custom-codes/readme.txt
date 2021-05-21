@@ -4,7 +4,7 @@ Tags: custom, codes, custom codes, custom css, development, developer, scss, sas
 Requires at least: 4.9.8
 Donate link: https://pressx.co
 Requires PHP: 5.6
-Tested up to: 5.6
+Tested up to: 5.7.1
 Stable tag: trunk
 License: MIT
 License URI: https://opensource.org/licenses/MIT
@@ -140,6 +140,18 @@ Simply install Custom Codes and click the *Upgrade >* button where you can learn
 5. Style settings
 
 == Changelog ==
+= 2.2.6 (2021-04-22 03:22 EET) =
+* Bug fixes
+
+= 2.2.5 (2021-04-22 02:58 EET) =
+* WP Filesystem API configuration error catching
+
+= 2.2.4 (2021-04-19 23:16 EET) =
+* Fix: Disable the not working PRO languages on language switch for free users
+* Tested on WordPress 5.7.1
+* Default output order is now "Desktop First"
+* Some translation updates
+
 = 2.2.3 (2021-02-25 15:16 EET) =
 * Show current media query around the style editors
 * Minor fixes

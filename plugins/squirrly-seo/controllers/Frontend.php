@@ -32,11 +32,6 @@ class SQ_Controllers_Frontend extends SQ_Classes_FrontController {
         //Set the post so that Squirrly will know which one to process
         add_action('template_redirect', array($this->model, 'setPost'), 9);
 
-        //Check the old permalink and redirect to the new permalink
-        if (SQ_Classes_Helpers_Tools::getOption('sq_permalink_redirect')) {
-            add_action('template_redirect', array($this->model, 'redirectPermalinks'), 10);
-        }
-
         /* Check if sitemap is on and Load the Sitemap */
         if (SQ_Classes_Helpers_Tools::getOption('sq_auto_sitemap')) {
             add_filter('wp_sitemaps_enabled', '__return_false');
@@ -48,11 +43,6 @@ class SQ_Controllers_Frontend extends SQ_Classes_FrontController {
             //Check if attachment to image redirect is needed
             if (SQ_Classes_Helpers_Tools::getOption('sq_attachment_redirect')) {
                 add_action('template_redirect', array($this->model, 'redirectAttachments'), 10);
-            }
-
-            /* Fix the Links in content */
-            if (SQ_Classes_Helpers_Tools::getOption('sq_external_nofollow') || SQ_Classes_Helpers_Tools::getOption('sq_external_blank')) {
-                add_action('the_content', array($this, 'fixNofollowLinks'), 11);
             }
 
         }
@@ -67,7 +57,11 @@ class SQ_Controllers_Frontend extends SQ_Classes_FrontController {
             remove_action('template_redirect', array($this, 'hookBuffer'), 1);
         }
 
-        $this->model->startBuffer();
+        //Check if there is an editor loading
+        //Don't load Squirrly METAs while in frontend editors
+        if(!SQ_Classes_ObjController::getClass('SQ_Models_Compatibility')->isBuilderEditor()) {
+            $this->model->startBuffer();
+        }
     }
 
     /**
@@ -114,95 +108,29 @@ class SQ_Controllers_Frontend extends SQ_Classes_FrontController {
      * Hook the Header load
      */
     public function hookFronthead() {
-        if (!is_admin() && (!SQ_Classes_Helpers_Tools::getOption('sq_load_css') || defined('SQ_NOCSS') && SQ_NOCSS)) {
+
+        if (is_admin() || (defined('SQ_NOCSS') && SQ_NOCSS)) {
             return;
         }
 
-        if (!SQ_Classes_Helpers_Tools::isAjax()) {
-            SQ_Classes_ObjController::getClass('SQ_Classes_DisplayController')->loadMedia(_SQ_ASSETS_URL_ . 'css/frontend' . (SQ_DEBUG ? '' : '.min') . '.css');
-        }
-    }
-
-
-    /**
-     * Change the image path to absolute when in feed
-     * @param string $content
-     *
-     * @return string
-     */
-    public function fixNofollowLinks($content) {
-
-        if (!is_feed() && !is_404()) {
-            preg_match_all('/<a[^>]*href=[\'"]([^\'"]+)[\'"][^>]*>/i', $content, $out);
-            if (empty($out) || empty($out[0])) {
-                return $content;
+        if (SQ_Classes_Helpers_Tools::isPluginInstalled('elementor/elementor.php')) {
+            if (SQ_Classes_Helpers_Tools::getValue('elementor-preview', false)) {
+                SQ_Classes_ObjController::getClass('SQ_Classes_DisplayController')->loadMedia('elementor');
             }
-
-            $domain = parse_url(home_url(), PHP_URL_HOST);
-
-            foreach ($out[0] as $index => $link) {
-                $newlink = $link;
-
-                //only for external links
-                if (isset($out[1][$index])) {
-                    //If it's not a valid link
-                    if(!$linkdomain = parse_url($out[1][$index], PHP_URL_HOST)){
-                        continue;
-                    }
-
-                    //If it's not an external link
-                    if (strpos($linkdomain, $domain) !== false) {
-                        continue;
-                    }
-
-                    //If it's not an exception link
-                    $exceptions = SQ_Classes_Helpers_Tools::getOption('sq_external_exception');
-                    if(!empty($exceptions)){
-                        foreach ($exceptions as $exception){
-                            if (strpos($exception, $linkdomain) !== false) {
-                                continue 2;
-                            }
-                        }
-                    }
-                }
-
-                //If nofollow rel is set
-                if (SQ_Classes_Helpers_Tools::getOption('sq_external_nofollow')) {
-
-                    if (strpos($newlink, 'rel=') === false) {
-                        $newlink = str_replace('<a', '<a rel="nofollow" ', $newlink);
-                    } elseif (strpos($newlink, 'nofollow') === false) {
-                        $newlink = preg_replace('/(rel=[\'"])([^\'"]+)([\'"])/i', '$1nofollow $2$3', $newlink);
-                    }
-
-                }
-
-                //if force external open
-                if (SQ_Classes_Helpers_Tools::getOption('sq_external_blank')) {
-
-                    if (strpos($newlink, 'target=') === false) {
-                        $newlink = str_replace('<a', '<a target="_blank" ', $newlink);
-                    } elseif (strpos($link, '_blank') === false) {
-                        $newlink = preg_replace('/(target=[\'"])([^\'"]+)([\'"])/i', '$1_blank$3', $newlink);
-                    }
-
-                }
-
-                //Check the link and replace it
-                if ($newlink <> $link) {
-                    $content = str_replace($link, $newlink, $content);
-                }
-            }
-
         }
-        return $content;
+
+        if(SQ_Classes_Helpers_Tools::getOption('sq_load_css')) {
+            if (!SQ_Classes_Helpers_Tools::isAjax()) {
+                SQ_Classes_ObjController::getClass('SQ_Classes_DisplayController')->loadMedia('frontend');
+            }
+        }
     }
 
     /**
      * Hook the footer
      */
     public function hookFrontfooter() {
-        echo (string)$this->model->getFooter();
+        echo $this->model->getFooter();
     }
 
     /**

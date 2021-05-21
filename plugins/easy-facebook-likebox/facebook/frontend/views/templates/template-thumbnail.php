@@ -309,7 +309,13 @@ if ( $is_album_feed ) {
     if ( $feed_type == 'shared_story' ) {
         $efbl_shared_img_col = 12;
         if ( !isset( $shared_src ) || empty($shared_src) ) {
-            $shared_src = $story->full_picture;
+            
+            if ( isset( $story->full_picture ) ) {
+                $shared_src = $story->full_picture;
+            } else {
+                $shared_src = '';
+            }
+        
         }
         $shared_src = $story->attachments->data['0']->media->image->src;
         ?>

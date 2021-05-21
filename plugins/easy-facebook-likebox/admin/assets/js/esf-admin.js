@@ -154,6 +154,27 @@ jQuery(document).ready(function($) {
     });
   });
 
+  jQuery('.esf-hide-free-sidebar').click(function() {
+
+    const id   = jQuery(this).data('id');
+    const data = {'action': 'esf_hide_free_sidebar', 'id' : id };
+    jQuery.ajax({
+      url: fta.ajax_url,
+      type: 'post',
+      data: data,
+      dataType: 'json',
+      async: !0,
+      success: function(response) {
+        Materialize.Toast.removeAll();
+        if (response.success) {
+          jQuery('.esf-hide-'+id).slideUp('fast');
+        }else{
+          Materialize.toast(response.data, 4000);
+        }
+      },
+    });
+  });
+
   jQuery('.esf_hide_updated_notice').click(function() {
 
     var data = {'action': 'esf_hide_updated_notice'};

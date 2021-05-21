@@ -62,6 +62,8 @@ class SQ_Models_Bulkseo_Twittercard extends SQ_Models_Abstract_Assistant {
                 if (isset($image['src'])) {
                     $this->_tw_media = $image['src'];
                 }
+            }elseif (SQ_Classes_Helpers_Tools::getOption('sq_tc_image')) {
+                $this->_tw_media = SQ_Classes_Helpers_Tools::getOption('sq_tc_image');
             }
         }
     }

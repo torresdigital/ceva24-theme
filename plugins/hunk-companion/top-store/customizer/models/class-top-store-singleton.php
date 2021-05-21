@@ -41,6 +41,6 @@ class Top_Store_Singleton{
 	/**
 	 * Make wakeup magic method private, so nobody can unserialize instance.
 	 */
-	private function __wakeup() {}
+	public function __wakeup() {}
 
 }

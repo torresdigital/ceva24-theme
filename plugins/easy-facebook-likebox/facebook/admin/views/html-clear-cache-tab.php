@@ -6,6 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 global $wpdb;
+$FTA          = new Feed_Them_All();
+$fta_settings = $FTA->fta_get_settings();
 
 
 ?>
@@ -22,6 +24,7 @@ global $wpdb;
 
 	$efbl_trans_results = $wpdb->get_results( $efbl_trans_sql );
 	$efbl_trans_posts   = [];
+	$efbl_trans_group   = [];
 	$efbl_trans_bio     = [];
 
 	if ( $efbl_trans_results ) {
@@ -41,23 +44,29 @@ global $wpdb;
 				$efbl_trans_bio[ $efbl_trans_result->name ] = $efbl_trans_result->value;
 			}
 
+			/*
+		 * Checking EFBL exists in transient slug then save that in efbl transient array.
+		 */
+			if ( strpos( $efbl_trans_result->name, 'efbl' ) !== false && strpos( $efbl_trans_result->name, 'group' ) !== false && strpos( $efbl_trans_result->name, 'timeout' ) == false ) {
+				$efbl_trans_group[ $efbl_trans_result->name ] = $efbl_trans_result->value;
+			}
+
 		}
 	}
 
 	if ( $efbl_trans_bio ) { ?>
         <ul class="collection with-header efbl_bio_collection">
             <li class="collection-header">
-                <h5><?php esc_html_e( "Pages Bio", 'easy-facebook-likebox' ); ?></h5>
+                <h5><?php esc_html_e( "Page(s) Bio", 'easy-facebook-likebox' ); ?></h5>
             </li>
 
 			<?php foreach ( $efbl_trans_bio as $key => $value ) {
 				$pieces     = explode( '-', $key );
 				$trans_name = array_pop( $pieces );
 
-				$FTA          = new Feed_Them_All();
-				$fta_settings = $FTA->fta_get_settings();
-
 				$approved_pages = $fta_settings['plugins']['facebook']['approved_pages'];
+
+				$bio_name = '';
 
 				if ( isset( $approved_pages[ $trans_name ] ) ) {
 
@@ -88,7 +97,7 @@ global $wpdb;
 
         <ul class="collection with-header efbl_posts_collection">
             <li class="collection-header">
-                <h5><?php esc_html_e( "Feeds", 'easy-facebook-likebox' ); ?></h5>
+                <h5><?php esc_html_e( "Page(s) Feed", 'easy-facebook-likebox' ); ?></h5>
             </li>
 
 			<?php foreach ( $efbl_trans_posts as $key => $value ) {
@@ -119,10 +128,42 @@ global $wpdb;
 
 			<?php } ?>
         </ul>
-	<?php } else { ?>
+	<?php }
+	if ( $efbl_trans_group ) { ?>
 
-        <blockquote><?php esc_html_e( "Whoops! nothing cached at the moment.", 'easy-facebook-likebox' ); ?></blockquote>
+        <ul class="collection with-header efbl_posts_collection">
+            <li class="collection-header">
+                <h5><?php esc_html_e( "Group(s) Feed", 'easy-facebook-likebox' ); ?></h5>
+            </li>
 
-	<?php } ?>
+			<?php foreach ( $efbl_trans_group as $key => $value ) {
+
+				$pieces = explode( '_', $key );
+                $page_name = $pieces[4];
+
+                if( isset( $fta_settings['plugins']['facebook']['approved_groups'] ) ){
+	                $approved_groups = $fta_settings['plugins']['facebook']['approved_groups'];
+	                $approved_groups = $approved_groups;
+	                $post_key = array_search( $page_name, array_column( $approved_groups, 'id' ) );
+	                $page_name = $approved_groups[$post_key]->name;
+				}
+
+
+				$key = str_replace( ' ', '', $key );
+
+				?>
+
+                <li class="collection-item <?php echo $key ?>">
+                    <div><?php echo $page_name ?>
+                        <a href="javascript:void(0);"
+                           data-efbl_trans="<?php echo $key ?>"
+                           class="secondary-content efbl_del_trans"><i
+                                    class="material-icons">delete</i></a>
+                    </div>
+                </li>
+
+			<?php } ?>
+        </ul>
+	<?php }?>
 
 </div>

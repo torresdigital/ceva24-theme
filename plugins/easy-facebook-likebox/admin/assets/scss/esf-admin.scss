@@ -3,10 +3,19 @@
   float: left;
   width: 100%;
   margin-top: 10px;
-  padding: 20px;
+  padding: 25px 20px;
   color: #fff;
   background: #ff8c00;
   text-align: center;
+  position: relative;
+
+.esf-hide-free-sidebar{
+  position: absolute;
+  right: 5px;
+  font-size: 22px;
+  cursor: pointer;
+  top: 5px;
+}
 
   b {
     text-shadow: 3px 2px #d25d53;
@@ -257,6 +266,9 @@ code{
 .fta_wrap_outer{
   float: left;
   width: 98%;
+}
+.esf-sidebar-is-hide{
+  width: 98% !important;
 }
 .fta_wrap {
 
@@ -1501,11 +1513,25 @@ code{
 .easy-social-feed_page_easy-facebook-likebox .fta-other-plugins-wrap {
   .fta-other-plugins-head {
     background-color: #018fd0;
+    position: relative;
+    .esf-hide-free-sidebar{
+      position: absolute;
+      right: 5px;
+      font-size: 22px;
+      cursor: pointer;
+    }
   }
 
   .indicators .indicator-item {
     background-color: #018fd0;
   }
+}
+
+.esf-hide-free-sidebar{
+  position: absolute;
+  right: 5px;
+  font-size: 22px;
+  cursor: pointer;
 }
 
 .easy-social-feed_page_mif .fta-other-plugins-wrap {
@@ -1516,4 +1542,8 @@ code{
   .indicators .indicator-item {
     background-color: #d23167;
   }
+}
+#fs_connect .fs-visual img{
+  width: 76px !important;
+  height: 76px !important;
 }

@@ -28,12 +28,19 @@ if ( is_customize_preview() && isset( $post->ID ) && $post->ID == $efbl_demo_pag
 }
 
 
-if ( class_exists( 'Esf_Multifeed_Facebook_Frontend' ) ) {
+if ( class_exists( 'Esf_Multifeed_Facebook_Frontend' ) && isset( $type ) && $type !== 'group' ) {
     $efbl_queried_data = apply_filters( 'efbl_filter_queried_data', $instance );
     $efbl_multifeed = true;
 } else {
-    $efbl_queried_data = $this->query_posts( sanitize_text_field( $fanpage_id ), $instance );
-    $efbl_multifeed = false;
+    
+    if ( isset( $type ) && $type == 'group' ) {
+        $efbl_queried_data = $this->query_group_feed( sanitize_text_field( $fanpage_id ), $instance );
+        $efbl_multifeed = false;
+    } else {
+        $efbl_queried_data = $this->query_posts( sanitize_text_field( $fanpage_id ), $instance );
+        $efbl_multifeed = false;
+    }
+
 }
 
 
@@ -95,6 +102,7 @@ if ( isset( $efbl_queried_data['efbl_queried_data'] ) ) {
     $is_valid_album_id = '';
 }
 
+$rand_id = mt_rand( 1, 10 );
 ?>
 
 <div class="efbl_feed_wraper efbl_skin_<?php 
@@ -106,26 +114,34 @@ do_action( 'efbl_feed_wrapper_custom_attrs' );
 
 	<?php 
 if ( !empty($cache_seconds) ) {
-    $efbl_bio_data = efbl_get_page_bio( $fanpage_id, $cache_seconds );
+    
+    if ( $type == 'group' ) {
+        $efbl_bio_data = efbl_get_group_bio( $fanpage_id, $cache_seconds );
+    } else {
+        $efbl_bio_data = efbl_get_page_bio( $fanpage_id, $cache_seconds );
+    }
+
 }
 $auth_img_src = efbl_get_page_logo( $fanpage_id );
 // Load Header
-
 if ( isset( $efbl_skin_values['design']['show_header'] ) && !empty($efbl_skin_values['design']['show_header']) && !isset( $efbl_bio_data->error ) ) {
-    /*
-     * Load header template if available in active theme
-     * Header template can be override by "{your-theme}/easy-facebook-likebox/facebook/frontend/views/html-feed-header.php"
-     */
     
-    if ( $esf_theme_header_url = locate_template( [ 'easy-facebook-likebox/facebook/frontend/views/html-feed-header.php' ] ) ) {
-        $esf_theme_header_url = $esf_theme_header_url;
-    } else {
-        $esf_theme_header_url = EFBL_PLUGIN_DIR . 'frontend/views/html-feed-header.php';
+    if ( !$is_moderate ) {
+        /*
+         * Load header template if available in active theme
+         * Header template can be override by "{your-theme}/easy-facebook-likebox/facebook/frontend/views/html-feed-header.php"
+         */
+        
+        if ( $esf_theme_header_url = locate_template( [ 'easy-facebook-likebox/facebook/frontend/views/html-feed-header.php' ] ) ) {
+            $esf_theme_header_url = $esf_theme_header_url;
+        } else {
+            $esf_theme_header_url = EFBL_PLUGIN_DIR . 'frontend/views/html-feed-header.php';
+        }
+        
+        include $esf_theme_header_url;
     }
-    
-    include $esf_theme_header_url;
-}
 
+}
 // If posts found
 
 if ( isset( $efbl_posts ) && !empty($efbl_posts) ) {
@@ -160,6 +176,14 @@ if ( isset( $efbl_posts ) && !empty($efbl_posts) ) {
         $is_album_feed = true;
     } else {
         $is_album_feed = false;
+        if ( efl_fs()->is_free_plan() || efl_fs()->is_plan( 'instagram_premium', true ) ) {
+            if ( $is_moderate ) {
+                ?>
+                        <div class="efbl-grid-skin">
+                            <div class="efbl-row e-outer">
+                                <?php 
+            }
+        }
         // Loop through each post
         foreach ( $efbl_posts as $story ) {
             $efbl_comments_count = 0;
@@ -173,6 +197,9 @@ if ( isset( $efbl_posts ) && !empty($efbl_posts) ) {
             }
             
             $page_id = $id_exploded[0];
+            if ( isset( $type ) && $type == 'group' ) {
+                $page_id = $fanpage_id;
+            }
             if ( 'events' == $filter ) {
                 $page_id = $story->owner->id;
             }
@@ -184,11 +211,16 @@ if ( isset( $efbl_posts ) && !empty($efbl_posts) ) {
                 $feed_type = '';
             }
             
+            if ( $feed_type == '' && $type == 'group' ) {
+                $feed_type = 'mobile_status_update';
+            }
             
             if ( efl_fs()->is_plan( 'facebook_premium', true ) or efl_fs()->is_plan( 'combo_premium', true ) ) {
             } else {
-                if ( isset( $story->story ) && strpos( $story->story, 'live' ) !== false ) {
-                    continue;
+                if ( !$is_moderate ) {
+                    if ( isset( $story->story ) && strpos( $story->story, 'live' ) !== false ) {
+                        continue;
+                    }
                 }
             }
             
@@ -395,7 +427,7 @@ if ( isset( $efbl_posts ) && !empty($efbl_posts) ) {
             }
             
             $efbl_feed_popup_url = '';
-            if ( $layout == 'grid' && $pic_class != "efbl_has_image" ) {
+            if ( $layout == 'grid' && $pic_class != "efbl_has_image" && !$is_moderate ) {
                 continue;
             }
             if ( $filter == 'albums' && $story->count == 0 ) {
@@ -421,6 +453,9 @@ if ( isset( $efbl_posts ) && !empty($efbl_posts) ) {
             
             //get author image src
             $author_image = '<a href="https://facebook.com/' . $page_id . '" title="' . $story_name . '" target="' . $link_target . '"><img alt="' . $story_name . '" src="' . $auth_img_src . '" title="' . $story_from_name . '" width="40" height="40" /></a>';
+            if ( $feed_type == 'mobile_status_update' && isset( $story->attachments->data[0]->media->image->src ) ) {
+                $feed_img = $story->attachments->data[0]->media->image->src;
+            }
             if ( isset( $words_limit ) && !empty($words_limit) ) {
                 
                 if ( str_word_count( $post_text ) <= $words_limit ) {
@@ -435,14 +470,44 @@ if ( isset( $efbl_posts ) && !empty($efbl_posts) ) {
             $post_text = ecff_makeClickableLinks( $post_text, [ 'http', 'mail', 'https' ], [
                 'target' => $link_target,
             ] );
+            $efbl_feed_comments_popup_url = '';
+            $load_description_action = 'efbl_load_more_description';
+            
+            if ( isset( $story->reactions->data ) ) {
+                $reactions_arr = $story->reactions->data;
+            } else {
+                $reactions_arr = '';
+            }
+            
+            $efbl_love = efbl_check_reaction( 'LOVE', $reactions_arr );
+            $efbl_wow = efbl_check_reaction( 'WOW', $reactions_arr );
+            $efbl_angry = efbl_check_reaction( 'ANGRY', $reactions_arr );
+            $efbl_haha = efbl_check_reaction( 'HAHA', $reactions_arr );
+            $efbl_likes = efbl_check_reaction( 'LIKE', $reactions_arr );
+            $efbl_reactions_class = '';
+            if ( efl_fs()->is_free_plan() || efl_fs()->is_plan( 'instagram_premium', true ) ) {
+                
+                if ( $is_moderate && $i == 0 ) {
+                    $active_class = 'efbl-moderate-selected';
+                } else {
+                    $active_class = '';
+                }
+            
+            }
             if ( empty($layout) ) {
                 $layout = 'halfwidth';
             }
             
-            if ( $efbl_templateurl = locate_template( [ 'easy-facebook-likebox/facebook/views/templates/template-' . $layout . '.php' ] ) ) {
-                $efbl_templateurl = $efbl_templateurl;
+            if ( $is_moderate ) {
+                $efbl_templateurl = EFBL_PLUGIN_DIR . 'admin/views/template-moderate.php';
             } else {
-                $efbl_templateurl = EFBL_PLUGIN_DIR . 'frontend/views/templates/template-' . $layout . '.php';
+                
+                if ( $efbl_templateurl = locate_template( [ 'easy-facebook-likebox/facebook/views/templates/template-' . $layout . '.php' ] ) ) {
+                    $efbl_templateurl = $efbl_templateurl;
+                } else {
+                    $efbl_templateurl = EFBL_PLUGIN_DIR . 'frontend/views/templates/template-' . $layout . '.php';
+                }
+            
             }
             
             require $efbl_templateurl;
@@ -454,24 +519,34 @@ if ( isset( $efbl_posts ) && !empty($efbl_posts) ) {
                 break;
             }
         }
+        if ( efl_fs()->is_free_plan() || efl_fs()->is_plan( 'instagram_premium', true ) ) {
+            if ( $is_moderate ) {
+                ?>
+                                    </div>
+                                    </div>
+                                <?php 
+            }
+        }
     }
     
     ?>
             </div>
 			<?php 
-    
-    if ( !$efbl_queried_data['is_live'] || !$live_stream_only ) {
-        //Load Footer
+    if ( !isset( $efbl_queried_data['is_live'] ) || !$live_stream_only ) {
         
-        if ( $esf_theme_footer_url = locate_template( [ 'easy-facebook-likebox/facebook/frontend/views/html-feed-footer.php' ] ) ) {
-            $esf_theme_footer_url = $esf_theme_footer_url;
-        } else {
-            $esf_theme_footer_url = EFBL_PLUGIN_DIR . 'frontend/views/html-feed-footer.php';
+        if ( !$is_moderate ) {
+            //Load Footer
+            
+            if ( $esf_theme_footer_url = locate_template( [ 'easy-facebook-likebox/facebook/frontend/views/html-feed-footer.php' ] ) ) {
+                $esf_theme_footer_url = $esf_theme_footer_url;
+            } else {
+                $esf_theme_footer_url = EFBL_PLUGIN_DIR . 'frontend/views/html-feed-footer.php';
+            }
+            
+            include $esf_theme_footer_url;
         }
-        
-        include $esf_theme_footer_url;
-    }
     
+    }
     // Show likebox if enabled
     
     if ( $show_like_box ) {
@@ -487,11 +562,35 @@ if ( isset( $efbl_posts ) && !empty($efbl_posts) ) {
 } else {
     
     if ( isset( $efbl_queried_data['error'] ) && !empty($efbl_queried_data['error']) ) {
+        
+        if ( $efbl_queried_data['error'] == 'group_err_msg_empty' ) {
+            ?>
+                        <div class="efbl_error_msg">
+                            <strong><?php 
+            esc_html_e( 'We are unable to fetch the group’s feed due to one of the following possible reasons', 'easy-facebook-likebox' );
+            ?>.</strong>
+                            <ol>
+                                <li><?php 
+            esc_html_e( 'You have not authenticated the plugin with your Facebook group. Please go to Easy Social Feed -> Facebook -> Authenticate -> click on “Connect My Facebook Account” button and make sure  you select Groups from the popup', 'easy-facebook-likebox' );
+            ?>.</li>
+                                <li><?php 
+            esc_html_e( 'You have not added Easy Social Feed (A) or Easy Social Feed (B) app in your groups settings. Please follow the steps on Easy Social Feed -> Facebook -> Authenticate -> Approved Group(s) -> Important notice to add the app in the group', 'easy-facebook-likebox' );
+            ?>.</li>
+                                <li><?php 
+            esc_html_e( 'Please clear the cache, reconnect the plugin and then try again', 'easy-facebook-likebox' );
+            ?>.</li>
+                            </ol>
+                        </div>
+				   <?php 
+        } else {
+            ?>
+				        <p class="efbl_error_msg"> <?php 
+            echo  $efbl_queried_data['error'] ;
+            ?> </p>
+				 <?php 
+        }
+        
         ?>
-
-                    <p class="efbl_error_msg"> <?php 
-        echo  $efbl_queried_data['error'] ;
-        ?> </p>
 
 				<?php 
     } else {
@@ -507,7 +606,7 @@ if ( isset( $efbl_posts ) && !empty($efbl_posts) ) {
             ?>
 
                         <p class="efbl_error_msg"><?php 
-            _e( "{$efbl_bio_data->name} don't have any {$events_filter_name} {$filter}.", 'easy-facebook-likebox' );
+            esc_html_e( "{$efbl_bio_data->name} don't have any {$events_filter_name} {$filter}.", 'easy-facebook-likebox' );
             ?> </p>
 
 					<?php 
@@ -515,7 +614,7 @@ if ( isset( $efbl_posts ) && !empty($efbl_posts) ) {
             ?>
 
                         <p class="efbl_error_msg"> <?php 
-            _e( 'Whoops! Nothing found according to your query, Try changing fanpage ID.', 'easy-facebook-likebox' );
+            esc_html_e( 'Whoops! Nothing found according to your query, Try changing fanpage ID.', 'easy-facebook-likebox' );
             ?> </p>
 
 					<?php 

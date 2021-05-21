@@ -35,6 +35,12 @@ class SQ_Models_Bulkseo_Visibility extends SQ_Models_Abstract_Assistant {
                 'title' => esc_html__("Add page in sitemap", _SQ_PLUGIN_NAME_),
                 'description' => sprintf(esc_html__("Turn the 'Show it in Sitemap.xml' toggle to green (ON). %s That setting helps you control if the current URL should be found within the sitemap. There are pages you will want in the sitemap, and pages that you will want out of the sitemap. %s If your purpose is to maximize visibility for the current URL, then you need to add it to Sitemap.", _SQ_PLUGIN_NAME_), '<br /><br />', '<br /><br />'),
             ),
+            'redirect' => array(
+                'title' => esc_html__("301 Redirect", _SQ_PLUGIN_NAME_),
+                'value_title' => esc_html__("Current Redirect", _SQ_PLUGIN_NAME_),
+                'value' => ((isset($this->_post->sq->redirect) && $this->_post->sq->redirect <> '') ? urldecode($this->_post->sq->redirect) : esc_html__("No Redirects", _SQ_PLUGIN_NAME_)),
+                'description' => sprintf(esc_html__("You don't have to set any redirect link if you don't want to redirect to a different URL. %s Squirrly will alert you if you add a redirect URL to make sure you know what you're doing. %s The redirect link will be used to redirect visitors to a different URL when they access the URL of the current post.", _SQ_PLUGIN_NAME_), '<br /><br />', '<br /><br />'),
+            ),
         );
 
 
@@ -104,7 +110,7 @@ class SQ_Models_Bulkseo_Visibility extends SQ_Models_Abstract_Assistant {
             return $task;
         }
 
-        $task['completed'] = ((int)$this->_post->sq_adm->noindex == 0);
+        $task['completed'] = ((int)$this->_post->sq_adm->noindex <> 1);
 
         return $task;
     }
@@ -136,11 +142,10 @@ class SQ_Models_Bulkseo_Visibility extends SQ_Models_Abstract_Assistant {
             $task['error'] = true;
         }
 
-        $task['completed'] = ((int)$this->_post->sq_adm->noindex == 0);
+        $task['completed'] = ((int)$this->_post->sq_adm->nofollow <> 1);
 
         return $task;
     }
-
 
     /**
      * Check if Nofollow is set to 0
@@ -166,7 +171,33 @@ class SQ_Models_Bulkseo_Visibility extends SQ_Models_Abstract_Assistant {
             $task['error'] = true;
         }
 
-        $task['completed'] = ((int)$this->_post->sq_adm->nositemap == 0);
+        $task['completed'] = ((int)$this->_post->sq_adm->nositemap <> 1);
+
+        return $task;
+    }
+
+    public function checkRedirect($task) {
+        if (!$this->_post->sq->doseo) {
+            $errors[] = esc_html__("Squirrly Snippet is deactivated from this post.", _SQ_PLUGIN_NAME_);
+        }
+
+        if (!SQ_Classes_Helpers_Tools::getOption('sq_auto_redirects')) {
+            $errors[] = sprintf(esc_html__("Redirect is deactivated from %sSEO Settings > SEO Links%s.", _SQ_PLUGIN_NAME_), '<a href="' . SQ_Classes_Helpers_Tools::getAdminUrl('sq_seosettings', 'metas') . '" >', '</a>');
+        }
+
+        if (!empty($errors)) {
+            $task['error_message'] = join('<br />', $errors);
+            $task['error'] = true;
+        }
+
+        if (isset($this->_post->sq->redirect) && $this->_post->sq->redirect <> '') {
+            $task['completed'] = false;
+//            $task['error_message'] = '<span class="text-danger">'.esc_html__("Current Redirect:", _SQ_PLUGIN_NAME_) . ' ' . ((isset($this->_post->sq->redirect) && $this->_post->sq->redirect <> '') ? urldecode($this->_post->sq->redirect) : esc_html__("No Redirects", _SQ_PLUGIN_NAME_)).'</span>';
+//            $task['error'] = true;
+            return $task;
+        }
+
+        $task['completed'] = true;
 
         return $task;
     }

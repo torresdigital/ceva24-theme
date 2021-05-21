@@ -274,7 +274,7 @@ class SQ_Controllers_CheckSeo extends SQ_Classes_FrontController {
     public function action() {
         parent::action();
 
-        if (!current_user_can('sq_manage_snippets')) {
+        if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippets')) {
             return;
         }
 

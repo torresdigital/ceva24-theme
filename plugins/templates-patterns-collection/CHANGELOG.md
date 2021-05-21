@@ -1,3 +1,29 @@
+##### [Version 1.1.12](https://github.com/Codeinwp/templates-patterns-collection/compare/v1.1.11...v1.1.12) (2021-05-17)
+
+* Improve plugin constant definitions.
+
+##### [Version 1.1.11](https://github.com/Codeinwp/templates-patterns-collection/compare/v1.1.10...v1.1.11) (2021-05-13)
+
+* Improve translations 
+* Improve texts and descriptions
+
+##### [Version 1.1.10](https://github.com/Codeinwp/templates-patterns-collection/compare/v1.1.9...v1.1.10) (2021-05-05)
+
+- Allow user-made templates to save metadata
+- Fix Custom Layouts editor crashing
+- Fix Gutenberg sync update template for non-Gutenberg templates
+
+##### [Version 1.1.9](https://github.com/Codeinwp/templates-patterns-collection/compare/v1.1.8...v1.1.9) (2021-04-29)
+
+- [Fix] Content images not delivered from user site after import on some demos
+- [Fix] Replace content links with local links on core editor demos
+
+##### [Version 1.1.8](https://github.com/Codeinwp/templates-patterns-collection/compare/v1.1.7...v1.1.8) (2021-04-29)
+
+- Decode HTML entities in title 
+- Improve Templates Cloud visibility
+- Fix meta not saving properly
+
 ##### [Version 1.1.7](https://github.com/Codeinwp/templates-patterns-collection/compare/v1.1.6...v1.1.7) (2021-04-12)
 
 - Rename to "Save to Templates Cloud" to "Neve Cloud"

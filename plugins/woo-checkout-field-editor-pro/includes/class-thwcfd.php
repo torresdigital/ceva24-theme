@@ -68,7 +68,8 @@ class THWCFD {
 		add_filter('woocommerce_screen_ids', array($plugin_admin, 'add_screen_id'));
 		add_filter('plugin_action_links_'.THWCFD_BASE_NAME, array($plugin_admin, 'plugin_action_links'));
 		//add_filter('plugin_row_meta', array($plugin_admin, 'plugin_row_meta'), 10, 2);
-		add_action('wp_ajax_dismiss_thwcfd_upgrade_notice', array($plugin_admin, 'dismiss_thwcfd_upgrade_notice'));
+		add_action('wp_ajax_dismiss_thwcfd_review_request_notice', array($plugin_admin, 'dismiss_thwcfd_review_request_notice'));
+		add_action('wp_ajax_skip_thwcfd_review_request_notice', array($plugin_admin, 'skip_thwcfd_review_request_notice'));
 
 		$general_settings = new THWCFD_Admin_Settings_General();
 		add_action('after_setup_theme', array($general_settings, 'define_admin_hooks'));

@@ -30,7 +30,7 @@ class Easy_Facebook_Likebox
      *
      * @var     string
      */
-    const  VERSION = '6.2.2' ;
+    const  VERSION = '6.2.4' ;
     /**
      *
      * Unique identifier for your plugin.
@@ -256,14 +256,12 @@ class Easy_Facebook_Likebox
      */
     public function enqueue_scripts()
     {
-        if ( efl_fs()->is_free_plan() ) {
-            wp_enqueue_script(
-                $this->plugin_slug . '-popup-script',
-                plugins_url( 'assets/js/jquery.magnific-popup.min.js', __FILE__ ),
-                [ 'jquery' ],
-                self::VERSION
-            );
-        }
+        wp_enqueue_script(
+            $this->plugin_slug . '-popup-script',
+            plugins_url( 'assets/js/jquery.magnific-popup.min.js', __FILE__ ),
+            [ 'jquery' ],
+            self::VERSION
+        );
         wp_enqueue_script(
             $this->plugin_slug . '-public-script',
             plugins_url( 'assets/js/public.js', __FILE__ ),
@@ -322,6 +320,8 @@ class Easy_Facebook_Likebox
             'filter'           => '',
             'events_filter'    => '',
             'live_stream_only' => 0,
+            'type'             => 'page',
+            'is_moderate'      => false,
         );
         $instance = wp_parse_args( (array) $atts, $defaults );
         if ( isset( $atts['other_page_id'] ) && !empty($atts['other_page_id']) ) {
@@ -559,6 +559,76 @@ class Easy_Facebook_Likebox
             'transient_name' => $transient_name,
             'is_saved_posts' => $is_saved_posts,
             'has_album_data' => $has_album_data,
+        ) );
+    }
+    
+    /**
+     * Get group feed by ID
+     *
+     * @param       $group_id
+     * @param array $instance
+     *
+     * @return mixed|void
+     *
+     * @since 6.2.3
+     */
+    public function query_group_feed( $group_id, $instance = array() )
+    {
+        $FTA = new Feed_Them_All();
+        $fta_settings = $FTA->fta_get_settings();
+        $fb_settings = $fta_settings['plugins']['facebook'];
+        $access_token = $fb_settings['access_token'];
+        $transient_name = 'efbl_group_' . $group_id . '_feed-' . $instance['post_limit'];
+        $group_json_data = get_transient( $transient_name );
+        $group_feed = json_decode( $group_json_data );
+        $test_mode = false;
+        
+        if ( isset( $instance['test_mode'] ) ) {
+            $test_mode = $instance['test_mode'];
+        } else {
+            $test_mode = false;
+        }
+        
+        $error_message = '';
+        
+        if ( !$group_json_data ) {
+            $efbl_api_url = add_query_arg( apply_filters( 'efbl_group_feed_api_url_params', [
+                'fields'       => 'status_type,permalink_url,full_picture,from,created_time,message,message_tags,shares,attachments,picture,story,story_tags,comments,reactions{type,pic_crop,pic,username,picture}',
+                'access_token' => $access_token,
+                'limit'        => $instance['post_limit'],
+            ], $instance ), apply_filters( 'efbl_group_feed_api_url_base', 'https://graph.facebook.com/v1.0/' . $group_id . '/feed', $instance ) );
+            $group_json_data = jws_fetchUrl( $efbl_api_url );
+            $group_feed = json_decode( $group_json_data );
+            $cache_seconds = efbl_get_cache_seconds( $instance );
+            
+            if ( isset( $group_feed->data ) && !empty($group_feed->data) && !$test_mode ) {
+                set_transient( $transient_name, $group_json_data, $cache_seconds );
+            } else {
+                
+                if ( isset( $group_feed->error->message ) ) {
+                    $error_message = $group_feed->error->message;
+                } else {
+                    $error_message = "group_err_msg_empty";
+                }
+            
+            }
+        
+        }
+        
+        
+        if ( isset( $group_feed->paging->next ) ) {
+            $next_post_url = $group_feed->paging->next;
+        } else {
+            $next_post_url = '';
+        }
+        
+        return apply_filters( 'efbl_query_group_feed_return', array(
+            'posts'          => $group_feed->data,
+            'error'          => $error_message,
+            'next_posts_url' => $next_post_url,
+            'transient_name' => $transient_name,
+            'is_saved_posts' => true,
+            'has_album_data' => false,
         ) );
     }
 

@@ -3,20 +3,20 @@
 Plugin Name: WPC Smart Compare for WooCommerce
 Plugin URI: https://wpclever.net/
 Description: Smart products compare for WooCommerce.
-Version: 3.5.3
+Version: 3.5.6
 Author: WPClever
 Author URI: https://wpclever.net
 Text Domain: wooscp
 Domain Path: /languages/
 Requires at least: 4.0
-Tested up to: 5.7
+Tested up to: 5.7.2
 WC requires at least: 3.0
-WC tested up to: 5.1
+WC tested up to: 5.3.0
 */
 
 defined( 'ABSPATH' ) || exit;
 
-! defined( 'WOOSCP_VERSION' ) && define( 'WOOSCP_VERSION', '3.5.3' );
+! defined( 'WOOSCP_VERSION' ) && define( 'WOOSCP_VERSION', '3.5.6' );
 ! defined( 'WOOSCP_URI' ) && define( 'WOOSCP_URI', plugin_dir_url( __FILE__ ) );
 ! defined( 'WOOSCP_PATH' ) && define( 'WOOSCP_PATH', plugin_dir_path( __FILE__ ) );
 ! defined( 'WOOSCP_SUPPORT' ) && define( 'WOOSCP_SUPPORT', 'https://wpclever.net/support?utm_source=support&utm_medium=woosc&utm_campaign=wporg' );
@@ -159,11 +159,11 @@ if ( ! function_exists( 'wooscp_init' ) ) {
 					// add button for single
 					$wooscp_button_single = apply_filters( 'filter_wooscp_button_single', get_option( '_wooscp_button_single', '31' ) );
 
-					if ( $wooscp_button_single !== '0' ) {
+					if ( ! empty( $wooscp_button_single ) ) {
 						add_action( 'woocommerce_single_product_summary', array(
 							$this,
 							'wooscp_add_button'
-						), $wooscp_button_single );
+						), (int) $wooscp_button_single );
 					}
 				}
 
@@ -207,9 +207,6 @@ if ( ! function_exists( 'wooscp_init' ) ) {
 						$wooscp_limit_notice = esc_html__( 'You can add a maximum of {limit} products to the compare table.', 'wooscp' );
 					}
 
-					$wooscp_page_id = get_option( '_wooscp_page_id' );
-					$wooscp_page    = ! empty( $wooscp_page_id ) ? get_permalink( $wooscp_page_id ) : '';
-
 					$button_text       = get_option( '_wooscp_button_text' );
 					$button_text_added = get_option( '_wooscp_button_text_added' );
 
@@ -224,7 +221,7 @@ if ( ! function_exists( 'wooscp_init' ) ) {
 					wp_localize_script( 'wooscp-frontend', 'wooscpVars', array(
 							'ajaxurl'            => admin_url( 'admin-ajax.php' ),
 							'user_id'            => md5( 'wooscp' . get_current_user_id() ),
-							'page_url'           => $wooscp_page,
+							'page_url'           => self::wooscp_get_page_url(),
 							'open_button'        => $this->wooscp_nice_class_id( get_option( '_wooscp_open_button', '' ) ),
 							'open_button_action' => get_option( '_wooscp_open_button_action', 'open_popup' ),
 							'menu_action'        => get_option( '_wooscp_menu_action', 'open_popup' ),
@@ -1166,10 +1163,11 @@ if ( ! function_exists( 'wooscp_init' ) ) {
 								continue;
 							}
 
-							$wooscp_product_id = $wooscp_product_obj->get_id();
+							$wooscp_product_id   = $wooscp_product_obj->get_id();
+							$wooscp_product_name = apply_filters( 'wooscp_product_name', $wooscp_product_obj->get_name() );
 
 							$wooscp_output .= '<div class="wooscp-bar-item" data-id="' . $wooscp_product_id . '">';
-							$wooscp_output .= '<span class="wooscp-bar-item-img hint--top" aria-label="' . esc_attr( wp_strip_all_tags( apply_filters( 'wooscp_product_title', $wooscp_product_obj->get_formatted_name(), $wooscp_product_obj ) ) ) . '">' . $wooscp_product_obj->get_image( 'wooscp-small' ) . '</span>';
+							$wooscp_output .= '<span class="wooscp-bar-item-img hint--top" aria-label="' . esc_attr( apply_filters( 'wooscp_product_title', wp_strip_all_tags( $wooscp_product_name ), $wooscp_product_obj ) ) . '">' . $wooscp_product_obj->get_image( 'wooscp-small' ) . '</span>';
 							$wooscp_output .= '<span class="wooscp-bar-item-remove" data-id="' . $wooscp_product_id . '"></span></div>';
 						}
 					}
@@ -1215,12 +1213,7 @@ if ( ! function_exists( 'wooscp_init' ) ) {
 								continue;
 							}
 
-							$product_name = $product->get_name();
-
-							if ( $product->is_type( 'variation' ) ) {
-								$parent_product = wc_get_product( $product->get_parent_id() );
-								$product_name   = $parent_product->get_formatted_name();
-							}
+							$product_name = apply_filters( 'wooscp_product_name', $product->get_name() );
 
 							if ( $_link !== 'no' ) {
 								$wooscp_products_data[ $wooscp_product ]['title'] = apply_filters( 'wooscp_product_title', '<a ' . ( $_link === 'yes_popup' ? 'class="woosq-btn" data-id="' . $wooscp_product . '"' : '' ) . ' href="' . $product->get_permalink() . '" draggable="false" ' . ( $_link === 'yes_blank' ? 'target="_blank"' : '' ) . '>' . wp_strip_all_tags( $product_name ) . '</a>', $product );
@@ -1261,7 +1254,7 @@ if ( ! function_exists( 'wooscp_init' ) ) {
 							}
 
 							if ( in_array( 'content', $saved_fields, true ) ) {
-								$wooscp_products_data[ $wooscp_product ]['content'] = apply_filters( 'wooscp_product_content', $product->get_description(), $product );
+								$wooscp_products_data[ $wooscp_product ]['content'] = apply_filters( 'wooscp_product_content', apply_filters( 'the_content', $product->get_description() ), $product );
 							}
 
 							if ( in_array( 'additional', $saved_fields, true ) ) {
@@ -1591,11 +1584,46 @@ if ( ! function_exists( 'wooscp_init' ) ) {
 					return count( $wooscp_products );
 				}
 
+				public static function wooscp_get_page_url() {
+					$page_id  = get_option( '_wooscp_page_id' );
+					$page_url = ! empty( $page_id ) ? get_permalink( $page_id ) : '#';
+
+					return esc_url( $page_url );
+				}
+
 				function wooscp_nav_menu_items( $items, $args ) {
+					$selected    = false;
 					$saved_menus = get_option( '_wooscp_menus', array() );
 
-					if ( isset( $args->menu->term_id ) && is_array( $saved_menus ) && in_array( $args->menu->term_id, $saved_menus, false ) ) {
-						$items .= '<li class="menu-item wooscp-menu-item menu-item-type-wooscp"><a href="#"><span class="wooscp-menu-item-inner" data-count="' . $this->wooscp_get_count() . '">' . esc_html__( 'Compare', 'wooscp' ) . '</span></a></li>';
+					if ( ! is_array( $saved_menus ) || empty( $saved_menus ) || ! property_exists( $args, 'menu' ) ) {
+						return $items;
+					}
+
+					if ( $args->menu instanceof WP_Term ) {
+						// menu object
+						if ( in_array( $args->menu->term_id, $saved_menus, false ) ) {
+							$selected = true;
+						}
+					} elseif ( is_numeric( $args->menu ) ) {
+						// menu id
+						if ( in_array( $args->menu, $saved_menus, false ) ) {
+							$selected = true;
+						}
+					} elseif ( is_string( $args->menu ) ) {
+						// menu slug or name
+						$menu = get_term_by( 'name', $args->menu, 'nav_menu' );
+
+						if ( ! $menu ) {
+							$menu = get_term_by( 'slug', $args->menu, 'nav_menu' );
+						}
+
+						if ( $menu && in_array( $menu->term_id, $saved_menus, false ) ) {
+							$selected = true;
+						}
+					}
+
+					if ( $selected ) {
+						$items .= '<li class="menu-item wooscp-menu-item menu-item-type-wooscp"><a href="' . self::wooscp_get_page_url() . '"><span class="wooscp-menu-item-inner" data-count="' . $this->wooscp_get_count() . '">' . esc_html__( 'Compare', 'wooscp' ) . '</span></a></li>';
 					}
 
 					return $items;

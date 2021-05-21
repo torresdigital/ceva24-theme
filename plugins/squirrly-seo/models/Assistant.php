@@ -143,7 +143,7 @@ class SQ_Models_Assistant {
             $tasks['sq_assistant'] = array(
                 'sla_optimize' => array(
                     'title' => esc_html__("Optimize Using Live Assistant", _SQ_PLUGIN_NAME_),
-                    'description' => sprintf(esc_html__("Optimize your first Page or Article using the SEO Live Assistant (SLA) feature from Squirrly SEO. %s You can either Edit an existing post or create a new post. (You have your Live Assistant where you have your WP Editor)%sThe SEO Live Assistant is like having a SEO Consultant near you, whispering in your ear exactly what you have to do to get a 100% optimized article or page.%sYou can try the DEMO first, by clicking on the Demo Post button. It's safe to break anything in the SEO of that page, because it never gets indexed by Google, since it's a DEMO. It's an easy way to learn your way around it.", _SQ_PLUGIN_NAME_), '<br />', '<br />', '<br />', '<br />'),
+                    'description' => sprintf(esc_html__("Optimize your first Page or Article using the SEO Live Assistant (SLA) feature from Squirrly SEO. %s You can either Edit an existing post or create a new post. (You have your Live Assistant where you have your WP Editor)%sThe SEO Live Assistant is like having a SEO Consultant near you, whispering in your ear exactly what you have to do to get a 100&#37; optimized article or page.%sYou can try the DEMO first, by clicking on the Demo Post button. It's safe to break anything in the SEO of that page, because it never gets indexed by Google, since it's a DEMO. It's an easy way to learn your way around it.", _SQ_PLUGIN_NAME_), '<br />', '<br />', '<br />', '<br />'),
                     'function' => 'checkSLAOptimization',
                 ),
             );
@@ -190,7 +190,7 @@ class SQ_Models_Assistant {
 //                ),
                 'setup_webmasters' => array(
                     'title' => esc_html__("Connect the Webmasters", _SQ_PLUGIN_NAME_),
-                    'description' => sprintf(esc_html__("Go to the %sConnection section%s. %s This section makes it super easy to integrate different (important) 3rd party services with your WordPress. %s Alexa META Code is 100%% optional, but the rest are very important to add. %s Enter your Pinterest code, especially if you plan to expand your presence on Pinterest. It will %sactivate Rich Pins%s, which will completely boost your sales and visibility for any product or post that has great images.", _SQ_PLUGIN_NAME_), '<a href="' . SQ_Classes_Helpers_Tools::getAdminUrl('sq_seosettings', 'webmaster') . '">', '</a>', '<br /><br />', '<br /><br />', '<br /><br />', '<a href="https://developers.pinterest.com/tools/url-debugger/" target="_blank">', '</a>'),
+                    'description' => sprintf(esc_html__("Go to the %sWebmasters section%s. %s This section makes it super easy to integrate different (important) 3rd party services with your WordPress. %s Some webmasters are optional, but Google Search Console is really important. %s Enter your Pinterest code, especially if you plan to expand your presence on Pinterest. It will %sactivate Rich Pins%s, which will completely boost your sales and visibility for any product or post that has great images.", _SQ_PLUGIN_NAME_), '<a href="' . SQ_Classes_Helpers_Tools::getAdminUrl('sq_seosettings', 'webmaster') . '">', '</a>', '<br /><br />', '<br /><br />', '<br /><br />', '<a href="https://developers.pinterest.com/tools/url-debugger/" target="_blank">', '</a>'),
                     'function' => 'checkSettingsWebmasters',
                 ),
 
@@ -442,6 +442,9 @@ class SQ_Models_Assistant {
             if (isset($codes->google_wt) && $codes->google_wt <> '' ||
                 isset($codes->bing_wt) && $codes->bing_wt <> '' ||
                 isset($codes->alexa_verify) && $codes->alexa_verify <> '' ||
+                isset($codes->baidu_wt) && $codes->baidu_wt <> '' ||
+                isset($codes->yandex_wt) && $codes->yandex_wt <> '' ||
+                isset($codes->norton_verify) && $codes->norton_verify <> '' ||
                 isset($codes->pinterest_verify) && $codes->pinterest_verify <> '') {
                 return true;
             }

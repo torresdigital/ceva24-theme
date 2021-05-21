@@ -4,7 +4,7 @@
     <?php do_action('sq_notices'); ?>
     <div class="d-flex flex-row my-0 bg-white" style="clear: both !important;">
         <?php
-        if (!current_user_can('sq_manage_settings')) {
+        if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
             echo '<div class="col-12 alert alert-success text-center m-0 p-3">' . esc_html__("You do not have permission to access this page. You need Squirrly SEO Admin role.", _SQ_PLUGIN_NAME_) . '</div>';
             return;
         }
@@ -65,6 +65,22 @@
                                             }
                                             $new_types[$pattern] = $type;
                                         }
+                                        foreach ($types as $pattern => $type) {
+                                            if (in_array($pattern, array('shop_2'))) continue;
+
+                                            if ($post_type_obj = get_post_type_object($pattern)) {
+                                                if (!$post_type_obj->has_archive) {
+                                                    continue;
+                                                }
+                                            }
+
+                                            if (in_array('archive-' . $pattern, array_keys(SQ_Classes_Helpers_Tools::getOption('patterns')))) {
+                                                continue;
+                                            }
+
+                                            $new_types['archive-' . $pattern] = $type;
+                                        }
+
                                         $filter = array('public' => true,);
                                         $taxonomies = get_taxonomies($filter);
                                         foreach ($taxonomies as $pattern => $type) {
@@ -93,7 +109,7 @@
                                                                 <?php
                                                                 foreach ($new_types as $pattern => $type) {
                                                                     ?>
-                                                                    <option value="<?php echo esc_attr($pattern) ?>"><?php echo ucwords(str_replace(array('-', '_'), ' ', esc_attr($pattern))); ?></option>
+                                                                    <option value="<?php echo esc_attr($pattern) ?>"><?php echo ucwords(str_replace(array('-', '_'), ' ', esc_attr($pattern))); ?> (<?php echo esc_attr($pattern) ?>)</option>
                                                                 <?php } ?>
                                                             </select>
 
@@ -120,9 +136,9 @@
                                                         }
 
                                                         $itemname = ucwords(str_replace(array('-', '_'), ' ', esc_attr($pattern)));
-                                                        if($pattern == 'tax-product_cat'){
+                                                        if ($pattern == 'tax-product_cat') {
                                                             $itemname = "Product Category";
-                                                        }elseif($pattern == 'tax-product_tag'){
+                                                        } elseif ($pattern == 'tax-product_tag') {
                                                             $itemname = "Product Tag";
                                                         }
                                                         ?>
@@ -136,15 +152,17 @@
                                                 <div class="tab-content flex-grow-1 border-top border-right border-bottom">
                                                     <?php foreach (SQ_Classes_Helpers_Tools::getOption('patterns') as $pattern => $type) {
                                                         $itemname = ucwords(str_replace(array('-', '_'), ' ', esc_attr($pattern)));
-                                                        if($pattern == 'tax-product_cat'){
+                                                        if ($pattern == 'tax-product_cat') {
                                                             $itemname = "Product Category";
-                                                        }elseif($pattern == 'tax-product_tag'){
+                                                        } elseif ($pattern == 'tax-product_tag') {
                                                             $itemname = "Product Tag";
                                                         }
                                                         ?>
 
                                                         <div class="tab-pane <?php if ($pattern == 'home') { ?>show active<?php } ?>" id="nav-<?php echo esc_attr($pattern) ?>" role="tabpanel" aria-labelledby="nav-<?php echo esc_attr($pattern) ?>-tab">
-                                                            <h4 class="col-12 py-3 text-center text-black"><?php echo $itemname; ?></h4>
+                                                            <h4 class="col-12 py-3 text-center text-black"><?php echo $itemname; ?> <?php if ($pattern <> 'home') { ?>
+                                                                    <span class="text-black-50">(<?php echo esc_attr($pattern) ?>)</span><?php } ?>
+                                                            </h4>
 
                                                             <div id="sq_seosettings" class="col-12 pt-0 pb-4 border-bottom tab-panel <?php echo(SQ_Classes_Helpers_Tools::getOption('sq_auto_pattern') ? '' : 'sq_deactivated') ?>">
 
@@ -271,11 +289,7 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <?php
-                                                                if (!isset($type['do_redirects'])) {
-                                                                    $type['do_redirects'] = 0;
-                                                                }
-                                                                ?>
+                                                                <?php if (!isset($type['do_redirects'])) $type['do_redirects'] = 0; ?>
                                                                 <div class="col-12 row mb-1 ml-1">
                                                                     <div class="checker col-12 row my-2 py-1">
                                                                         <div class="col-12 p-0 sq-switch sq-switch-sm">
@@ -288,6 +302,20 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <?php if ($pattern == '404') { ?>
+                                                                    <div class="col-12 row py-2 mx-0 my-3 ">
+                                                                        <div class="col-4 p-0 pr-3 font-weight-bold">
+                                                                            <?php echo esc_html__("Default Redirect URL", _SQ_PLUGIN_NAME_); ?>:
+                                                                            <a href="https://howto.squirrly.co/kb/seo-automation/#redirect_404_links" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
+                                                                            <div class="small text-black-50 my-1"><?php echo esc_html__("Add the default URL for the Broken URLs when no permalink is found.", _SQ_PLUGIN_NAME_); ?></div>
+                                                                        </div>
+                                                                        <div class="col-8 p-0 input-group input-group-lg">
+                                                                            <input type="text" class="form-control bg-input" name="404_url_redirect" value="<?php echo SQ_Classes_Helpers_Tools::getOption('404_url_redirect') ?>"/>
+                                                                        </div>
+                                                                    </div>
+
+                                                                <?php }?>
+
 
                                                                 <?php if ($pattern == 'attachment') { ?>
                                                                     <div class="col-12 row mb-1 ml-1">
@@ -302,6 +330,7 @@
                                                                         </div>
                                                                     </div>
                                                                 <?php } ?>
+
                                                             </div>
 
                                                             <div class="col-12 py-4 border-bottom tab-panel sq_advanced">
@@ -383,7 +412,7 @@
                                                                             if ($pattern == 'product') $post_types = array('product');
                                                                             ?>
                                                                             <div class="col-5 p-0 input-group">
-                                                                                <select <?php echo((count($post_types) > 1) ? 'multiple' : '') ?> name="patterns[<?php echo esc_attr($pattern) ?>][jsonld_types][]" class="selectpicker form-control bg-input mb-1">
+                                                                                <select <?php echo((count($post_types) > 1) ? 'multiple' : '') ?> name="patterns[<?php echo esc_attr($pattern) ?>][jsonld_types][]" class="selectpicker form-control bg-input mb-1" style="min-height: 100px;">
                                                                                     <?php foreach ($post_types as $post_type => $jsonld_type) { ?>
                                                                                         <option <?php echo((isset($type['jsonld_types']) && !empty($type['jsonld_types']) && in_array($jsonld_type, $type['jsonld_types'])) ? 'selected="selected"' : '') ?> value="<?php echo esc_attr($jsonld_type) ?>">
                                                                                             <?php echo ucfirst(esc_attr($jsonld_type)) ?>
@@ -565,7 +594,8 @@
 
                                         <div class="bg-title p-2">
                                             <h3 class="card-title">
-                                                <?php echo esc_html__("Squirrly Patterns", _SQ_PLUGIN_NAME_); ?> <a href="https://howto.squirrly.co/kb/seo-automation/#add_patterns" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
+                                                <?php echo esc_html__("Squirrly Patterns", _SQ_PLUGIN_NAME_); ?>
+                                                <a href="https://howto.squirrly.co/kb/seo-automation/#add_patterns" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
                                             </h3>
                                             <div class="col-12 text-left m-0 p-0">
                                                 <div class="card-title-description mb-0"><?php echo esc_html__("Use the Pattern system to prevent Title and Description duplicates between posts", _SQ_PLUGIN_NAME_); ?></div>
@@ -584,7 +614,8 @@
                                         <div class="sq_advanced">
                                             <?php $metas = json_decode(wp_json_encode(SQ_Classes_Helpers_Tools::getOption('sq_metas'))); ?>
                                             <div class="bg-title p-2">
-                                                <h3 class="card-title"><?php echo esc_html__("META Lengths", _SQ_PLUGIN_NAME_); ?> <a href="https://howto.squirrly.co/kb/seo-automation/#automation_custom_lengths" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
+                                                <h3 class="card-title"><?php echo esc_html__("META Lengths", _SQ_PLUGIN_NAME_); ?>
+                                                    <a href="https://howto.squirrly.co/kb/seo-automation/#automation_custom_lengths" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
                                                 </h3>
                                                 <div class="col-12 text-left m-0 p-0">
                                                     <div class="card-title-description mb-0"><?php echo esc_html__("Change the lengths for each META on automation", _SQ_PLUGIN_NAME_); ?></div>

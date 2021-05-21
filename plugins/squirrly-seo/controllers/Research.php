@@ -30,10 +30,10 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
         $this->checkin = SQ_Classes_RemoteController::checkin();
 
         if (is_wp_error($this->checkin)) {
-            if($this->checkin->get_error_message() == 'no_data') {
+            if ($this->checkin->get_error_message() == 'no_data') {
                 echo $this->getView('Errors/Error');
                 return;
-            }elseif($this->checkin->get_error_message() == 'maintenance') {
+            } elseif ($this->checkin->get_error_message() == 'maintenance') {
                 echo $this->getView('Errors/Maintenance');
                 return;
             }
@@ -42,11 +42,11 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
         $tab = SQ_Classes_Helpers_Tools::getValue('tab', 'research');
 
         SQ_Classes_ObjController::getClass('SQ_Classes_DisplayController')->loadMedia('bootstrap-reboot');
-        if(is_rtl()){
+        if (is_rtl()) {
             SQ_Classes_ObjController::getClass('SQ_Classes_DisplayController')->loadMedia('popper');
             SQ_Classes_ObjController::getClass('SQ_Classes_DisplayController')->loadMedia('bootstrap.rtl');
             SQ_Classes_ObjController::getClass('SQ_Classes_DisplayController')->loadMedia('rtl');
-        }else{
+        } else {
             SQ_Classes_ObjController::getClass('SQ_Classes_DisplayController')->loadMedia('bootstrap');
         }
         SQ_Classes_ObjController::getClass('SQ_Classes_DisplayController')->loadMedia('switchery');
@@ -71,7 +71,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
     }
 
     public function research() {
-        add_action('sq_form_notices', array($this,'getNotificationBar'));
+        add_action('sq_form_notices', array($this, 'getNotificationBar'));
 
         $countries = SQ_Classes_RemoteController::getKrCountries();
 
@@ -83,7 +83,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
     }
 
     public function briefcase() {
-        add_action('sq_form_notices', array($this,'getNotificationBar'));
+        add_action('sq_form_notices', array($this, 'getNotificationBar'));
 
         $search = (string)SQ_Classes_Helpers_Tools::getValue('skeyword', '');
         $labels = SQ_Classes_Helpers_Tools::getValue('slabel', false);
@@ -102,7 +102,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
             if (isset($briefcase->keywords) && !empty($briefcase->keywords)) {
                 $this->keywords = $briefcase->keywords;
             } else {
-                $this->error = sprintf(esc_html__("No keyword found. %s Show all %s keywords from Briefcase.", _SQ_PLUGIN_NAME_),'<a href="'.SQ_Classes_Helpers_Tools::getAdminUrl('sq_research','briefcase').'">','</a>');
+                $this->error = sprintf(esc_html__("No keyword found. %s Show all %s keywords from Briefcase.", _SQ_PLUGIN_NAME_), '<a href="' . SQ_Classes_Helpers_Tools::getAdminUrl('sq_research', 'briefcase') . '">', '</a>');
             }
 
             if (isset($briefcase->labels)) {
@@ -119,7 +119,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
     }
 
     public function labels() {
-        add_action('sq_form_notices', array($this,'getNotificationBar'));
+        add_action('sq_form_notices', array($this, 'getNotificationBar'));
 
         $args = array();
         if (!empty($labels)) {
@@ -142,7 +142,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
     }
 
     public function suggested() {
-        add_action('sq_form_notices', array($this,'getNotificationBar'));
+        add_action('sq_form_notices', array($this, 'getNotificationBar'));
 
         //Get the briefcase keywords
         if ($briefcase = SQ_Classes_RemoteController::getBriefcase()) {
@@ -162,7 +162,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
 
     }
 
-    function history() {
+    public function history() {
 
         $args = array();
         $args['limit'] = 100;
@@ -170,6 +170,24 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
 
     }
 
+    /**
+     * Return the text for the stats in details
+     * @param $key
+     * @param $index
+     * @return string
+     */
+    public function getReasearchStatsText($key, $index) {
+        $stats =  array(
+            'tw' => array(esc_html__("very few", _SQ_PLUGIN_NAME_), esc_html__("few", _SQ_PLUGIN_NAME_), esc_html__("few", _SQ_PLUGIN_NAME_), esc_html__("few", _SQ_PLUGIN_NAME_), esc_html__("few", _SQ_PLUGIN_NAME_), esc_html__("some", _SQ_PLUGIN_NAME_), esc_html__("some", _SQ_PLUGIN_NAME_), esc_html__("some", _SQ_PLUGIN_NAME_), esc_html__("some", _SQ_PLUGIN_NAME_), esc_html__("many", _SQ_PLUGIN_NAME_), esc_html__("many", _SQ_PLUGIN_NAME_)),
+            'sc' => array(esc_html__("very low ranking chance", _SQ_PLUGIN_NAME_), esc_html__("very low ranking chance", _SQ_PLUGIN_NAME_), esc_html__("low ranking chance", _SQ_PLUGIN_NAME_), esc_html__("low ranking chance", _SQ_PLUGIN_NAME_), esc_html__("low ranking chance", _SQ_PLUGIN_NAME_), esc_html__("modest ranking chance", _SQ_PLUGIN_NAME_), esc_html__("modest ranking chance", _SQ_PLUGIN_NAME_), esc_html__("decent ranking chance", _SQ_PLUGIN_NAME_), esc_html__("high ranking chance", _SQ_PLUGIN_NAME_), esc_html__("very high ranking chance", _SQ_PLUGIN_NAME_), esc_html__("very high ranking chance", _SQ_PLUGIN_NAME_)),
+        );
+
+        if(isset($stats[$key][$index])){
+            return $stats[$key][$index];
+        }
+
+        return '';
+    }
 
     /**
      * Called when action is triggered
@@ -182,7 +200,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
         switch (SQ_Classes_Helpers_Tools::getValue('action')) {
 
             case 'sq_briefcase_addkeyword':
-                if (!current_user_can('sq_manage_snippet')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
 
@@ -227,7 +245,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
                 }
                 break;
             case 'sq_briefcase_deletekeyword':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
                     echo wp_json_encode($response);
@@ -249,7 +267,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
                 }
                 exit();
             case 'sq_briefcase_deletefound':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
                     echo wp_json_encode($response);
@@ -272,7 +290,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
                 exit();
             /**********************************/
             case 'sq_briefcase_addlabel':
-                if (!current_user_can('sq_manage_snippet')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
                     echo wp_json_encode($response);
@@ -302,7 +320,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
                 }
                 exit();
             case 'sq_briefcase_editlabel':
-                if (!current_user_can('sq_manage_snippet')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
                     echo wp_json_encode($response);
@@ -329,7 +347,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
                 }
                 exit();
             case 'sq_briefcase_deletelabel':
-                if (!current_user_can('sq_manage_snippets')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippets')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
                     echo wp_json_encode($response);
@@ -353,7 +371,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
                 }
                 exit();
             case 'sq_briefcase_keywordlabel':
-                if (!current_user_can('sq_manage_snippet')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
                     echo wp_json_encode($response);
@@ -383,28 +401,31 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
                 }
                 exit();
             case 'sq_briefcase_backup':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     SQ_Classes_Error::setError(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     return;
                 }
 
-                $briefcase = SQ_Classes_RemoteController::getBriefcase();
+                $args = array();
+                $args['limit'] = -1;
+                $briefcase = SQ_Classes_RemoteController::getBriefcase($args);
 
-                $fp = fopen(_SQ_CACHE_DIR_ . 'file.csv', 'w');
+                $fp = fopen(_SQ_CACHE_DIR_ . 'file.txt', 'w');
                 foreach ($briefcase->keywords as $row) {
-                    fputcsv($fp, array($row->keyword), ',', '"');
+                    fwrite($fp, $row->keyword . PHP_EOL);
                 }
                 fclose($fp);
 
-                header('Content-type: text/csv');
-                header("Content-Disposition: attachment; filename=squirrly-briefcase-" . gmdate('Y-m-d') . ".csv");
+                header("Content-type: text;");
+                header("Content-Encoding: UTF-8");
+                header("Content-Disposition: attachment; filename=squirrly-briefcase-" . gmdate('Y-m-d') . ".txt");
                 header("Pragma: no-cache");
                 header("Expires: 0");
-                readfile(_SQ_CACHE_DIR_ . 'file.csv');
+                readfile(_SQ_CACHE_DIR_ . 'file.txt');
 
                 exit();
             case 'sq_briefcase_restore':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     SQ_Classes_Error::setError(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     return;
                 }
@@ -484,7 +505,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
                 }
                 break;
             case 'sq_briefcase_savemain':
-                if (!current_user_can('sq_manage_snippet')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
                     echo wp_json_encode($response);
@@ -510,7 +531,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
                 exit();
             /************************************************* AJAX */
             case 'sq_ajax_briefcase_doserp':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
                     echo wp_json_encode($response);
@@ -551,7 +572,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
                     $json = SQ_Classes_RemoteController::getKROthers($args);
 
                     if (!is_wp_error($json)) {
-                        if(isset($json->keywords)) {
+                        if (isset($json->keywords)) {
                             echo wp_json_encode(array('keywords' => $json->keywords));
                         }
                     } else {
@@ -616,7 +637,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
                     $process = SQ_Classes_RemoteController::setKRSuggestion($args);
 
                     if (!is_wp_error($process)) {
-                        if(isset($process->id)) {
+                        if (isset($process->id)) {
                             //Get the briefcase keywords
                             echo wp_json_encode(array('done' => false, 'id' => $process->id));
 
@@ -661,7 +682,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
                 exit();
 
             case 'sq_ajax_briefcase_bulk_delete':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
                     echo wp_json_encode($response);
@@ -685,7 +706,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
                 }
                 exit();
             case 'sq_ajax_briefcase_bulk_label':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
                     echo wp_json_encode($response);
@@ -719,7 +740,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
 
                 exit();
             case 'sq_ajax_briefcase_bulk_doserp':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
                     echo wp_json_encode($response);
@@ -745,7 +766,7 @@ class SQ_Controllers_Research extends SQ_Classes_FrontController {
                 exit();
 
             case 'sq_ajax_labels_bulk_delete':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
                     echo wp_json_encode($response);

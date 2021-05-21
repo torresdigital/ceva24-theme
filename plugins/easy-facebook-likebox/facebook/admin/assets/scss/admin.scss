@@ -34,6 +34,33 @@
     margin-right: 10px;
   }
 
+  #efbl-authentication-modal{
+    width: 18%;
+    h6{
+      letter-spacing: 1px;
+      line-height: 1.5;
+      margin-bottom: 15px;
+      font-size: 1.2rem;
+    }
+
+    .efbl-auth-btn-holder {
+      display: block;
+      padding: 5px 0;
+      position: relative;
+
+      label {
+        padding: 0 10px 0 28px;
+      }
+    }
+    .mif-modal-content{
+      text-align: center;
+    }
+    .efbl-auth-modal-btn {
+      margin-top: 10px;
+    }
+
+  }
+
   .efbl_wrap_inner {
 
 
@@ -94,6 +121,15 @@
             display: table;
             padding: 0 22px;
 
+            @media (max-width: 1920px) {
+              padding: 0 18px;
+            }
+
+            @media (max-width: 1680px) {
+              padding: 0 14px;
+            }
+
+
             &:focus {
               outline: none !important;
               box-shadow: none;
@@ -109,6 +145,10 @@
               letter-spacing: 1.5px;
               font-size: 13px;
               font-weight: bold;
+
+              @media (max-width: 1440px) {
+                font-size: 12px;
+              }
             }
           }
 
@@ -161,6 +201,8 @@
 
       }
 
+
+
       #efbl-cached {
         .collection-item {
           .efbl_del_trans {
@@ -202,6 +244,59 @@
 
           .efbl_all_pages {
             padding: 0;
+
+            .collection.with-header{
+              .efbl-is-group-admin{
+                border: 1px solid #ccc;
+                color: #867979;
+                padding: 3px 14px;
+                margin-right: 10px;
+                letter-spacing: 1px;
+                display: inline-block;
+                margin-top: 10px;
+              }
+              .efbl-group-setting{
+                background: #308fd0;
+                color: #fff;
+                padding: 6px 10px;
+                margin-top: 5px;
+                display: inline-block;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                border-radius: 2px;
+                &:hover{
+                  background: #167bbf;
+                }
+              }
+            }
+            .efbl-group-app-addition{
+              border: 1px solid #e0e0e0;
+              margin-top: 0px;
+              padding: 10px 15px;
+              border-top: none;
+              position: relative;
+
+              h4{
+                margin-top: 0px;
+                font-size: 2rem;
+              }
+              ul{
+                margin-top: 0;
+                li{
+                  font-size: 15px;
+                  line-height: 1.8;
+                  font-weight: 400;
+                  color: #867979;
+                  b{
+                    color: #5b656f;
+                    margin-right: 5px;
+                  }
+                }
+              }
+              p:last-child{
+                margin-bottom: 0;
+              }
+            }
           }
 
         }
@@ -330,6 +425,10 @@
           }
         }
 
+        .efbl-group-id-wrap, .efbl-moderate-page-id-wrap{
+          display: none;
+        }
+
         .efbl_filter_events_wrap_outer {
           display: none;
           float: left;
@@ -356,6 +455,8 @@
 
         .efbl_shortcode_submit, .efbl_likebox_shortcode_submit {
           margin-top: 20px;
+          float: left;
+          clear: both;
         }
 
         .efbl_generated_shortcode, .efbl_likebox_generated_shortcode {
@@ -374,7 +475,7 @@
             box-shadow: none;
             border: none;
             display: inline-block;
-            font-size: 12px;
+            font-size: 10px;
             padding: 10px;
             border-left: 5px solid #057cb5;
           }
@@ -415,6 +516,43 @@
           height: auto;
         }
 
+      }
+    }
+    #efbl-moderate-wrap.efbl_tab_c_holder{
+      .efbl-moderate-type-wrap{
+        .efbl-moderate-type{
+          margin-bottom: 10px;
+        }
+      }
+      .efbl-get-moderate-feed{
+        margin-top: 10px;
+      }
+      .efbl-moderate-visual-wrap{
+        margin-top: 20px;
+      }
+      .efbl-moderate-visual-wrap.efbl-moderate-free-view{
+        .efbl-grid-skin .efbl-grid-wrapper .efbl_feed_fancy_popup .efbl-overlay{
+          opacity: 1 !important;
+          background: rgb(230 205 205 / 46%) !important;
+        }
+      }
+      .efbl-moderate-pro{
+        margin-top: 20px;
+        a.btn{
+          background-color: #ff8c00;
+          margin-top: -3px;
+        }
+        .trial-btn{
+          border: 1px solid #ff8c00;
+          color: #ff8c00;
+          padding: 14px 20px;
+          display: inline-block;
+          margin-right: 10px;
+          border-radius: 2px;
+        }
+        p{
+          margin-bottom: 0;
+        }
       }
     }
   }
@@ -521,7 +659,7 @@
   blockquote {
     background-color: #018ed0;
     color: #fff;
-    padding: 10px;
+    padding: 11px 10px;
     font-size: 12px;
     border-left: 5px solid #057cb5;
     letter-spacing: .5px;
@@ -949,7 +1087,55 @@
 
   }
 
-  /* vertical tabs scss ends */
+  .efbl-groups-list-modal{
+    width: 20%;
+    max-height: 400px;
+    top: 20% !important;
+    .modal-content{
+      padding: 15px;
+      h5{
+        margin: 0;
+        font-size: 1.4rem;
+        text-align: center;
+        margin-bottom: 15px;
+        line-height: 125%;
+      }
+      #efbl-selected-groups-list{
+        border-top: 1px solid #ccc;
+        padding-top: 15px !important;
+        float: left;
+        width: 100%;
+        li {
+          font-weight: bold;
+          padding: 10px 5px;
+          float: left;
+          clear: both;
+          width: 100%;
+          cursor: pointer;
+        img {
+          max-width: 50px;
+          max-height: 50px;
+          margin-right: 10px;
+          float: left;
+        }
+      }
+        li.selected{
+          background: #dceada !important;
+          border: 1px solid #6ca365 !important;
+        }
+        li.is-admin{
+          background: #ddd;
+          border: 1px solid #ccc;
+        }
+      }
+      .efbl-save-groups-list{
+        width: 100%;
+        position: sticky;
+        bottom: 6px;
+        left: 0;
+      }
+    }
+  }
 }
 
 .toplevel_page_easy-facebook-likebox {

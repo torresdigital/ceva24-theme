@@ -47,10 +47,6 @@ class SQ_Classes_Helpers_Tools {
 
     }
 
-    public static function getUsedMemory() {
-        return number_format(memory_get_usage() / 1024 / 1024, 0);
-    }
-
     public static function isAjax() {
         return (defined('DOING_AJAX') && DOING_AJAX);
     }
@@ -156,7 +152,7 @@ class SQ_Classes_Helpers_Tools {
             'sq_sla_type' => 'auto',
             'sq_sla_exclude_post_types' => array(),
             'sq_keyword_help' => 1,
-            'sq_local_images' => 1,
+            'sq_local_images' => 0,
             'sq_img_licence' => 1,
             'sq_sla_social_fetch' => 1,
 
@@ -168,6 +164,8 @@ class SQ_Classes_Helpers_Tools {
             'sq_jsonld_breadcrumbs' => 1,
             'sq_jsonld_woocommerce' => 1,
             'sq_jsonld_clearcode' => 0,
+            'sq_jsonld_product_rating' => 0,
+            'sq_jsonld_product_custom' => 1,
             'sq_jsonld_product_defaults' => 1,
             'sq_jsonld_local' => array(
                 'priceRange' => '',
@@ -236,6 +234,7 @@ class SQ_Classes_Helpers_Tools {
                         '@type' => 'PostalAddress',
                         'streetAddress' => '',
                         'addressLocality' => '',
+                        'addressRegion' => '',
                         'postalCode' => '',
                         'addressCountry' => '',
                     ),
@@ -269,7 +268,7 @@ class SQ_Classes_Helpers_Tools {
                 'images' => 1,
                 'videos' => 0,
             ),
-            'sq_sitemap_perpage' => 200,
+            'sq_sitemap_perpage' => 500,
             'sq_sitemap_frequency' => 'weekly',
             'sq_sitemap_combinelangs' => 0,
             'sq_sitemap' => array(
@@ -303,6 +302,7 @@ class SQ_Classes_Helpers_Tools {
             'sq_use' => 1,
             'sq_auto_metas' => 1,
             'sq_auto_links' => 0,
+            'sq_auto_redirects' => 1,
             'sq_auto_title' => 1,
             'sq_auto_description' => 1,
             'sq_auto_keywords' => 1,
@@ -313,10 +313,11 @@ class SQ_Classes_Helpers_Tools {
             'sq_auto_noindex' => 1,
             'sq_use_frontend' => 1,
             'sq_attachment_redirect' => 0,
-            'sq_permalink_redirect' => 1,
+            'profile_noindex_empty' => 0,
+            '404_url_redirect' => home_url(),
             'sq_external_nofollow' => 1,
             'sq_external_exception' => array(),
-            'sq_external_blank' => 1,
+            'sq_external_blank' => 0,
             'sq_metas' => array(
                 'title_maxlength' => 75,
                 'description_maxlength' => 320,
@@ -355,6 +356,9 @@ class SQ_Classes_Helpers_Tools {
                 'show_panel' => 1,
                 'show_tutorial' => 1,
                 'show_audit' => 1,
+                'show_assistant' => 1,
+                'show_bulkseo' => 1,
+                'show_research' => 1,
                 'show_rankings' => 1,
                 'show_focuspages' => 1,
                 'show_seogoals' => 1,
@@ -366,6 +370,8 @@ class SQ_Classes_Helpers_Tools {
             'sq_auto_facebook' => 1,
             'sq_auto_twitter' => 1,
             'sq_og_locale' => 'en_US',
+            'sq_og_image' => '',
+            'sq_tc_image' => '',
 
             'socials' => array(
                 'fb_admins' => array(),
@@ -1189,13 +1195,13 @@ class SQ_Classes_Helpers_Tools {
     public static function isPluginInstalled($name) {
         if (empty(self::$allplugins)) {
             self::$allplugins = (array)get_option('active_plugins', array());
-        }
 
-        if (!empty(self::$allplugins)) {
             if (is_multisite()) {
                 self::$allplugins = array_merge(array_values(self::$allplugins), array_keys(get_site_option('active_sitewide_plugins')));
             }
+        }
 
+        if (!empty(self::$allplugins)) {
             return in_array($name, self::$allplugins, true);
         }
 
@@ -1207,7 +1213,7 @@ class SQ_Classes_Helpers_Tools {
      * @return bool
      */
     public static function isFrontAdmin() {
-        return (!is_admin() && is_user_logged_in());
+        return (!is_admin() && (function_exists('is_user_logged_in') && is_user_logged_in()));
     }
 
     /**
@@ -1223,6 +1229,11 @@ class SQ_Classes_Helpers_Tools {
      * @return bool
      */
     public static function isEcommerce() {
+
+        if(self::isPluginInstalled('woocommerce/woocommerce.php')){
+            return true;
+        }
+
         $products = array('product', 'wpsc-product');
         $post_types = get_post_types(array('public' => true));
 
@@ -1258,6 +1269,32 @@ class SQ_Classes_Helpers_Tools {
 
         if (function_exists('ampforwp_is_amp_endpoint')) {
             return ampforwp_is_amp_endpoint();
+        }
+
+        return false;
+    }
+
+    /**
+     * Check the user capability for the roles attached
+     *
+     * @param $cap
+     * @param mixed ...$args
+     * @return bool
+     */
+    public static function userCan($cap, ...$args ) {
+
+        if (current_user_can($cap, ...$args)) {
+            return true;
+        }
+
+        $user = wp_get_current_user();
+        if (count((array)$user->roles) > 1) {
+            foreach ($user->roles as $role) {
+                $role_object = get_role($role);
+                if ($role_object->has_cap($cap)) {
+                    return true;
+                }
+            }
         }
 
         return false;
@@ -1306,43 +1343,8 @@ class SQ_Classes_Helpers_Tools {
         global $wp_filesystem;
 
         if (!$wp_filesystem || empty($wp_filesystem)) {
-            $credentials = array();
-
-            if (!defined('FS_METHOD')) {
-                define('FS_METHOD', 'direct');
-            }
-
-            $method = defined('FS_METHOD') ? FS_METHOD : false;
-
-            if ('ftpext' === $method) {
-                // If defined, set it to that, Else, set to NULL.
-                $credentials['hostname'] = defined('FTP_HOST') ? preg_replace('|\w+://|', '', FTP_HOST) : null;
-                $credentials['username'] = defined('FTP_USER') ? FTP_USER : null;
-                $credentials['password'] = defined('FTP_PASS') ? FTP_PASS : null;
-
-                // Set FTP port.
-                if (strpos($credentials['hostname'], ':') && null !== $credentials['hostname']) {
-                    list($credentials['hostname'], $credentials['port']) = explode(':', $credentials['hostname'], 2);
-                    if (!is_numeric($credentials['port'])) {
-                        unset($credentials['port']);
-                    }
-                } else {
-                    unset($credentials['port']);
-                }
-
-                // Set connection type.
-                if ((defined('FTP_SSL') && FTP_SSL) && 'ftpext' === $method) {
-                    $credentials['connection_type'] = 'ftps';
-                } elseif (!array_filter($credentials)) {
-                    $credentials['connection_type'] = null;
-                } else {
-                    $credentials['connection_type'] = 'ftp';
-                }
-            }
-
-
             require_once wp_normalize_path(ABSPATH . '/wp-admin/includes/file.php');
-            WP_Filesystem($credentials);
+            WP_Filesystem();
         }
 
         return $wp_filesystem;

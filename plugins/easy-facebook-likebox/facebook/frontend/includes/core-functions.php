@@ -367,7 +367,7 @@ if ( !function_exists( 'efbl_get_page_logo' ) ) {
                 $FTA = new Feed_Them_All();
                 $fta_settings = $FTA->fta_get_settings();
                 
-                if ( isset( $fta_settings['plugins']['facebook']['approved_pages'] ) ) {
+                if ( isset( $fta_settings['plugins']['facebook']['approved_pages'] ) || isset( $fta_settings['plugins']['facebook']['approved_groups'] ) ) {
                     $pages = $fta_settings['plugins']['facebook']['approved_pages'];
                     
                     if ( isset( $pages[$page_id] ) ) {
@@ -640,6 +640,46 @@ if ( !function_exists( 'efbl_get_albums_list' ) ) {
         if ( !$page_id ) {
             return false;
         }
+    }
+
+}
+if ( !function_exists( 'efbl_get_group_bio' ) ) {
+    /**
+     * Get group bio
+     * @param $id
+     * @param $cache_seconds
+     *
+     * @return mixed
+     */
+    function efbl_get_group_bio( $id, $cache_seconds )
+    {
+        $efbl_bio_data = [];
+        $accesstoken = '';
+        $efbl_bio_slug = "efbl_group_bio-{$id}";
+        $efbl_bio_data = get_transient( $efbl_bio_slug );
+        
+        if ( !$efbl_bio_data || '' == $efbl_bio_data ) {
+            $FTA = new Feed_Them_All();
+            $fta_settings = $FTA->fta_get_settings();
+            
+            if ( isset( $fta_settings['plugins']['facebook']['approved_pages'] ) ) {
+                $pages = $fta_settings['plugins']['facebook']['approved_pages'];
+                $accesstoken = $fta_settings['plugins']['facebook']['access_token'];
+            }
+            
+            $efbl_bio_url = "https://graph.facebook.com/{$id}?fields=member_count,description,name,link,picture&access_token=" . $accesstoken;
+            $efbl_bio_data_api = wp_remote_get( $efbl_bio_url );
+            if ( isset( $efbl_bio_data_api ) && !empty($efbl_bio_data_api) ) {
+                if ( isset( $efbl_bio_data_api['body'] ) ) {
+                    $efbl_bio_data = json_decode( $efbl_bio_data_api['body'] );
+                }
+            }
+            if ( 200 == $efbl_bio_data_api['response']['code'] && !empty($efbl_bio_data) ) {
+                set_transient( $efbl_bio_slug, $efbl_bio_data, $cache_seconds );
+            }
+        }
+        
+        return $efbl_bio_data;
     }
 
 }

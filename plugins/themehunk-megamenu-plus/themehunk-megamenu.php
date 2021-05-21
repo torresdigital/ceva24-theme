@@ -3,14 +3,14 @@
  * Plugin Name: ThemeHunk MegaMenu Plus
  * Plugin URI:  https://themehunk.com
  * Description: Megamenu plugin from Themehunk.
- * Version:     1.0.4
+ * Version:     1.0.5
  * Author:      Themehunk
  * License:     GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: themehunk-megamenu
  */
  if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
-define( 'THEMEHUNK_MEGAMENU_VERSION',  '1.0.4' );
+define( 'THEMEHUNK_MEGAMENU_VERSION',  '1.0.5' );
 // Setting path variables
 if( ! defined( 'THEMEHUNK_MEGAMENU_URL' ) ){
 	define( 'THEMEHUNK_MEGAMENU_URL', plugin_dir_url( __FILE__ ) );

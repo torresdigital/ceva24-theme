@@ -9,13 +9,14 @@ class SQ_Controllers_Overview extends SQ_Classes_FrontController {
     public $checkin;
 
     public function init() {
-        //Checkin to API V2
-        $this->checkin = SQ_Classes_RemoteController::checkin();
 
         if (SQ_Classes_Helpers_Tools::getOption('sq_api') == '') {
             echo $this->getView('Errors/Connect');
             return;
         }
+
+        //Checkin to API V2
+        $this->checkin = SQ_Classes_RemoteController::checkin();
 
         SQ_Classes_ObjController::getClass('SQ_Classes_DisplayController')->loadMedia('bootstrap-reboot');
         if (is_rtl()) {
@@ -44,7 +45,7 @@ class SQ_Controllers_Overview extends SQ_Classes_FrontController {
     }
 
     public function getJourneyNotification() {
-        if (!current_user_can('sq_manage_snippets')) {
+        if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippets')) {
             return;
         }
 

@@ -29,7 +29,7 @@
 
                                             <div id="sq_onboarding">
 
-                                                <div class="col-12 card-title m-2 mt-5 text-center" style="font-size: 20px; line-height: 35px"><?php echo sprintf(esc_html__("%sImport your settings and SEO%s from the following plugin into your new Squirrly SEO", _SQ_PLUGIN_NAME_), '<strong>', '</strong>'); ?>:</div>
+                                                <div class="col-12 card-title m-2 mt-5 text-center" style="font-size: 20px; line-height: 35px"><?php echo sprintf(esc_html__("%sImport your settings and SEO%s from the following plugin", _SQ_PLUGIN_NAME_), '<strong>', '</strong>'); ?>:</div>
 
                                                 <div class="col-12 pt-0 pb-4 ml-3 tab-panel">
                                                     <form id="sq_inport_form" name="import" action="" method="post" enctype="multipart/form-data">

@@ -12,6 +12,7 @@ class SQ_Core_Blocklogin extends SQ_Classes_BlockController {
         }
 
         SQ_Classes_ObjController::getClass('SQ_Classes_DisplayController')->loadMedia('login');
+        SQ_Classes_Error::hookNotices();
         echo $this->getView('Blocks/Login');
     }
 

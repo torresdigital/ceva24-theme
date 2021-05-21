@@ -2,7 +2,7 @@
 Contributors: aThemeArt
 Tags:  woocommerce search page, woocommerce search form, woocommerce search filter, woocommerce search products, woocommerce search content, woocommerce search autocomplete, woocommerce advanced search, woocommerce search category, woocommerce search product attributes, woocommerce search by tag, woocommerce search by brand, woocommerce predictive, woocommerce live search, woocommerce single product search, woocommerce site search, woocommerce search, ajax, search, woocommerce, products, themes, woocommerce search by sku, woocommerce search results, woocommerce search shortcode , e-commerce, shop, ajax search, instant search, premium, aThemeArt, autocomplete, autosuggest, better search, category search, custom search, highlight terms, Live Search, Predictive Search, product search, relevant search, search highlight, search product, suggest, typeahead, WooCommerce Plugin, woocommerce product search, woocommerce search, wordpress ecommerce
 Requires at least: 4.6
-Tested up to:  5.4.1
+Tested up to:  5.7.4
 Stable tag: 1.0.2
 Requires PHP: 5.3.2
 Donate link: https://athemeart.com/downloads/advanced-product-search-for-woo/
@@ -15,7 +15,7 @@ Popup Cart Lite for WooCommerce for WooCommerce plugin that displays popup cart 
 
 [__Live Demo__](https://eds.edatastyle.com/demo/aspw/).
 
-[__Check Woocommerce Search Plugin Pro __](https://athemeart.com/downloads/advanced-product-search-for-woo/).
+[__Check Woocommerce Search Plugin Pro __](https://www.athemeart.com/downloads/advanced-product-search-for-woo/).
 
 Advanced Product search for woocommerce – powerful instant search plugin for WooCommerce.You just got to install and simply begin typewriting and you'll instantly see the product list that you simply search.
 

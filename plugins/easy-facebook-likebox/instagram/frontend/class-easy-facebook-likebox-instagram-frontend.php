@@ -70,7 +70,6 @@ if ( !class_exists( 'ESF_Instagram_Frontend' ) ) {
          */
         public function esf_insta_shortcode( $atts )
         {
-            //			echo '<pre>'; print_r($atts); echo '</pre>'; exit;
             $mif_skin_default_id = '';
             $Feed_Them_All = new Feed_Them_All();
             /*
@@ -81,16 +80,19 @@ if ( !class_exists( 'ESF_Instagram_Frontend' ) ) {
                 $mif_skin_default_id = $fta_settings['plugins']['instagram']['default_skin_id'];
             }
             $atts = shortcode_atts( [
-                'wrapper_class'  => null,
-                'user_id'        => null,
-                'hashtag'        => null,
-                'skin_id'        => $mif_skin_default_id,
-                'feeds_per_page' => 9,
-                'caption_words'  => 25,
-                'links_new_tab'  => 1,
-                'load_more'      => 1,
-                'cache_unit'     => 1,
-                'cache_duration' => 'days',
+                'wrapper_class'   => null,
+                'user_id'         => null,
+                'hashtag'         => null,
+                'skin_id'         => $mif_skin_default_id,
+                'feeds_per_page'  => 9,
+                'profile_picture' => null,
+                'caption_words'   => 25,
+                'links_new_tab'   => 1,
+                'load_more'       => 1,
+                'cache_unit'      => 1,
+                'show_stories'    => 1,
+                'cache_duration'  => 'days',
+                'is_moderate'     => false,
             ], $atts, 'my-instagram-feed' );
             if ( isset( $atts ) ) {
                 extract( $atts );
@@ -240,6 +242,8 @@ if ( !class_exists( 'ESF_Instagram_Frontend' ) ) {
                  * Getting the decoded data of authenticated user from instagram.
                  */
                 $self_decoded_data = $this->esf_insta_get_data( $mif_bio_url );
+                if ( 400 !== $self_decoded_data->meta->code && !isset( $self_decoded_data->error ) ) {
+                }
                 if ( 400 !== $self_decoded_data->meta->code && !isset( $self_decoded_data->error ) ) {
                     set_transient( $mif_bio_slug, $self_decoded_data, $cache_seconds );
                 }

@@ -4,7 +4,7 @@
     <?php do_action('sq_notices'); ?>
     <div class="d-flex flex-row my-0 bg-white" style="clear: both !important;">
         <?php
-        if (!current_user_can('sq_manage_settings')) {
+        if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
             echo '<div class="col-12 alert alert-success text-center m-0 p-3">' . esc_html__("You do not have permission to access this page. You need Squirrly SEO Admin role", _SQ_PLUGIN_NAME_) . '</div>';
             return;
         }
@@ -373,7 +373,20 @@
                                                         <label for="sq_jsonld_woocommerce" class="ml-2"><?php echo esc_html__("Add Support For Woocommerce", _SQ_PLUGIN_NAME_); ?>
                                                             <a href="https://howto.squirrly.co/kb/json-ld-structured-data/#woocommerce" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
                                                         </label>
-                                                        <div class="offset-1 small text-black-50"><?php echo esc_html__("Improve the Woocommerce Product and Orders Schema with the required data.", _SQ_PLUGIN_NAME_); ?></div>
+                                                        <div class="offset-1 small text-black-50"><?php echo esc_html__("Improve the WooCommerce  Product and Orders Schema by enabling Squirrly to add the required data.", _SQ_PLUGIN_NAME_); ?></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 row mb-1 ml-1 sq_advanced">
+                                                <div class="checker col-12 row my-2 py-1">
+                                                    <div class="col-12 p-0 sq-switch sq-switch-sm">
+                                                        <input type="hidden" name="sq_jsonld_product_custom" value="0"/>
+                                                        <input type="checkbox" id="sq_jsonld_product_custom" name="sq_jsonld_product_custom" class="sq-switch" <?php echo(SQ_Classes_Helpers_Tools::getOption('sq_jsonld_product_custom') ? 'checked="checked"' : '') ?> value="1"/>
+                                                        <label for="sq_jsonld_product_custom" class="ml-2"><?php echo esc_html__("Add Custom Data for WooCommerce Products", _SQ_PLUGIN_NAME_); ?>
+                                                            <a href="https://howto.squirrly.co/kb/json-ld-structured-data/#woocommerce" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
+                                                        </label>
+                                                        <div class="offset-1 small text-black-50"><?php echo esc_html__("Enable Squirrly to include additional metadata fields for WooCommerce Products: MPN, ISBN, EAN, UPC, GTIN, Brand, Review.", _SQ_PLUGIN_NAME_); ?></div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -383,13 +396,15 @@
                                                     <div class="col-12 p-0 sq-switch sq-switch-sm">
                                                         <input type="hidden" name="sq_jsonld_product_defaults" value="0"/>
                                                         <input type="checkbox" id="sq_jsonld_product_defaults" name="sq_jsonld_product_defaults" class="sq-switch" <?php echo(SQ_Classes_Helpers_Tools::getOption('sq_jsonld_product_defaults') ? 'checked="checked"' : '') ?> value="1"/>
-                                                        <label for="sq_jsonld_product_defaults" class="ml-2"><?php echo esc_html__("Add default data for Woocommerce Products", _SQ_PLUGIN_NAME_); ?>
+                                                        <label for="sq_jsonld_product_defaults" class="ml-2"><?php echo esc_html__("Add Default Data for Woocommerce Products", _SQ_PLUGIN_NAME_); ?>
                                                             <a href="https://howto.squirrly.co/kb/json-ld-structured-data/#woocommerce" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
                                                         </label>
-                                                        <div class="offset-1 small text-black-50"><?php echo esc_html__("Add default data for JSON-LD aggregateRating, review, offers, sku, mpn to avoid GSC errors.", _SQ_PLUGIN_NAME_); ?></div>
+                                                        <div class="offset-1 small text-black-50"><?php echo esc_html__("Add default data for JSON-LD AggregateRating, Offers, Sku, MPN when they are missing from the product to avoid GSC errors.", _SQ_PLUGIN_NAME_); ?></div>
                                                     </div>
                                                 </div>
                                             </div>
+
+
                                         <?php } ?>
 
 

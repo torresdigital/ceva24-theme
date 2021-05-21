@@ -400,6 +400,65 @@ Type a keyword to the right of the screen and start using Squirrly Seo. Enjoy!
 9. Squirrly SEO - Progress & Achievements
 
 == Changelog ==
+= 11.1.03- 05/06/2021 =
+Update - Do not track the traffic for Squirrly crawlers
+Update - Add in Dev Kit the options to hide the Research, All Snippets, Live Assistant menu items
+Update - Integrate Focus Pages with the SEO Links domain exception in the Outbound nofollow links report
+Update - Compatibility between Live Assistant & Thrive Architect
+Fix - Add a patch for the Oxygen builder to not show 500 error when editing the templates
+Fix - Web Dev Kit to work with the Wp Mutisite for the custom plugin name
+Fix - Fixed JSON-LD compatibility with the lastest version of WooCommerce
+
+= 11.1.02- 04/30/2021 =
+Update - Add the option to import the SEO Snippets from SEO Press (Patterns, SEO METAs, Open Graph, Twitter Card, 301 Redirects, Noindex)
+Update - Add the option to import the Settings from SEO Press (Social Media, JSON-LD, Webmasters)
+Update - Add the option to import the SEO Snippets from Rank Math (Patterns, SEO METAs, Open Graph, Twitter Card, Noindex)
+Update - Add the option to import the Settings from Rank Math (Social Media, JSON-LD, Webmasters)
+Update - Add the option to import the SEO Snippets from SEO FrameWork (SEO METAs, Open Graph, Twitter Card, 301 Redirects, Noindex)
+Update - Add the option to import the SEO Snippets from All In One SEO (Patterns, SEO METAs, Open Graph, Twitter Card, Noindex, Nofollow)
+Update - Add the option to import the Settings from All In One SEO (Social Media, JSON-LD, Webmasters)
+Update - Added import for Profiles & Archives from Yoast SEO plugin
+Update - Added the option to import the WooCommerce SEO from Yoast SEO
+Update - Added the option to import the JSON-LD from Yoast SEO
+Update - Added default Open Graph Image for URLs without Feature Image
+Update - Added default Twitter Card Image for URLs without Twitter Card Image
+Update - Show Primary Category option in JSON-LD only when there are multiple categories selected for a Post/Page
+Update - Breadcrumbs for WooCommerce Post, Products & Custom Posts to get the primary chosen category
+Update - Added MPN, ISBN, EAN (GTIN-13), UPC (GTIN-12), GTIN option for WooCommerce Products
+Update - Load the JSON-LD for each WooCommerce product custom field
+Update - Added Brands select for WooCommerce Products
+Update - Added the Slovenia country in Google Rankings > Settings
+Update - Compatibility with BuddyPress plugin for User Activity page
+Update - Added the 301 Redirect option in SEO Snippet
+Update - Added Patterns support for double and single delimiter like %%title%% and %title% if importing from other SEO Plugins
+Update - Added 2 new patterns for the Products: {{product_price_with_tax}} {{product_brand}}
+Update - Added the patterns {{plural}} and {{single}} for the Custom post Type label
+Updated - Open Graph Support for the WooCommerce products
+Update - Compatibility with ACF plugin to add a custom video URL in sitemap by using the field _sq_video
+Update - Video Schema in JSON-LD to work with embed video or the ACF _sq_video field
+Update - Added archive for custom post type in SEO Automation
+Update - Add compatibility with Oxygen plugin to check the content optimization in backend
+Update - Add URL identification for German language e.g.  für =>  fuer
+Update - Added the default redirect URL in SEO Automation > 404 to redirect the broken URLs when no valid permalink is found
+Update - Make Squirrly highlight the text in WP Bakery, Elementor, Block Editor when using Live Assistant
+Fixed - Add the product sitemap in robots.txt when Ecommerce is detected
+Fixed - Layouts in Squirrly SEO Settings for tiny windows
+Fixed - SLA to remany minimized when no keyword is entered yet
+Fixed - Show Custom Company logo and name for Web Dev Kit in Menu and Admin Toolbar
+Fixed - Show Custom Company logo for the Live Assistant and SEO Snippet
+Fixed - Download remote images multiple times into Media File  from Squirrly Bloggin Assistant
+Fixed - Show correct value format in Rankings for Share Counts
+Fixed - Sitemap pagination limit for custom post type to show all the posts and not only a part of them
+Fixed - Load $wp_filesystem through WordPress function
+Fixed - Don't call the post save hook if the Live Assistant is not loading for that Post Type
+Fixed - Corrected the JsonLD priceValidUntil markup to reflect the offer price
+Fixed - Keywords backup limit from Briefcase to backup all the Briefcase keywords
+Fixed - current_user_can when an user has multiple roles with different capabilities and limits
+Fixed - Compatibility with Oxygen Builder to not load Squirrly METAs while editing with Oxygen Bulder
+Fixed - JSON places markup to not show for the Organization
+Fixed - Markup servesCuisine to include multiple cuisine types when separated with comma in JSON-LD Local SEO
+Fixed - "Warning: Constants may only evaluate to scalar values in SQ_ACTIONS"
+
 = 11.1.01 - 04/04/2021 =
 Update - Added the option to reactivate the ignored success messages
 Update - Make the Local SEO feature more visible while active

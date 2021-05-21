@@ -79,7 +79,6 @@ class SQ_Controllers_Onboarding extends SQ_Classes_FrontController {
                         SQ_Classes_Helpers_Tools::saveOptions('sq_attachment_redirect', 0);
                     }else{
                         SQ_Classes_Helpers_Tools::saveOptions('sq_attachment_redirect', 1);
-                        SQ_Classes_Helpers_Tools::saveOptions('sq_auto_links', 1);
                     }
                     SQ_Classes_Helpers_Tools::saveOptions('sq_jsonld_type', ($sq_onboarding_data['website_type'] == 'personal' ? 'Person' : 'Organization'));
                 }

@@ -12,16 +12,30 @@ $ESF_Admin = new ESF_Admin();
 
 $fta_settings = $FTA->fta_get_settings();
 
+if( isset($fta_settings['hide_plugin'] ) ){
+	$hide_plugin = $fta_settings['hide_plugin'];
+}
+
+if( isset($fta_settings['hide_upgrade'] ) ){
+	$hide_upgrade = $fta_settings['hide_upgrade'];
+}
+
+if( isset( $hide_plugin ) && isset( $hide_upgrade ) ){
+	$hide_sidebar_class = 'esf-sidebar-is-hide';
+}else{
+	$hide_sidebar_class = '';
+}
+
 $app_ID = [ '405460652816219', '222116127877068' ];
 
-$rand_app_ID = array_rand( $app_ID, '1' );
+$rand_app_ID = array_rand( $app_ID, 1 );
 
 $u_app_ID = $app_ID[ $rand_app_ID ];
 
 $auth_url = esc_url( add_query_arg( [
 	'client_id'    => $u_app_ID,
 	'redirect_uri' => 'https://maltathemes.com/efbl/app-' . $u_app_ID . '/index.php',
-	'scope'        => 'pages_read_engagement,pages_manage_metadata,pages_read_user_content,instagram_basic',
+	'scope'        => 'pages_read_engagement,pages_manage_metadata,pages_read_user_content,instagram_basic,instagram_manage_insights',
 	'state'        => admin_url( 'admin.php?page=mif' ),
 ], 'https://www.facebook.com/dialog/oauth' ) );
 
@@ -46,7 +60,7 @@ $mt_plugins = $ESF_Admin->mt_plugins_info();
             <div class="loader mif_loader"></div>
         </div>
     </div>
-    <div class="fta_wrap_outer" <?php  if( efl_fs()->is_free_plan() || efl_fs()->is_plan( 'facebook_premium', true ) ){?> style="width: 78%" <?php  } ?>>
+    <div class="fta_wrap_outer <?php echo $hide_sidebar_class; ?>" <?php  if( efl_fs()->is_free_plan() || efl_fs()->is_plan( 'facebook_premium', true ) ){?> style="width: 78%" <?php  } ?>>
         <div class="mif_wrap z-depth-1">
         <div class="mif_wrap_inner">
 
@@ -76,6 +90,19 @@ $mt_plugins = $ESF_Admin->mt_plugins_info();
                         </li>
 
                         <li class="tab col s3"><a
+                                    class=" mif_for_disable mif-moderate"
+                                    href="#mif-moderate">
+                                <span><?php esc_html_e( "Moderate", 'easy-facebook-likebox' );
+	                                if ( efl_fs()->is_free_plan() || efl_fs()->is_plan( 'facebook_premium', true ) ){ ?>
+                                        (<?php esc_html_e( "Pro", 'easy-facebook-likebox' ); ?>)
+	                                <?php } ?>
+                                </span>
+                            </a>
+                        </li>
+
+	                    <?php do_action('esf_insta_admin_tab', $fta_settings ); ?>
+
+                        <li class="tab col s3"><a
                                     class=" mif_for_disable mif-cache"
                                     href="#mif-cache">
                                 <span><?php esc_html_e( "Clear Cache", 'easy-facebook-likebox' ); ?></span>
@@ -94,11 +121,14 @@ $mt_plugins = $ESF_Admin->mt_plugins_info();
 
 					<?php } ?>
                 </div>
+	            <?php do_action('esf_insta_admin_after_tabs', $fta_settings); ?>
                 <div class="mif_tab_c_holder">
 					<?php include_once ESF_INSTA_PLUGIN_DIR . 'admin/views/html-autenticate-tab.php'; ?>
 					<?php include_once ESF_INSTA_PLUGIN_DIR . 'admin/views/html-how-to-use-tab.php'; ?>
 					<?php include_once ESF_INSTA_PLUGIN_DIR . 'admin/views/html-skins-tab.php'; ?>
+					<?php include_once ESF_INSTA_PLUGIN_DIR . 'admin/views/html-moderate-tab.php'; ?>
 					<?php include_once ESF_INSTA_PLUGIN_DIR . 'admin/views/html-clear-cache-tab.php'; ?>
+					<?php do_action('esf_insta_admin_tab_content', $fta_settings); ?>
                 </div>
             </div>
 
@@ -289,14 +319,16 @@ $mt_plugins = $ESF_Admin->mt_plugins_info();
 
     </div>
 
-<?php if ( efl_fs()->is_free_plan() || efl_fs()->is_plan( 'facebook_premium', true ) ) { ?>
+<?php if ( efl_fs()->is_free_plan() || efl_fs()->is_plan( 'facebook_premium', true ) ) {
+	if( !isset( $hide_plugin ) && !isset( $hide_upgrade ) ){ ?>
     <div class="fta-other-plugins-sidebar">
 
-		<?php if ( $mt_plugins ) { ?>
+		<?php if ( $mt_plugins && !isset( $fta_settings['hide_plugin']) ) { ?>
 
-            <div class="fta-other-plugins-wrap z-depth-1">
+            <div class="fta-other-plugins-wrap z-depth-1 esf-hide-plugin">
 
                 <div class="fta-other-plugins-head">
+                    <div class="dashicons dashicons-no-alt esf-hide-free-sidebar" data-id="plugin"></div>
                     <h5><?php esc_html_e( 'Love this plugin?', 'easy-facebook-likebox' ); ?></h5>
                     <p><?php esc_html_e( 'Then why not try our other FREE plugins.', 'easy-facebook-likebox' ); ?></p>
                 </div>
@@ -358,9 +390,11 @@ $mt_plugins = $ESF_Admin->mt_plugins_info();
 
 		<?php } ?>
 
-	    <?php $banner_info = $ESF_Admin->esf_upgrade_banner();?>
+	    <?php $banner_info = $ESF_Admin->esf_upgrade_banner();
+	        if( !isset( $fta_settings['hide_upgrade']) ){ ?>
 
-        <div class="espf-upgrade z-depth-2">
+                <div class="espf-upgrade z-depth-2 esf-hide-upgrade">
+                    <div class="dashicons dashicons-no-alt esf-hide-free-sidebar" data-id="upgrade"></div>
             <h2><?php  esc_html_e( $banner_info['name'] ); ?>
                 <b><?php  esc_html_e( $banner_info['bold'] ); ?></b></h2>
             <p><?php  esc_html_e( $banner_info['insta-description'] ); ?></p>
@@ -370,8 +404,11 @@ $mt_plugins = $ESF_Admin->mt_plugins_info();
                class="waves-effect waves-light btn"><i class="material-icons right">lock_open</i><?php esc_html_e( $banner_info['button-text'] ); ?>
             </a>
         </div>
+            <?php } ?>
 
     </div>
 
     </div>
-<?php } ?>
+<?php
+}
+} ?>

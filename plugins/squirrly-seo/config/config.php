@@ -45,21 +45,25 @@ define('SQ_ALL_PATTERNS', wp_json_encode(array(
     '{{searchphrase}}' => esc_html__("Displays the search phrase (if it appears in the post)", _SQ_PLUGIN_NAME_),
     '{{modified}}' => esc_html__("Replaces the publication date of a post/page with the modified one", _SQ_PLUGIN_NAME_),
     '{{name}}' => esc_html__("Displays the author's nicename", _SQ_PLUGIN_NAME_),
+    '{{single}}' => esc_html__("Displays the post type singular label", _SQ_PLUGIN_NAME_),
+    '{{plural}}' => esc_html__("Displays the post type plural label", _SQ_PLUGIN_NAME_),
     '{{user_description}}' => esc_html__("Adds the author's biographical info to the post description", _SQ_PLUGIN_NAME_),
-    '{{currentdate}}' => esc_html__("Displays the current date", _SQ_PLUGIN_NAME_),
     '{{date}}' => esc_html__("Displays the date of the post/page once it's published", _SQ_PLUGIN_NAME_),
+    '{{currentdate}}' => esc_html__("Displays the current date", _SQ_PLUGIN_NAME_),
     '{{currentday}}' => esc_html__("Adds the current day", _SQ_PLUGIN_NAME_),
     '{{currentmonth}}' => esc_html__("Adds the current month", _SQ_PLUGIN_NAME_),
     '{{currentyear}}' => esc_html__("Adds the current year", _SQ_PLUGIN_NAME_),
     '{{parent_title}}' => esc_html__("Adds the title of a page's parent page", _SQ_PLUGIN_NAME_),
     '{{product_name}}' => esc_html__("Adds the product name from Woocommerce for the current product", _SQ_PLUGIN_NAME_),
     '{{product_price}}' => esc_html__("Adds the product price from Woocommerce for the current product", _SQ_PLUGIN_NAME_),
+    '{{product_price_with_tax}}' => esc_html__("Adds the product price with Tax from Woocommerce for the current product", _SQ_PLUGIN_NAME_),
     '{{product_sale}}' => esc_html__("Adds the product sale price from Woocommerce for the current product", _SQ_PLUGIN_NAME_),
     '{{product_currency}}' => esc_html__("Adds the product price currency from Woocommerce for the current product", _SQ_PLUGIN_NAME_),
+    '{{product_brand}}' => esc_html__("Adds the product brand from Woocommerce for the current product", _SQ_PLUGIN_NAME_),
 )));
 
-define('SQ_ALL_OG_TYPES', wp_json_encode(array('website','article','profile','book','music','video')));
-define('SQ_ALL_JSONLD_TYPES', wp_json_encode(array('website','article','newsarticle','FAQ page','question','recipe','review','movie','video','local store','local restaurant','profile')));
+define('SQ_ALL_OG_TYPES', wp_json_encode(array('website', 'article', 'profile', 'book', 'music', 'video')));
+define('SQ_ALL_JSONLD_TYPES', wp_json_encode(array('website', 'article', 'newsarticle', 'FAQ page', 'question', 'recipe', 'review', 'movie', 'video', 'local store', 'local restaurant', 'profile')));
 
 define('SQ_ALL_SEP', wp_json_encode(array(
     'sc-dash' => '-',

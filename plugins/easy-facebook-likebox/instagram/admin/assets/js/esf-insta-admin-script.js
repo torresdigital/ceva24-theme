@@ -418,6 +418,15 @@ jQuery(document).ready(function($) {
  */
     var mif_user_id = $('#mif_user_id').val();
 
+    var profile_picture = $('#profile_picture').val();
+
+    if (profile_picture) {
+      profile_picture = ' profile_picture="' + profile_picture + '"';
+    }
+    else {
+      profile_picture = '';
+    }
+
     /*
 * Getting Feeds Per Page
 */
@@ -528,10 +537,17 @@ jQuery(document).ready(function($) {
       esf_insta_load_more = ' load_more="0" ';
     }
 
-    var shortcode_html = '[my-instagram-feed ' + mif_user_id_attr + '' +
+    if (jQuery('#esf_insta_show_stories').is(':checked')) {
+      esf_insta_show_stories = ' show_stories="1" ';
+    }
+    else {
+      esf_insta_show_stories = ' show_stories="0" ';
+    }
+
+    var shortcode_html = '[my-instagram-feed ' + mif_user_id_attr + '' + profile_picture + '' +
         mif_hashtag + '' + mif_skin_id + '' + mif_feeds_per_page + '' +
         mif_wrap_class + '' + mif_caption_words + '' + mif_cache_unit + '' +
-        mif_cache_duration + esf_insta_load_more + esf_insta_link_new_tab +']';
+        mif_cache_duration + esf_insta_load_more + esf_insta_link_new_tab + esf_insta_show_stories +']';
 
     jQuery('.mif_generated_shortcode blockquote').html(' ');
 
@@ -543,6 +559,46 @@ jQuery(document).ready(function($) {
     jQuery('.mif_generated_shortcode').slideDown();
 
   });/* Generated shortcode func ends here. */
+
+  function mif_get_moderate_feed(){
+
+    const user_id = $('#mif_moderate_user_id').val();
+
+    Materialize.toast(mif.moderate_wait, 400000);
+
+    var data = {
+      action: 'mif_get_moderate_feed',
+      user_id: user_id,
+      mif_nonce: mif.nonce,
+    };
+
+    jQuery.ajax({
+      url: mif.ajax_url,
+      type: 'post',
+      data: data,
+      dataType: 'json',
+      success: function(response) {
+        Materialize.Toast.removeAll();
+        if (response.success) {
+          jQuery('#mif-moderate-wrap .mif-moderate-visual-wrap').html(' ').append(response.data).slideDown('slow');
+        }
+        else {
+          Materialize.toast(response.data, 4000);
+          jQuery('#toast-container').addClass('esf-failed-notification');
+        }
+
+      },
+
+    });
+  }
+
+  jQuery(document).on('click', '.mif-get-moderate-feed', function(event) {
+
+    event.preventDefault();
+    mif_get_moderate_feed();
+  });
+
+  
 
   function MIFremoveURLParameter(url, parameter) {
     //prefer to use l.search if you have a location/link object

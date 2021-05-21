@@ -9,7 +9,7 @@
 
     <div class="d-flex flex-row my-0 bg-white" style="clear: both !important;">
         <?php
-        if (!current_user_can('sq_manage_snippet')) {
+        if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
             echo '<div class="col-12 alert alert-success text-center m-0 p-3">' . esc_html__("You do not have permission to access this page. You need Squirrly SEO Admin role.", _SQ_PLUGIN_NAME_) . '</div>';
             return;
         }
@@ -158,9 +158,9 @@
                                                 if (!$post) continue; //don't load post if errors
                                                 if (in_array($post->hash, $loaded_posts)) continue; //don't load post for multiple times
 
-                                                $can_edit_post = ($post->ID ? current_user_can('edit_post', $post->ID) : false);
-                                                $can_edit_tax = ($post->term_id ? current_user_can('edit_term', $post->term_id) : false);
-                                                if (!current_user_can('sq_manage_snippets') && !$can_edit_tax && !$can_edit_post) continue;
+                                                $can_edit_post = ($post->ID ? SQ_Classes_Helpers_Tools::userCan('edit_post', $post->ID) : false);
+                                                $can_edit_tax = ($post->term_id ? SQ_Classes_Helpers_Tools::userCan('edit_term', $post->term_id) : false);
+                                                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippets') && !$can_edit_tax && !$can_edit_post) continue;
                                                 ?>
                                                 <tr id="sq_row_<?php echo esc_attr($post->hash) ?>" class="<?php echo((int)$index % 2 ? 'even' : 'odd') ?>">
                                                     <?php

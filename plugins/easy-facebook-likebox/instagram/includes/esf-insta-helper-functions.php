@@ -263,7 +263,7 @@ if ( ! function_exists( 'esf_insta_readable_count' ) ) {
 
 if ( ! function_exists( 'esf_insta_readable_time' ) ) {
 	function esf_insta_readable_time( $date, $granularity = 2 ) {
-
+		$retval = '';
 		$date_time_strings = [
 			"second"  => __( 'second', 'easy-facebook-likebox' ),
 			"seconds" => __( 'seconds', 'easy-facebook-likebox' ),

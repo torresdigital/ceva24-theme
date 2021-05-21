@@ -853,15 +853,21 @@ var thwcfd_settings = (function($, window, document) {
 	$( document ).on( 'click', '.thpladmin-notice .notice-dismiss', function() {
 		var wrapper = $(this).closest('div.thpladmin-notice');
 		var nonce = wrapper.data("nonce");
+		var action = wrapper.data("action");
 		var data = {
 			security: nonce,
-			action: 'dismiss_thwcfd_upgrade_notice',
+			action: action,
 		};
-		
 		$.post( ajaxurl, data, function() {
-			
+
 		});
-	})	
+	})
+
+	$(document).ready(function(){
+	   setTimeout(function(){
+	      $("#thwcfd_review_request_notice").fadeIn(500);
+	   }, 2000);
+	});	
    
 	function select_all_fields(elm){
 		var checkAll = $(elm).prop('checked');
@@ -877,7 +883,7 @@ var thwcfd_settings = (function($, window, document) {
 			}
 			row.find(".f_deleted").val(1);
 			//row.find(".f_edit_btn").prop('disabled', true);
-	  	});	
+	  	});
 	}
 
 	function enable_disable_selected_fields(enabled){
@@ -896,11 +902,25 @@ var thwcfd_settings = (function($, window, document) {
 			row.find(".f_enabled").val(enabled);
 	  	});	
 	}
+
+	function hide_review_request_notice(elm){
+		var wrapper = $(elm).closest('div.thpladmin-notice');
+		var nonce = wrapper.data("nonce");
+		var data = {
+			security: nonce,
+			action: 'skip_thwcfd_review_request_notice',
+		};
+		$.post( ajaxurl, data, function() {
+
+		});
+		$(wrapper).hide(50);
+	}
 	   				
 	return {
 		selectAllFields : select_all_fields,
 		removeSelectedFields : remove_selected_fields,
 		enableDisableSelectedFields : enable_disable_selected_fields,
+		hideReviewRequestNotice : hide_review_request_notice,
    	};
 }(window.jQuery, window, document));	
 
@@ -918,4 +938,8 @@ function thwcfdEnableSelectedFields(){
 
 function thwcfdDisableSelectedFields(){
 	thwcfd_settings.enableDisableSelectedFields(0);
+}
+
+function thwcfdHideReviewRequestNotice(elm){
+	thwcfd_settings.hideReviewRequestNotice(elm);
 }

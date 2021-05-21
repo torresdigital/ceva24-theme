@@ -5,7 +5,7 @@ Tags: checkout field editor, woocommerce checkout field editor, checkout manager
 Requires at least: 4.9
 Tested up to: 5.7
 Requires PHP: 5.6
-Stable tag: 1.4.6
+Stable tag: 1.4.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -207,6 +207,13 @@ Yes. There is a button 'reset to default fields' to go back to the WooCommerce d
 8. Save changes.
 
 == Changelog ==
+= 1.4.8 =
+* Added backward compatibility with PHP 5.6.
+
+= 1.4.7 =
+* Dismissable review request notice added to the admin screens.
+* Added Woocommerce version - 5.2.2 compatibility.
+
 = 1.4.6 =
 * Settings screen UI improved.
 * WordPress and WooCommerce compatible version updated.

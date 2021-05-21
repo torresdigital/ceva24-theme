@@ -5,7 +5,7 @@ if (!defined('ABSPATH')){
 }
 // gets the current theme
 $theme = wp_get_theme(); 
-if ( 'Big Store' == $theme ){
+if ( 'Royal Shop' == $theme ){
   return;
  }
 if ( ! class_exists( 'THNotice' ) ){
@@ -23,29 +23,29 @@ if ( ! class_exists( 'THNotice' ) ){
         ?>
                 <div class="notice thunk-notice">
                     <div class="thunk-review-thumbnail">
-                        <a href="https://themehunk.com/product/big-store/?utm_source=th&utm_medium=banner&utm_campaign=th_plugins"
+                        <a href="https://wpzita.com/royal-shop/"
                            target="_blank">
                             <img src="<?php echo WPPB_URL.'notify/assets/images/plugin-banner.png'; ?>"
-                                 alt="Big Store - New Free WooCommerce Theme"/>
+                                 alt="Royal Shop - New Free WooCommerce Theme"/>
                         </a>
                     </div>
                     <div class="thunk-notice-text">
-                        <h3><?php esc_html_e( 'Big Store - New Free WooCommerce Theme', 'hunk-companion' ) ?></h3>
+                        <h3><?php esc_html_e( 'Royal Shop - New Free WooCommerce Theme', 'hunk-companion' ) ?></h3>
                         <p>
-              <?php esc_html_e( 'Big Store is a free eCommerce WordPress theme, Specially made for WooCommerce. Theme comes
+              <?php esc_html_e( 'Royal Shop is a free eCommerce WordPress theme, Specially made for WooCommerce. Theme comes
                             with one click demo import feature, Which help you to setup website in few minutes. You can
                             create single as well as multi vendor store using this theme.', 'hunk-companion' ) ?>
                         </p>
                         <ul class="thunk-review-ul">
                             <li class="show-mor-message">
-                                <a href="https://themehunk.com/big-store-ecommerce-wordpress-theme/?utm_source=th&utm_medium=banner&utm_campaign=th_plugins"
+                                <a href="https://wpzita.com/royal-shop/#themedemo"
                                    target="_blank">
                                     <span class="dashicons dashicons-desktop"></span>
                   <?php esc_html_e( 'Live Demo', 'hunk-companion' ) ?>
                                 </a>
                             </li>
                             <li class="free-download-message">
-                                <a href="https://themehunk.com/product/big-store/?utm_source=th&utm_medium=banner&utm_campaign=th_plugins"
+                                <a href="https://wpzita.com/royal-shop/"
                                    target="_blank">
                                     <span class="dashicons dashicons-external"></span>
                   <?php esc_html_e( 'Check Detail', 'hunk-companion' ) ?>

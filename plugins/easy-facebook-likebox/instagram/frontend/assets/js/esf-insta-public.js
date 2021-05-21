@@ -37,8 +37,6 @@ jQuery(document).ready(function($) {
   }
 
   
-/* Premium Code Stripped by Freemius */
-
 
   jQuery(document).on('click', '.esf_insta_load_more_btn', function(event) {
 
@@ -166,8 +164,6 @@ jQuery(document).ready(function($) {
           }
 
           
-/* Premium Code Stripped by Freemius */
-
 
         }
         else {

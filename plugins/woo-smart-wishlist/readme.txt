@@ -3,8 +3,8 @@ Contributors: wpclever
 Donate link: https://wpclever.net
 Tags: woocommerce, woo, wpc, smart, wishlist, wish list
 Requires at least: 4.0
-Tested up to: 5.7
-Stable tag: 2.6.0
+Tested up to: 5.7.2
+Stable tag: 2.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,10 +37,11 @@ Visit our [live demo](https://demo.wpclever.net/woosw/ "live demo") here to see 
 - Choose categories that allow wishlist button
 - Unlimited colors for wishlist popup
 - Edit the destination link for the Continue Shopping button
+- Choose a menu to add the wishlist menu
+- Choose an action triggered by the wishlist menu
 - WPML integration for building multilingual sites
 - RTL support
-- Premium: Choose a menu to add the wishlist menu
-- Premium: Choose an action triggered by the wishlist menu.
+- Premium: Add note for each product
 - Premium: Lifetime update and dedicated support
 - Premium: Customization to match with your theme/site design
 
@@ -92,12 +93,8 @@ Visit [plugin documentation website](https://wpclever.net?utm_source=doc&utm_med
 
 To integrate with a theme, please use bellow filter to hide the default buttons.
 
-`add_filter( 'woosw_button_position_archive', function() {
-    return '0';
-} );
-add_filter( 'woosw_button_position_single', function() {
-    return '0';
-} );`
+`add_filter( 'woosw_button_position_archive', '__return_false' );
+add_filter( 'woosw_button_position_single', '__return_false' );`
 
 After that, use the shortcode to display the button where you want.
 
@@ -108,6 +105,23 @@ Example:
 `echo do_shortcode('[woosw id="99"]');`
 
 == Changelog ==
+
+= 2.7.0 =
+* Fixed: Compatible with SG Optimizer
+* Fixed: Return the previous guest wishlist after logout
+
+= 2.6.4 =
+* Fixed: Filter 'woosw_button_position_archive' & 'woosw_button_position_single' doesn't work
+
+= 2.6.3 =
+* Updated: Optimized the code
+
+= 2.6.2 =
+* Fixed: Wishlist menu item
+
+= 2.6.1 =
+* Updated: Unlock wishlist menu item for free version
+* Fixed: Some minor CSS issues
 
 = 2.6.0 =
 * Added: Action and filter hooks: woosw_wishlist_items_before, woosw_wishlist_item_before, woosw_wishlist_item_image, woosw_wishlist_item_info, woosw_wishlist_item_actions, woosw_wishlist_item_after, woosw_wishlist_items_after

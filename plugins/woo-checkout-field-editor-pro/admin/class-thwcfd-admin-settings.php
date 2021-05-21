@@ -20,7 +20,7 @@ abstract class THWCFD_Admin_Settings{
 	protected $sections = '';
 
 	public function __construct() {
-		$this->tabs = array( 'fields' => 'Checkout Fields', 'advanced_settings' => 'Advanced Settings');
+		$this->tabs = array( 'fields' => 'Checkout Fields', 'advanced_settings' => 'Advanced Settings', 'pro' => 'Premium Features');
 	}
 	
 	public function get_tabs(){
