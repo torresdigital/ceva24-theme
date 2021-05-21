@@ -208,12 +208,16 @@ html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;
 =====================================================*/
 @media only screen and (max-width : 1200px) {
 
+    .comment-form { width: 100%; }
+
 }
 
+@media only screen and (max-width : 1024px) {
+
+}
 @media only screen and (max-width : 979px) {
 
 }
-
 @media only screen and (max-width : 768px) {
 
     .thunk-highlight-col {width: 50%;padding: 7px 33px;text-align: center;display: inline-block;}
@@ -225,14 +229,14 @@ html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;
 }
 
 @media only screen and (max-width : 640px) {
-    
+
     .main-header-col2 {width: 40%;margin-right: 7px;}
     .sticky-header-col2 {width: auto;text-align: center;display: inherit;}
     .sticky-header .logo-content {width: auto;}
 
     .thunk-highlight-col {width: 50%;padding: 7px 33px;text-align: center;display: inline-block;}
     #media_image-2 {text-align: center;}
-    
+
     .woocommerce div.product div.images .woocommerce-product-gallery__trigger {top: 29px;right: 10px;}
 
 
@@ -265,7 +269,7 @@ html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;
     #search-box input[type="text"], select#product_cat {padding: 0px 10px;font-size: 11px;width: 80%;}
     .open-shop-quantity {width: 132px;margin: 0 5px 0 0;}
 
-    .single_add_to_cart_button.button.alt, .woocommerce #respond input#submit.alt, .woocommerce a.button.alt, .woocommerce button.button.alt, .woocommerce input.button.alt, .woocommerce #respond input#submit, .woocommerce button.button, .woocommerce input.button, .woocommerce div.product form.cart .button {line-height: 32px;margin-right: 9px;text-align: center;padding: 0 10px;min-width: 88px;}
+    .single_add_to_cart_button.button.alt, .woocommerce #respond input#submit.alt, .woocommerce a.button.alt, .woocommerce button.button.alt, .woocommerce input.button.alt, .woocommerce #respond input#submit, .woocommerce button.button, .woocommerce input.button, .woocommerce div.product form.cart .button {line-height: 37px;margin-right: 9px;text-align: center;padding: 0 10px;min-width: 88px;}
 
     .woocommerce div.product form.cart {margin-bottom: 9px;text-align: center;}
     .added_to_cart.wc-forward {color: red;font-family: "Roboto-Bold", sans-serif;font-size: 20px;}
