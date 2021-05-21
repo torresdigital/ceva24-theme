@@ -97,7 +97,7 @@ class SQ_Controllers_Assistant extends SQ_Classes_FrontController {
 
             ///////////////////////////////////////////LIVE ASSISTANT SETTINGS
             case 'sq_settings_assistant':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
 
@@ -112,7 +112,7 @@ class SQ_Controllers_Assistant extends SQ_Classes_FrontController {
                 break;
 
             case 'sq_ajax_assistant':
-                if (!current_user_can('sq_manage_snippets')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippets')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
                     echo wp_json_encode($response);

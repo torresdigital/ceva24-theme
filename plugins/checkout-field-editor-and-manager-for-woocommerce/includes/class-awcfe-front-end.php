@@ -77,10 +77,13 @@ class AWCFE_Front_End
 
             add_action('wp_enqueue_scripts', array($this, 'frontend_enqueue_styles'), 20, 1);
 
+            //add_filter( 'woocommerce_is_rest_api_request', function(){} );
+
         }
 
 
     }
+
 
     public function check_woocommerce_active()
     {
@@ -228,7 +231,7 @@ class AWCFE_Front_End
 
     public function woocommerce_form_field($field, $key, $args, $value)
     {
-		
+
         if ($args['type'] === 'paragraph') {
             $field .= '<p class="' . AWCFE_TOKEN . '_paragraph_field " >' . do_shortcode(nl2br($args['label'])) . '</p>';
             if (!empty($field)) {
@@ -680,16 +683,16 @@ class AWCFE_Front_End
                 $field_label = isset( $field['label'] ) ? $field['label'] : '';
 
                 //$Section_label = $this->getSectionDefaultTitle($fieldset_key);
-                switch ( $fieldset_key ) {
-                    case 'shipping':
-                        /* translators: %s: field name */
-                        $field_label = sprintf( __( 'Shipping %s', 'woocommerce' ), $field_label );
-                        break;
-                    case 'billing':
-                        /* translators: %s: field name */
-                        $field_label = sprintf( __( 'Billing %s', 'woocommerce' ), $field_label );
-                        break;
-                }
+				switch ( $fieldset_key ) {
+					case 'shipping':
+						/* translators: %s: field name */
+						$field_label = sprintf( _x( 'Shipping %s', 'checkout-validation', 'woocommerce' ), $field_label );
+						break;
+					case 'billing':
+						/* translators: %s: field name */
+						$field_label = sprintf( _x( 'Billing %s', 'checkout-validation', 'woocommerce' ), $field_label );
+						break;
+				}
 
                 if ( in_array( 'postcode', $format, true ) ) {
                     $country      = isset( $data[ $fieldset_key . '_country' ] ) ? $data[ $fieldset_key . '_country' ] : WC()->customer->{"get_{$fieldset_key}_country"}();
@@ -704,7 +707,7 @@ class AWCFE_Front_End
                         }
                       }
                     }
-					
+
                     $data[ $key ] = wc_format_postcode( $data[ $key ], $country );
 
                     if ( $validate_fieldset && '' !== $data[ $key ] && ! WC_Validation::is_postcode( $data[ $key ], $country ) ) {
@@ -787,8 +790,8 @@ class AWCFE_Front_End
         if ( empty( $data['woocommerce_checkout_update_totals'] ) && empty( $data['terms'] ) && ! empty( $_POST['terms-field'] ) ) {
             $errors->add( 'terms', __( 'Please read and accept the terms and conditions to proceed with your order.', 'woocommerce' ) );
         }
-		
-		
+
+
         if ( WC()->cart->needs_shipping() ) {
           $shipping_country = WC()->customer->get_shipping_country();
 

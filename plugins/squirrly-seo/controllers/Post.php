@@ -11,6 +11,7 @@ class SQ_Controllers_Post extends SQ_Classes_FrontController {
         if (is_rtl()) {
             SQ_Classes_ObjController::getClass('SQ_Classes_DisplayController')->loadMedia('rtl');
         }
+
         //load the draggable script in post edit for the floating SLA
         wp_enqueue_script("jquery-ui-core");
         wp_enqueue_script("jquery-ui-draggable");
@@ -23,10 +24,16 @@ class SQ_Controllers_Post extends SQ_Classes_FrontController {
         if (SQ_Classes_Helpers_Tools::getOption('sq_api') == '')
             return;
 
-        //Hook and save the Snippet and Keywords
+        //Hook and save the Snippet and Keywords for Attachment Pages
         add_action('wp_insert_attachment_data', array($this, 'hookAttachmentSave'), 12, 2);
+
+        //if the option to save the images locally is activated
+        if (SQ_Classes_Helpers_Tools::getOption('sq_local_images')) {
+            add_filter('wp_insert_post_data', array($this, 'checkImage'), 13, 2);
+        }
+
+        //Remove the SLA highlight from post
         add_filter('wp_insert_post_data', array($this, 'removeHighlight'), 12, 2);
-        add_filter('wp_insert_post_data', array($this, 'checkImage'), 13, 2);
 
         //Hook the save post action
         add_action('save_post', array($this, 'hookSavePost'), 11, 2);
@@ -38,14 +45,29 @@ class SQ_Controllers_Post extends SQ_Classes_FrontController {
             add_action('transition_post_status', array(SQ_Classes_ObjController::getClass('SQ_Controllers_Sitemaps'), 'refreshSitemap'), PHP_INT_MAX, 3);
         }
 
+        //Check the compatibility with Woocommerce
+        if (SQ_Classes_Helpers_Tools::getOption('sq_jsonld_product_custom')) {
+            SQ_Classes_ObjController::getClass('SQ_Models_Compatibility')->checkWooCommerce();
+        }
+
+        //add compatibility for backend
+        SQ_Classes_ObjController::getClass('SQ_Models_Compatibility')->hookPostEditorBackend();
+
         //Make sure the URL is local and not changed by other plugins
-        add_filter('sq_homeurl', function ($url) {
-            if (defined('WP_HOME')) {
-                return WP_HOME;
-            } else {
-                return get_option('home');
-            }
-        });
+        add_filter('sq_homeurl', array($this, 'getHomeUrl'));
+    }
+
+    /**
+     * Get the current Home URL
+     * @param $url
+     * @return mixed
+     */
+    public function getHomeUrl($url) {
+        if (defined('WP_HOME')) {
+            return WP_HOME;
+        } else {
+            return get_option('home');
+        }
     }
 
     /**
@@ -64,6 +86,15 @@ class SQ_Controllers_Post extends SQ_Classes_FrontController {
      * @return array
      */
     public function removeHighlight($post_data, $postarr) {
+
+        if (isset($post_data['post_type']) && $post_data['post_type'] <> '') {
+            //Exclude types for SLA
+            $excludes = SQ_Classes_Helpers_Tools::getOption('sq_sla_exclude_post_types');
+            if (in_array($post_data['post_type'], $excludes)) {
+                return $post_data;
+            }
+        }
+
         if (!isset($post_data['post_content']) || !isset($postarr['ID'])) {
             return $post_data;
         }
@@ -82,61 +113,69 @@ class SQ_Controllers_Post extends SQ_Classes_FrontController {
      * @return array
      */
     public function checkImage($post_data, $postarr) {
+
         if (!isset($post_data['post_content']) || !isset($postarr['ID'])) {
             return $post_data;
         }
 
+        if (isset($post_data['post_type']) && $post_data['post_type'] <> '') {
+            //Exclude types for SLA
+            $excludes = SQ_Classes_Helpers_Tools::getOption('sq_sla_exclude_post_types');
+            if (in_array($post_data['post_type'], $excludes)) {
+                return $post_data;
+            }
+        }
+
         require_once(ABSPATH . 'wp-admin/includes/image.php');
 
-        //if the option to save the images locally is set on
-        if (SQ_Classes_Helpers_Tools::getOption('sq_local_images')) {
-            $urls = array();
-            if (function_exists('preg_match_all')) {
-                @preg_match_all('/<img[^>]*src=[\'"]([^\'"]+)[\'"][^>]*>/i', stripslashes($post_data['post_content']), $out);
+        $urls = array();
+        if (function_exists('preg_match_all')) {
+            @preg_match_all('/<img[^>]*src=[\'"]([^\'"]+)[\'"][^>]*>/i', stripslashes($post_data['post_content']), $out);
 
-                if (!empty($out)) {
-                    if (!is_array($out[1]) || count((array)$out[1]) == 0) {
-                        return $post_data;
-                    }
+            if (!empty($out)) {
+                if (!is_array($out[1]) || count((array)$out[1]) == 0) {
+                    return $post_data;
+                }
 
-                    if (get_bloginfo('wpurl') <> '') {
-                        $domain = parse_url(home_url(), PHP_URL_HOST);
+                if (get_bloginfo('wpurl') <> '') {
+                    $domain = parse_url(home_url(), PHP_URL_HOST);
 
-                        foreach ($out[1] as $row) {
-                            if (strpos($row, '//') !== false && strpos($row, $domain) === false) {
-                                if (!in_array($row, $urls)) {
-                                    $urls[] = $row;
-                                }
+                    foreach ($out[1] as $row) {
+                        if (strpos($row, '//') !== false && strpos($row, $domain) === false) {
+                            if (!in_array($row, $urls)) {
+                                $urls[] = $row;
                             }
                         }
                     }
                 }
             }
+        }
 
-            if (!is_array($urls) || (is_array($urls) && count((array)$urls) == 0)) {
-                return $post_data;
+        if (!is_array($urls) || (is_array($urls) && count((array)$urls) == 0)) {
+            return $post_data;
+        }
+
+        if (count((array)$urls) > 1) {
+            $urls = array_unique($urls);
+        }
+
+        $time = microtime(true);
+
+        //get the already downloaded images
+        $images = get_post_meta((int)$postarr['ID'], '_sq_image_downloaded');
+
+        foreach ($urls as $url) {
+
+            //Set the title and filename
+            $basename = md5(basename($url));
+            $keyword = SQ_Classes_Helpers_Tools::getValue('sq_keyword', false);
+            if ($keyword) {
+                $title = preg_replace('|[^a-z0-9-~+_.?#=!&;,/:%@$\|*\'()\[\]\\x80-\\xff ]|i', '', $keyword);
+                $basename = preg_replace('|[^a-z0-9-_]|i', '', str_replace(' ', '-', strtolower($keyword)));
             }
 
-            if (count((array)$urls) > 1) {
-                $urls = array_unique($urls);
-            }
-
-            $time = microtime(true);
-
-            //get the already downloaded images
-            $images = get_post_meta((int)$postarr['ID'], '_sq_image_downloaded');
-
-            foreach ($urls as $url) {
-
-                //Set the title and filename
-                $basename = md5(basename($url));
-                $keyword = SQ_Classes_Helpers_Tools::getValue('sq_keyword', false);
-                if ($keyword) {
-                    $title = preg_replace('|[^a-z0-9-~+_.?#=!&;,/:%@$\|*\'()\[\]\\x80-\\xff ]|i', '', $keyword);
-                    $basename = preg_replace('|[^a-z0-9-_]|i', '', str_replace(' ', '-', strtolower($keyword)));
-                }
-
-                //check the images
+            //check the images
+            if (!empty($images)) {
                 foreach ($images as $key => $local) {
                     $local = json_decode($local, true);
                     if ($local['url'] == md5($url)) {
@@ -147,42 +186,40 @@ class SQ_Controllers_Post extends SQ_Classes_FrontController {
                         continue 2;
                     }
                 }
-
-                //Upload the image on server
-                if ($file = $this->model->upload_image($url, $basename)) {
-                    if (!file_is_valid_image($file['file']))
-                        continue;
-
-                    $local_file = $file['url'];
-                    if ($local_file !== false) {
-
-                        //save as downloaded image to avoid duplicates
-                        add_post_meta((int)$postarr['ID'], '_sq_image_downloaded', wp_json_encode(array('url' => md5($url), 'file' => $local_file)));
-
-                        //replace the image in the content
-                        $post_data['post_content'] = str_replace($url, $local_file, $post_data['post_content']);
-
-                        //add the attachment image
-                        $attach_id = wp_insert_attachment(array(
-                            'post_mime_type' => $file['type'],
-                            'post_title' => $title,
-                            'post_content' => '',
-                            'post_status' => 'inherit',
-                            'guid' => $local_file
-                        ), $file['file'], $postarr['ID']);
-
-                        $attach_data = wp_generate_attachment_metadata($attach_id, $file['file']);
-                        wp_update_attachment_metadata($attach_id, $attach_data);
-
-                    }
-                }
-
-                if (microtime(true) - $time >= 10) {
-                    break;
-                }
-
             }
 
+            //Upload the image on server
+            if ($file = $this->model->upload_image($url, $basename)) {
+                if (!file_is_valid_image($file['file']))
+                    continue;
+
+                $local_file = $file['url'];
+                if ($local_file !== false) {
+
+                    //save as downloaded image to avoid duplicates
+                    add_post_meta((int)$postarr['ID'], '_sq_image_downloaded', wp_json_encode(array('url' => md5($url), 'file' => $local_file)));
+
+                    //replace the image in the content
+                    $post_data['post_content'] = str_replace($url, $local_file, $post_data['post_content']);
+
+                    //add the attachment image
+                    $attach_id = wp_insert_attachment(array(
+                        'post_mime_type' => $file['type'],
+                        'post_title' => $title,
+                        'post_content' => '',
+                        'post_status' => 'inherit',
+                        'guid' => $local_file
+                    ), $file['file'], $postarr['ID']);
+
+                    $attach_data = wp_generate_attachment_metadata($attach_id, $file['file']);
+                    wp_update_attachment_metadata($attach_id, $attach_data);
+
+                }
+            }
+
+            if (microtime(true) - $time >= 10) {
+                break;
+            }
 
         }
 
@@ -240,6 +277,14 @@ class SQ_Controllers_Post extends SQ_Classes_FrontController {
                 //Save the SEO
                 SQ_Classes_ObjController::getClass('SQ_Models_Snippet')->saveSEO($post->ID);
 
+                //Exclude types for SLA
+                if (isset($post->post_type) && $post->post_type <> '') {
+                    $excludes = SQ_Classes_Helpers_Tools::getOption('sq_sla_exclude_post_types');
+                    if (in_array($post->post_type, $excludes)) {
+                        return;
+                    }
+                }
+
                 //Send the optimization when attachment page
                 $this->sendSeo($post);
             }
@@ -282,7 +327,7 @@ class SQ_Controllers_Post extends SQ_Classes_FrontController {
         parent::action();
         switch (SQ_Classes_Helpers_Tools::getValue('action')) {
             case 'sq_create_demo':
-                if (!current_user_can('sq_manage_snippet')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
                     SQ_Classes_Error::setError(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     break;
                 }
@@ -335,7 +380,7 @@ class SQ_Controllers_Post extends SQ_Classes_FrontController {
 
             /**************************** AJAX CALLS *************************/
             case 'sq_ajax_save_ogimage':
-                if (!current_user_can('sq_manage_snippet')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
                     echo wp_json_encode($response);
@@ -366,7 +411,7 @@ class SQ_Controllers_Post extends SQ_Classes_FrontController {
             case 'sq_ajax_save_post':
                 SQ_Classes_Helpers_Tools::setHeader('json');
 
-                if (!current_user_can('sq_manage_snippet')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     echo wp_json_encode($response);
                     exit();
@@ -401,7 +446,7 @@ class SQ_Controllers_Post extends SQ_Classes_FrontController {
             case 'sq_ajax_get_post':
                 SQ_Classes_Helpers_Tools::setHeader('json');
 
-                if (!current_user_can('sq_manage_snippet')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     echo wp_json_encode($response);
                     exit();
@@ -585,5 +630,6 @@ class SQ_Controllers_Post extends SQ_Classes_FrontController {
 
         }
     }
+
 
 }

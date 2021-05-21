@@ -16,11 +16,11 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: custom-codes
  * Domain Path: /languages
- * Version: 2.2.3
+ * Version: 2.2.6
  *
  */
 defined( 'ABSPATH' ) || die( 'No script kiddies please!' );
-define( 'CODES_VERSION', '2.2.3' );
+define( 'CODES_VERSION', '2.2.6' );
 define( 'CODES_DEBUG', false );
 // Paths.
 define( 'CODES_FILE', __FILE__ );
@@ -80,7 +80,20 @@ if ( function_exists( 'codes_fs' ) ) {
         if ( !function_exists( 'WP_Filesystem' ) ) {
             require_once ABSPATH . 'wp-admin/includes/file.php';
         }
-        WP_Filesystem();
+        
+        if ( !WP_Filesystem() ) {
+            add_action( 'admin_notices', function () {
+                $class = 'notice notice-error';
+                $message = sprintf(
+                    /* translators: 1: WP Filesystem Method */
+                    __( 'Your WordPress filesystem method "%1$s" is not configured correctly. Please configure it, or use another method like "direct" to be able to continue using the plugin.', 'custom-codes' ),
+                    get_filesystem_method()
+                );
+                printf( '<div class="notice notice-error"><p><b>Custom Codes:</b> %1$s</p></div>', esc_html( $message ) );
+            } );
+            return;
+        }
+        
         global  $wp_filesystem ;
     }
     

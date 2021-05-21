@@ -31,6 +31,16 @@ class SQ_Models_Focuspages_Nofollow extends SQ_Models_Abstract_Assistant {
                         $hlink = str_replace('www.', '', parse_url(home_url(), PHP_URL_HOST));
                         $slink = str_replace('www.', '', parse_url(site_url(), PHP_URL_HOST));
 
+                        //If it's not an exception link
+                        $exceptions = SQ_Classes_Helpers_Tools::getOption('sq_external_exception');
+                        if (!empty($exceptions)) {
+                            foreach ($exceptions as $exception) {
+                                if (strpos($exception, $link) !== false) {
+                                    continue 2;
+                                }
+                            }
+                        }
+
                         if ($link <> $hlink && $link <> $slink && strpos($link, '.') !== false) {
                             $this->_dofollow_links[] = $link;
                         }

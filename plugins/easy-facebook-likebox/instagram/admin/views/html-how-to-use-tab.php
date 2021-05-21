@@ -165,7 +165,7 @@ if ( !class_exists( 'Esf_Multifeed_Instagram_Frontend' ) ) {
 ?>
                     </div>
 
-					<?php 
+	                <?php 
 
 if ( efl_fs()->is_plan( 'instagram_premium', true ) or efl_fs()->is_plan( 'combo_premium', true ) ) {
 } else {
@@ -373,6 +373,56 @@ if ( efl_fs()->is_plan( 'instagram_premium', true ) or efl_fs()->is_plan( 'combo
 esc_html_e( "Open links in new tab", 'easy-facebook-likebox' );
 ?></label>
                     </div>
+	                <?php 
+
+if ( efl_fs()->is_plan( 'instagram_premium', true ) or efl_fs()->is_plan( 'combo_premium', true ) ) {
+} else {
+    ?>
+                        <div class="col s12 mif_fields esf_insta_checkbox">
+                            <input name="esf_insta_show_stories_free"
+                                   type="checkbox" class="filled-in modal-trigger" href="#esf-insta-show_stories-upgrade"
+                                   value="" id="esf_insta_show_stories_free"/>
+                            <label for="esf_insta_show_stories_free"><?php 
+    esc_html_e( "Show Stories", 'easy-facebook-likebox' );
+    ?></label>
+                        </div>
+
+                        <div id="esf-insta-show_stories-upgrade"
+                             class="fta-upgrade-modal modal">
+                            <div class="modal-content">
+
+                                <div class="mif-modal-content"><span
+                                            class="mif-lock-icon"><i
+                                                class="material-icons dp48">lock_outline</i> </span>
+                                    <h5><?php 
+    esc_html_e( "Premium Feature", 'easy-facebook-likebox' );
+    ?></h5>
+                                    <p><?php 
+    esc_html_e( "We're sorry, Account Stories are not included in your plan.", 'easy-facebook-likebox' );
+    ?></p>
+                                    <p><?php 
+    esc_html_e( 'Upgrade today and get a 10% discount! On the checkout click on "Have a promotional code?" and enter', 'easy-facebook-likebox' );
+    ?>
+                                        <code>espf10</code></p>
+                                    <hr/>
+                                    <a href="<?php 
+    echo  esc_url( efl_fs()->get_upgrade_url() ) ;
+    ?>"
+                                       class="waves-effect waves-light btn"><i
+                                                class="material-icons right">lock_open</i><?php 
+    esc_html_e( "Upgrade now", 'easy-facebook-likebox' );
+    ?>
+                                    </a>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+	                <?php 
+}
+
+?>
                     <br>
                     <div class="clear"></div>
                     <input type="submit" class="btn  mif_shortcode_submit"

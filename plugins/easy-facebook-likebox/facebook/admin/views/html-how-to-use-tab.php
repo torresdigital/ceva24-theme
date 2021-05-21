@@ -21,25 +21,32 @@ $efbl_default_likebox_notice = '';
                         <div class="efbl_collapsible_info col s12">
 
                             <div class="efbl_default_shortcode_holder col s8">
-                                <h5><?php 
-esc_html_e( "How to use this plugin?", 'easy-facebook-likebox' );
-?></h5>
+                                <?php 
 
+if ( isset( $fta_settings['plugins']['facebook']['approved_pages'] ) || isset( $fta_settings['plugins']['facebook']['approved_groups'] ) ) {
+    ?>
+                                <h5><?php 
+    esc_html_e( "How to use this plugin?", 'easy-facebook-likebox' );
+    ?></h5>
+                                <p><?php 
+    esc_html_e( "Copy and paste the following shortcode in any page, post or text widget to display the feed.", 'easy-facebook-likebox' );
+    ?></p>
 								<?php 
+}
+
 
 if ( isset( $fta_settings['plugins']['facebook']['approved_pages'] ) && !empty($fta_settings['plugins']['facebook']['approved_pages']) ) {
     $default_page_id = efbl_default_page_id();
     ?>
-
-                                    <p><?php 
-    esc_html_e( "Copy and paste the following shortcode in any page, post or text widget to display the feed.", 'easy-facebook-likebox' );
-    ?></p>
+                                    <h5><?php 
+    esc_html_e( "Page Feed", 'easy-facebook-likebox' );
+    ?></h5>
                                     <div class="efbl-shortcode-holder">
                                         <blockquote
                                                 class="efbl-shortcode-block">
                                             [efb_feed fanpage_id="<?php 
     echo  $default_page_id ;
-    ?>" skin_id="<?php 
+    ?>" type="page" skin_id="<?php 
     echo  efbl_default_skin_id() ;
     ?>" words_limit="25" links_new_tab="1"]
                                         </blockquote>
@@ -51,7 +58,7 @@ if ( isset( $fta_settings['plugins']['facebook']['approved_pages'] ) && !empty($
     ?>"
                                            data-clipboard-text='[efb_feed fanpage_id="<?php 
     echo  $default_page_id ;
-    ?>" skin_id="<?php 
+    ?>" type="page" skin_id="<?php 
     echo  efbl_default_skin_id() ;
     ?>" words_limit="25" links_new_tab="1"]'
                                            href="javascript:void(0);"><i
@@ -60,23 +67,73 @@ if ( isset( $fta_settings['plugins']['facebook']['approved_pages'] ) && !empty($
                                     </div>
 
 								<?php 
-} else {
+}
+
+?>
+
+	                            <?php 
+
+if ( isset( $fta_settings['plugins']['facebook']['approved_groups'] ) && !empty($fta_settings['plugins']['facebook']['approved_groups']) ) {
+    
+    if ( isset( $fta_settings['plugins']['facebook']['approved_groups'][0]->id ) ) {
+        $default_group_id = $fta_settings['plugins']['facebook']['approved_groups'][0]->id;
+    } else {
+        $default_group_id = '';
+    }
+    
+    if ( !isset( $default_group_id ) && isset( $fta_settings['plugins']['facebook']['approved_groups'][1]->id ) ) {
+        $default_group_id = $fta_settings['plugins']['facebook']['approved_groups'][1]->id;
+    }
+    ?>
+                                <h5><?php 
+    esc_html_e( "Group Feed", 'easy-facebook-likebox' );
+    ?></h5>
+                                <div class="efbl-shortcode-holder">
+                                    <blockquote
+                                            class="efbl-shortcode-block">
+                                        [efb_feed fanpage_id="<?php 
+    echo  $default_group_id ;
+    ?>" type="group" skin_id="<?php 
+    echo  efbl_default_skin_id() ;
+    ?>" words_limit="25" links_new_tab="1"]
+                                    </blockquote>
+
+                                    <a class="btn waves-effect efbl_copy_shortcode waves-light tooltipped"
+                                       data-position="right" data-delay="50"
+                                       data-tooltip="<?php 
+    esc_html_e( "Copy", 'easy-facebook-likebox' );
+    ?>"
+                                       data-clipboard-text='[efb_feed fanpage_id="<?php 
+    echo  $default_group_id ;
+    ?>" type="group" skin_id="<?php 
+    echo  efbl_default_skin_id() ;
+    ?>" words_limit="25" links_new_tab="1"]'
+                                       href="javascript:void(0);"><i
+                                                class="material-icons right">content_copy</i>
+                                    </a>
+                                </div>
+
+                                <?php 
+}
+
+
+if ( !isset( $fta_settings['plugins']['facebook']['approved_pages'] ) && !isset( $fta_settings['plugins']['facebook']['approved_groups'] ) ) {
     ?>
 
-                                    <blockquote
-                                            class="efbl-red-notice"><?php 
+                                <blockquote
+                                        class="efbl-red-notice"><?php 
     esc_html_e( "It looks like you did not authenticate the plugin. Please go to ", 'easy-facebook-likebox' );
     ?>
-                                        <a href="<?php 
+                                    <a href="<?php 
     echo  esc_url( admin_url( 'admin.php?page=easy-facebook-likebox' ) ) ;
     ?>"><?php 
     esc_html_e( "Authenticate", 'easy-facebook-likebox' );
     ?></a> <?php 
-    esc_html_e( 'page and click on the "Connect My Facebook Pages" button', 'easy-facebook-likebox' );
+    esc_html_e( 'page and click on the "Connect My Facebook Account" button and approve page(s) or group(s) from Facebook authentication process', 'easy-facebook-likebox' );
     ?>
-                                    </blockquote>
+                                </blockquote>
 
-								<?php 
+                                <?php 
 }
 
 ?>
@@ -113,7 +170,28 @@ esc_html_e( "Paste in the page/post content or in text widget", 'easy-facebook-l
                                 <h5><?php 
 esc_html_e( "Shortcode Generator", 'easy-facebook-likebox' );
 ?></h5>
-                                <div class="input-field col s12 efbl_fields">
+
+                                    <div class="input-field col s12 efbl_fields">
+                                        <a href="javascript:void(0)"
+                                           class="efbl_open_collapisble"
+                                           data-id="efbl_feed_type_info">?</a>
+                                        <select id="efbl_feed_type"
+                                                class="icons efbl_feed_type" <?php 
+do_action( 'esf_fb_feed_type_attr' );
+?>>
+                                                <option value="page" ><?php 
+esc_html_e( "Page", 'easy-facebook-likebox' );
+?></option>
+                                                <option value="group" ><?php 
+esc_html_e( "Group", 'easy-facebook-likebox' );
+?></option>
+                                        </select>
+                                        <label><?php 
+esc_html_e( "Feed type", 'easy-facebook-likebox' );
+?></label>
+                                    </div>
+
+                                <div class="input-field col s12 efbl_fields efbl-page-releated-field">
                                     <a href="javascript:void(0)"
                                        class="efbl_open_collapisble"
                                        data-id="efbl_page_info">?</a>
@@ -174,7 +252,8 @@ if ( $fta_settings['plugins']['facebook']['approved_pages'] ) {
 esc_html_e( "Select Page", 'easy-facebook-likebox' );
 ?></label>
                                 </div>
-                                <div class="input-field col s12 efbl_fields efbl-addon-upgrade-link">
+
+                                <div class="input-field col s12 efbl_fields efbl-addon-upgrade-link efbl-page-releated-field">
                                     <?php 
 
 if ( !class_exists( 'Esf_Multifeed_Facebook_Frontend' ) ) {
@@ -189,6 +268,68 @@ if ( !class_exists( 'Esf_Multifeed_Facebook_Frontend' ) ) {
 
 ?>
                                 </div>
+
+                                <?php 
+
+if ( isset( $fta_settings['plugins']['facebook']['approved_groups'] ) && !empty($fta_settings['plugins']['facebook']['approved_groups']) ) {
+    ?>
+                                    <div class="input-field col s12 efbl_fields efbl-group-id-wrap">
+                                        <a href="javascript:void(0)"
+                                           class="efbl_open_collapisble"
+                                           data-id="efbl_group_info">?</a>
+                                        <select id="efbl_group_id"
+                                                class="icons efbl_group_id" <?php 
+    do_action( 'esf_fb_group_attr' );
+    ?>>
+			                                <?php 
+    
+    if ( $fta_settings['plugins']['facebook']['approved_groups'] ) {
+        $i = 0;
+        foreach ( $fta_settings['plugins']['facebook']['approved_groups'] as $efbl_group ) {
+            $i++;
+            
+            if ( $efbl_group->id ) {
+                ?>
+                                                        <option value="<?php 
+                echo  $efbl_group->id ;
+                ?>"
+                                                                data-icon="<?php 
+                echo  efbl_get_page_logo( $efbl_group->id ) ;
+                ?>" <?php 
+                if ( $i == 1 ) {
+                    ?> selected <?php 
+                }
+                ?>><?php 
+                echo  $efbl_group->name ;
+                ?></option>
+
+					                                <?php 
+            }
+        
+        }
+    } else {
+        ?>
+
+                                                <option value="" disabled
+                                                        selected><?php 
+        esc_html_e( "No group(s) found, Please connect your Facebook group with plugin first from authenticate tab", 'easy-facebook-likebox' );
+        ?></option>
+
+			                                <?php 
+    }
+    
+    ?>
+                                        </select>
+                                        <label><?php 
+    esc_html_e( "Select Group", 'easy-facebook-likebox' );
+    ?></label>
+                                    </div>
+                                <?php 
+}
+
+?>
+
+
 
                                 <div class="input-field col s12 efbl_fields">
                                     <a href="javascript:void(0)"
@@ -205,7 +346,7 @@ esc_html_e( "Access Token (Optional)", 'easy-facebook-likebox' );
 								<?php 
 ?>
 
-                                    <div class="input-field col s12 efbl_fields">
+                                    <div class="input-field col s12 efbl_fields efbl-page-releated-field">
                                         <a href="javascript:void(0)"
                                            class="efbl_open_collapisble"
                                            data-id="efbl_other_pages_info">?</a>
@@ -217,7 +358,7 @@ esc_html_e( "Any other page ID", 'easy-facebook-likebox' );
 ?></label>
                                     </div>
 
-                                    <div class="col s12 efbl_fields">
+                                    <div class="col s12 efbl_fields efbl-page-releated-field">
                                         <a href="javascript:void(0)"
                                            class="efbl_open_collapisble"
                                            data-id="efbl_filter_posts_info">?</a>
@@ -266,10 +407,13 @@ if ( isset( $efbl_skins ) ) {
     foreach ( $efbl_skins as $efbl_skin ) {
         $layout_selected = ucfirst( $efbl_skin['layout'] );
         ?>
-
                                                 <option value="<?php 
         echo  $efbl_skin['ID'] ;
-        ?>" data-icon="<?php 
+        ?>" <?php 
+        if ( $efbl_skin['layout'] == 'half' ) {
+            ?> selected <?php 
+        }
+        ?> data-icon="<?php 
         echo  get_the_post_thumbnail_url( $efbl_skin['ID'], 'thumbnail' ) ;
         ?>"><?php 
         echo  $efbl_skin['title'] ;
@@ -386,7 +530,7 @@ if ( efl_fs()->is_plan( 'facebook_premium', true ) or efl_fs()->is_plan( 'combo_
 
 ?>
 
-                                <div class="col s6 efbl_fields"
+                                <div class="col s6 efbl_fields efbl-page-releated-field"
                                      style="padding-right: 10px;">
                                     <a href="javascript:void(0)"
                                        style="right: 10px;"
@@ -406,7 +550,7 @@ if ( efl_fs()->is_plan( 'facebook_premium', true ) or efl_fs()->is_plan( 'combo_
 } else {
     ?>
 
-                                    <div class="col s6 efbl_fields" style="padding-right: 10px;">
+                                    <div class="col s6 efbl_fields efbl-page-releated-field" style="padding-right: 10px;">
                                         <a href="javascript:void(0)" style="right: 10px;" class="efbl_open_collapisble" data-id="efbl_live_stream_only_info">?</a>
                                         <input name="efbl_live_stream_only_free" type="checkbox" class="filled-in modal-trigger" href="#efbl-live-stream-only-upgrade"  id="efbl_live_stream_only_free"/>
                                         <label for="efbl_live_stream_only_free"><?php 
@@ -490,13 +634,26 @@ esc_html_e( "Widgets", 'easy-facebook-likebox' );
                     </div>
 
                     <h5><?php 
-esc_html_e( "Unable to understand shortocde parameters?", 'easy-facebook-likebox' );
+esc_html_e( "Unable to understand shortcode parameters?", 'easy-facebook-likebox' );
 ?></h5>
                     <p><?php 
-esc_html_e( "No worries, Each shortocde parameter is explained below first read them and generate your shortocde.", 'easy-facebook-likebox' );
+esc_html_e( "No worries, Each shortcode parameter is explained below first read them and generate your shortocde.", 'easy-facebook-likebox' );
 ?></p>
                     <ul class="collapsible efbl_shortcode_accord"
                         data-collapsible="accordion">
+                        <li id="efbl_feed_type_info">
+                            <div class="collapsible-header">
+                                <span class="mif_detail_head"><?php 
+esc_html_e( "Feed Type", 'easy-facebook-likebox' );
+?></span>
+                            </div>
+                            <div class="collapsible-body">
+                                <p><?php 
+esc_html_e( "Select which type of feed you want to display. You can select either Page or Group", 'easy-facebook-likebox' );
+?>.</p>
+                            </div>
+                        </li>
+
                         <li id="efbl_page_info">
                             <div class="collapsible-header">
                                 <span class="mif_detail_head"><?php 
@@ -507,6 +664,19 @@ esc_html_e( "Pages", 'easy-facebook-likebox' );
                                 <p><?php 
 esc_html_e( "List of pages you approved for plugin to get the feeds. Select the page you want to display feeds.", 'easy-facebook-likebox' );
 ?></p>
+                            </div>
+                        </li>
+
+                        <li id="efbl_group_info">
+                            <div class="collapsible-header">
+                                <span class="mif_detail_head"><?php 
+esc_html_e( "Groups", 'easy-facebook-likebox' );
+?></span>
+                            </div>
+                            <div class="collapsible-body">
+                                <p><?php 
+esc_html_e( "List of groups you approved for plugin to get the feeds. Select the group you want to display feeds", 'easy-facebook-likebox' );
+?>,</p>
                             </div>
                         </li>
 

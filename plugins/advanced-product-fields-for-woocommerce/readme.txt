@@ -2,11 +2,11 @@
 Contributors: studiowombat,maartenbelmans
 Tags: woocommerce product addons, woocommerce, woocommerce product options, product addons, product fields
 Requires at least: 4.5
-Tested up to: 5.7
+Tested up to: 5.7.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Stable tag: 1.3.7
+Stable tag: 1.3.8
 
 Customize WooCommerce product pages with powerful and intuitive options ( = product add-ons).
 
@@ -84,7 +84,7 @@ Everything from the free version, plus:
 * Support for multilingual stores through WPML or Polylang.
 * Works with your WooCommerce tax settings.
 * Support for multi-currency stores via the WOOCS plugin.
-* More integrations with other plugins (such as WooCommerce Subscriptions) & popular themes. [See here](https://www.studiowombat.com/kb-article/advanced-product-fields-for-woocommerce-compatibility/).
+* More integrations with other plugins (such as WooCommerce Subscriptions) & popular themes. [See here](https://www.studiowombat.com/knowledge-base/which-plugins-and-themes-are-compatible-with-advanced-product-fields-for-woocommerce/).
 * More options for text fields: min. and max. length, or HTML validation (regex pattern).
 * Actions & filters so you can extend the plugin with additional features.
 * HTML output allowing you to more easily style certain aspects with CSS.
@@ -112,6 +112,10 @@ Find out more about the [pro version here](https://studiowombat.com/plugin/advan
  You'll need WooCommerce 3.4.0 or higher, WordPress 4.7 or higher, and PHP 5.6 or higher to make this plugin work.
 
 == Changelog ==
+
+= 1.3.8 =
+ * Update: changed links to new version of the documentation.
+ * Update: verify WooCommerce & WP version tags.
 
 = 1.3.7 =
  * Update: verify WooCommerce & WP version tags.

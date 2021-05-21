@@ -99,7 +99,7 @@
                                                                 foreach ($view->labels as $label) {
                                                                     ?>
                                                                     <input type="checkbox" name="sq_labels[]" class="sq_bulk_labels" id="popup_checkbox_bulk_<?php echo (int)$label->id ?>" style="display: none;" value="<?php echo (int)$label->id ?>"/>
-                                                                    <label for="popup_checkbox_bulk_<?php echo (int)$label->id ?>" class="sq_checkbox_label fa" style="background-color: <?php echo esc_attr($label->color) ?>" title="<?php echo esc_attr($label->name) ?>"><?php echo esc_html($label->name) ?></label>
+                                                                    <label for="popup_checkbox_bulk_<?php echo (int)$label->id ?>" class="sq_checkbox_label fa" data-title="<?php echo esc_html__("Click to select", _SQ_PLUGIN_NAME_); ?>" style="background-color: <?php echo esc_attr($label->color) ?>" title="<?php echo esc_attr($label->name) ?>"><?php echo esc_html($label->name) ?></label>
                                                                     <?php
                                                                 }
                                                             } else { ?>
@@ -160,7 +160,7 @@
                                                     ?>
                                                     <tr id="sq_row_<?php echo (int)$row->id ?>">
                                                         <td style="width: 10px;">
-                                                            <?php if (current_user_can('sq_manage_settings')) { ?>
+                                                            <?php if (SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) { ?>
                                                                 <input type="checkbox" name="sq_edit[]" class="sq_bulk_input" value="<?php echo SQ_Classes_Helpers_Sanitize::escapeKeyword($row->keyword) ?>"/>
                                                             <?php } ?>
                                                         </td>
@@ -245,7 +245,7 @@
                                                                                 <?php echo esc_html__("Optimize for this", _SQ_PLUGIN_NAME_) ?>
                                                                             </a>
                                                                         </li>
-                                                                        <?php if (current_user_can('sq_manage_settings')) { ?>
+                                                                        <?php if (SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) { ?>
                                                                             <?php if (isset($row->do_serp) && !$row->do_serp) { ?>
                                                                                 <li class="sq_research_doserp border-bottom m-0 p-1 py-2" data-success="<?php echo esc_html__("Check Rankings", _SQ_PLUGIN_NAME_) ?>" data-link="<?php echo SQ_Classes_Helpers_Tools::getAdminUrl('sq_rankings', 'rankings', array('strict=1', 'skeyword=' . SQ_Classes_Helpers_Sanitize::escapeKeyword($row->keyword))) ?>" data-keyword="<?php echo SQ_Classes_Helpers_Sanitize::escapeKeyword($row->keyword) ?>">
                                                                                     <i class="sq_icons_small sq_ranks_icon"></i>
@@ -265,7 +265,7 @@
                                                                             <i class="sq_icons_small sq_labels_icon"></i>
                                                                             <span onclick="jQuery('#sq_label_manage_popup<?php echo (int)$key ?>').modal('show')"><?php echo esc_html__("Assign Label", _SQ_PLUGIN_NAME_); ?></span>
                                                                         </li>
-                                                                        <?php if (current_user_can('sq_manage_settings')) { ?>
+                                                                        <?php if (SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) { ?>
                                                                             <li class="sq_delete m-0 p-1 py-2" data-id="<?php echo (int)$row->id ?>" data-keyword="<?php echo SQ_Classes_Helpers_Sanitize::escapeKeyword($row->keyword) ?>">
                                                                                 <i class="sq_icons_small fa fa-trash-o"></i>
                                                                                 <?php echo esc_html__("Delete Keyword", _SQ_PLUGIN_NAME_) ?>
@@ -329,7 +329,7 @@
                                                                 <?php if (isset($row->research->sc)) { ?>
                                                                     <li class="row py-3 border-bottom">
                                                                         <div class="col-4"><?php echo esc_html__("Competition", _SQ_PLUGIN_NAME_) ?>:</div>
-                                                                        <div class="col-6" style="color: <?php echo esc_attr($row->research->sc->color) ?>"><?php echo($row->research->sc->text <> '' ? esc_html($row->research->sc->text) : '-') ?></div>
+                                                                        <div class="col-6" style="color: <?php echo esc_attr($row->research->sc->color) ?>"><?php echo($row->research->sc->text <> '' ? $view->getReasearchStatsText('sc',$row->research->sc->value) : '-') ?></div>
                                                                     </li>
                                                                 <?php } ?>
                                                                 <?php if (isset($row->research->sv)) { ?>
@@ -341,7 +341,7 @@
                                                                 <?php if (isset($row->research->tw)) { ?>
                                                                     <li class="row py-3 border-bottom">
                                                                         <div class="col-4"><?php echo esc_html__("Recent discussions", _SQ_PLUGIN_NAME_) ?>:</div>
-                                                                        <div class="col-6"><?php echo($row->research->tw->text <> '' ? esc_html($row->research->tw->text) : '-') ?></div>
+                                                                        <div class="col-6"><?php echo($row->research->tw->text <> '' ? $view->getReasearchStatsText('tw',$row->research->tw->value) : '-') ?></div>
                                                                     </li>
                                                                 <?php } ?>
                                                                 <?php if (isset($row->research->td)) { ?>
@@ -398,7 +398,7 @@
                                                                 foreach ($view->labels as $label) {
                                                                     ?>
                                                                     <input type="checkbox" name="sq_labels" id="popup_checkbox_<?php echo (int)$key ?>_<?php echo (int)$label->id ?>" style="display: none;" value="<?php echo (int)$label->id ?>" <?php echo(in_array((int)$label->id, $keyword_labels) ? 'checked' : '') ?> />
-                                                                    <label for="popup_checkbox_<?php echo (int)$key ?>_<?php echo (int)$label->id ?>" class="sq_checkbox_label fa <?php echo(in_array((int)$label->id, $keyword_labels) ? 'sq_active' : '') ?>" style="background-color: <?php echo esc_attr($label->color) ?>" title="<?php echo esc_attr($label->name) ?>"><?php echo esc_html($label->name) ?></label>
+                                                                    <label for="popup_checkbox_<?php echo (int)$key ?>_<?php echo (int)$label->id ?>" class="sq_checkbox_label fa <?php echo(in_array((int)$label->id, $keyword_labels) ? 'sq_active' : '') ?>" data-title="<?php echo esc_html__("Click to select", _SQ_PLUGIN_NAME_); ?>" style="background-color: <?php echo esc_attr($label->color) ?>" title="<?php echo esc_attr($label->name) ?>"><?php echo esc_html($label->name) ?></label>
                                                                     <?php
                                                                 }
 
@@ -426,7 +426,7 @@
                                     <?php } else { ?>
 
                                         <div class="card-body">
-                                            <h4 class="text-center"><?php echo esc_html__("Welcome to Squirrly Briefcase", _SQ_PLUGIN_NAME_); ?></h4>
+                                            <h4 class="text-center"><?php echo esc_html__("Welcome to Briefcase", _SQ_PLUGIN_NAME_); ?></h4>
                                             <div class="col-12 m-2 text-center">
                                                 <a href="<?php echo SQ_Classes_Helpers_Tools::getAdminUrl('sq_research', 'research') ?>" class="btn btn-lg btn-primary">
                                                     <i class="fa fa-plus-square-o"></i> <?php echo esc_html__("Go Find New Keywords", _SQ_PLUGIN_NAME_); ?>
@@ -444,7 +444,7 @@
                                         </div>
                                     <?php } ?>
 
-                                    <?php if (current_user_can('sq_manage_settings')) { ?>
+                                    <?php if (SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) { ?>
                                         <div class="col-12 row py-2 mx-0 my-3 mt-4 pt-4 border-bottom-0 border-top">
                                             <div class="col-8 p-0 pr-3">
                                                 <div class="font-weight-bold"><?php echo esc_html__("Backup/Restore Briefcase Keywords", _SQ_PLUGIN_NAME_); ?>:

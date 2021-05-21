@@ -4,10 +4,10 @@
  * Plugin Name: Easy Social Feed
  * Plugin URI:        https://wordpress.org/plugins/easy-facebook-likebox
  * Description:       Formerly "Easy Facebook Like Box and Custom Facebook Feed" plugin allows you to easily display custom facebook feed, custom Instagram photos and videos feed, page plugin (like box) on your website using either widget or shortcode to increase facbook fan page likes. You can use the shortcode generator. Additionally it also now allows you to dipslay the customized facebook feed on your website using the same color scheme of your website. Its completely customizable with lots of optional settings. Its also responsive facebook like box at the same time.
- * Version:           6.2.2
- * Author:            Danish Ali Malik
- * Author URI:        https://maltathemes.com/danish-ali-malik
- * Text Domain:       easy-facebook-likebox,
+ * Version:           6.2.4
+ * Author:            Easy Social Feed
+ * Author URI:        https://easysocialfeed.com/
+ * Text Domain:       easy-facebook-likebox
  */
 // If this file is called directly, abort.
 if ( !defined( 'WPINC' ) ) {
@@ -98,31 +98,15 @@ if ( function_exists( 'efl_fs' ) ) {
     if ( !class_exists( 'Feed_Them_All' ) ) {
         class Feed_Them_All
         {
-            public  $version = '6.2.2' ;
+            public  $version = '6.2.4' ;
             public  $fta_slug = 'easy-facebook-likebox' ;
             public  $plug_slug = 'easy-facebook-likebox' ;
             function __construct()
             {
-                /*
-                 * init hooks fires on wp load
-                 */
                 add_action( 'init', [ $this, 'constants' ] );
                 add_action( 'init', [ $this, 'includes' ] );
                 add_action( 'plugins_loaded', [ $this, 'load_textdomain' ], 10 );
-                add_filter(
-                    'load_textdomain_mofile',
-                    [ $this, 'load_my_own_textdomain' ],
-                    10,
-                    2
-                );
-                /*
-                 * register_activation_hook fires plugin install.
-                 */
                 register_activation_hook( __FILE__, [ $this, 'fta_activated' ] );
-                /*
-                 * Will add the My Instagram Feed settings page link in the plugin area.
-                 */
-                // add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'fta_settings_link' ) );
             }
             
             /*
@@ -156,18 +140,7 @@ if ( function_exists( 'efl_fs' ) ) {
              */
             public function load_textdomain()
             {
-                load_plugin_textdomain( 'easy-facebook-likebox' );
-            }
-            
-            function load_my_own_textdomain( $mofile, $domain )
-            {
-                
-                if ( 'easy-facebook-likebox' === $domain && false !== strpos( $mofile, WP_LANG_DIR . '/plugins/' ) ) {
-                    $locale = apply_filters( 'plugin_locale', determine_locale(), $domain );
-                    $mofile = WP_PLUGIN_DIR . '/' . dirname( plugin_basename( __FILE__ ) ) . '/languages/' . $domain . '-' . $locale . '.mo';
-                }
-                
-                return $mofile;
+                load_plugin_textdomain( 'easy-facebook-likebox', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
             }
             
             /*

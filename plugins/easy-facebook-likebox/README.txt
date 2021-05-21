@@ -1,9 +1,9 @@
 === Easy Social Feed - Social Photos Gallery - Post Feed - Like Box ===
-Contributors: maltathemes, sjaved
+Contributors: DaNish Ali, maltathemes, sjaved
 Tags: instagram feed, instagram, facebook feed, Facebook, page plugin
 Requires at least: 3.3
 Tested up to: 5.7
-Stable tag: 6.2.2
+Stable tag: 6.2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -177,6 +177,19 @@ http://wordpress.org/support/topic/need-feed-back-on-plugin-feature/
 23. Instagram skins/layouts panel
 
 == Changelog ==
+= 6.2.4 =
+* Added: Featured Post addon support
+* Added: French, German, Spanish, Italian, Portuguese languages support.
+* Fixed: Ipad gallery next previous issue
+* Fixed: Mobile resize image issue
+* Fixed: Events calender issue
+
+= 6.2.3 =
+* Added: Facebook Groups support
+* Added: Visual Moderation
+* Added: Instagram Stories
+* Fixed: Minor issues
+
 = 6.2.2 =
 * Fixed: Template not found issue
 * Fixed: Events Date issue

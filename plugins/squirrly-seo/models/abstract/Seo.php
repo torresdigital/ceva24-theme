@@ -11,6 +11,14 @@ abstract class SQ_Models_Abstract_Seo {
         $this->_sq_use = true;
     }
 
+    /**
+     * Set the Post in SEO Class
+     * @param SQ_Models_Domain_Post $post
+     */
+    public function setPost($post) {
+        $this->_post = $post;
+    }
+
     /**************************** CLEAR THE VALUES *************************************/
     /***********************************************************************************/
     /**
@@ -80,18 +88,11 @@ abstract class SQ_Models_Abstract_Seo {
      * Get the image from post
      *
      * @return array
-     * @param integer $post_id Custom post is
      * @param boolean $all take all the images or stop at the first one
      * @return array
      */
-    public function getPostImages($post_id = null, $all = false) {
+    public function getPostImages($all = false) {
         $images = array();
-
-        //for sitemap calls
-        if (isset($post_id)) {
-            $this->_post = SQ_Classes_ObjController::getDomain('SQ_Models_Domain_Post');
-            $this->_post->ID = (int)$post_id;
-        }
 
         if (!isset($this->_post->ID) || (int)$this->_post->ID == 0) {
             return $images;
@@ -105,11 +106,12 @@ abstract class SQ_Models_Abstract_Seo {
             $attachment = get_post(get_post_thumbnail_id($this->_post->ID));
             $this->_post->post_title = ((isset($attachment->post_title) && strlen($attachment->post_title) > 10) ? $attachment->post_title : '');
             $this->_post->post_excerpt = ((isset($attachment->post_excerpt) ? $attachment->post_excerpt : (isset($attachment->post_content))) ? $attachment->post_content : '');
-            }
+        }
 
-            if (isset($attachment->ID)) {
-                $url = wp_get_attachment_image_src($attachment->ID, 'full');
+        if (isset($attachment->ID)) {
+            $url = wp_get_attachment_image_src($attachment->ID, 'full');
 
+            if(isset($url[0])) {
                 $images[] = array(
                     'src' => esc_url($url[0]),
                     'title' => SQ_Classes_Helpers_Sanitize::clearTitle($this->_post->post_title),
@@ -118,26 +120,27 @@ abstract class SQ_Models_Abstract_Seo {
                     'height' => $url[2],
                 );
             }
+        }
 
-            if ($all || empty($images)) {
-                if (isset($this->_post->post_content)) {
-                    preg_match('/<img[^>]*src="([^"]*)"[^>]*>/i', $this->_post->post_content, $match);
+        if ($all || empty($images)) {
+            if (isset($this->_post->post_content)) {
+                preg_match('/<img[^>]*src="([^"]*)"[^>]*>/i', $this->_post->post_content, $match);
 
-                    if (!empty($match)) {
-                        preg_match('/alt="([^"]*)"/i', $match[0], $alt);
+                if (!empty($match)) {
+                    preg_match('/alt="([^"]*)"/i', $match[0], $alt);
 
-                        if (strpos($match[1], '//') === false) {
-                            $match[1] = get_bloginfo('url') . $match[1];
-                        }
-
-                        $images[] = array(
-                            'src' => esc_url($match[1]),
-                            'title' => SQ_Classes_Helpers_Sanitize::clearTitle(!empty($alt[1]) ? $alt[1] : ''),
-                            'description' => '',
-                            'width' => '500',
-                            'height' => null,
-                        );
+                    if (strpos($match[1], '//') === false) {
+                        $match[1] = get_bloginfo('url') . $match[1];
                     }
+
+                    $images[] = array(
+                        'src' => esc_url($match[1]),
+                        'title' => SQ_Classes_Helpers_Sanitize::clearTitle(!empty($alt[1]) ? $alt[1] : ''),
+                        'description' => '',
+                        'width' => '500',
+                        'height' => null,
+                    );
+                }
             }
         }
 
@@ -170,49 +173,121 @@ abstract class SQ_Models_Abstract_Seo {
 
     /**
      * Get the video from content
-     * @param integer $post_id Custom post is
-     * @return array
+     * @param boolean $all take all the videos or stop at the first one
+     * @return array|false
      */
-    public function getPostVideos($post_id = null) {
-        $videos = array();
-
-        //for sitemap calls
-        if (isset($post_id)) {
-            $this->_post = SQ_Classes_ObjController::getDomain('SQ_Models_Domain_Post');
-            $this->_post->ID = (int)$post_id;
-        }
-
-        if ((int)$this->_post->ID == 0) {
+    public function getPostVideos($all = false) {
+        $videos = false;
+        $thumbnail = '';
+        if (!isset($this->_post->ID) || (int)$this->_post->ID == 0) {
             return $videos;
         }
 
+        $images = $this->getPostImages(true);
+        if (!empty($images)) {
+            $image = current($images);
+            if (isset($image['src'])) {
+                $thumbnail = $image['src'];
+            }
+        }
+
+        if (SQ_Classes_Helpers_Tools::isPluginInstalled('advanced-custom-fields/acf.php')) {
+            if (isset($this->_post->ID) && $this->_post->ID) {
+                if ($_sq_video = get_post_meta($this->_post->ID, '_sq_video', true)) {
+
+                    //get the image from the youtube video
+                    preg_match('/(?:http(?:s)?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:watch\?v=))([^&\"\'<>\s]+)/si', $_sq_video, $match);
+                    if (isset($match[1]) && $match[1] <> '') {
+                        $thumbnail = 'https://img.youtube.com/vi/' . $match[1] . '/hqdefault.jpg';
+                    }
+
+                    $videos[] = array(
+                        'thumbnail' => $thumbnail,
+                        'src' => esc_url($_sq_video),
+                    );
+                }
+            }
+        }
+
+        //return first video found
+        if (!$all && !empty($videos)) return $videos;
+
         if (isset($this->_post->post_content)) {
-            preg_match('/(?:http(?:s)?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed)\/)([^\?&\"\'>\s]+)/si', $this->_post->post_content, $match);
+
+            preg_match('/(?:http(?:s)?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed)\/)([^\?&\"\'<>\s]+)/si', $this->_post->post_content, $match);
 
             if (isset($match[0])) {
                 if (strpos($match[0], '//') !== false && strpos($match[0], 'http') === false) {
-                    $match[0] = 'http:' . $match[0];
+                    $match[0] = 'https:' . $match[0];
                 }
-                $videos[] = esc_url($match[0]);
+                $videos[] = array(
+                    'thumbnail' => $thumbnail,
+                    'src' => esc_url($match[0]),
+                );
             }
 
-            preg_match('/(?:http(?:s)?:\/\/)?(?:fwd4\.wistia\.com\/(?:medias)\/)([^\?&\"\'>\s]+)/si', $this->_post->post_content, $match);
+            //return first video found
+            if (!$all && !empty($videos)) return $videos;
+
+            preg_match_all('/(?:http(?:s)?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:watch\?v=))([^&\"\'\<>\s]+)/si', $this->_post->post_content, $matches, PREG_SET_ORDER );
+
+            if(!empty($matches)){
+                foreach ($matches as $match){
+                    if (isset($match[0])) {
+
+                        if (isset($match[1]) && $match[1] <> '') {
+                            $thumbnail = 'https://img.youtube.com/vi/' . $match[1] . '/hqdefault.jpg';
+
+                            $videos[md5($match[1])] = array(
+                                'thumbnail' => $thumbnail,
+                                'src' => 'https://www.youtube.com/embed/' . $match[1],
+                            );
+                        }
+                    }
+                }
+
+                //reset videos array keys
+                if(!empty($videos)){
+                    $videos = array_values($videos);
+                }
+            }
+
+            //return first video found
+            if (!$all && !empty($videos)) return $videos;
+
+            preg_match('/(?:http(?:s)?:\/\/)?(?:fwd4\.wistia\.com\/(?:medias)\/)([^\?&\"\'<>\s]+)/si', $this->_post->post_content, $match);
 
             if (isset($match[0])) {
-                $videos[] = esc_url('http://fast.wistia.net/embed/iframe/' . $match[1]);
+                $videos[] = array(
+                    'thumbnail' => $thumbnail,
+                    'src' => esc_url('https://fast.wistia.net/embed/iframe/' . $match[1]),
+                );
             }
 
-            preg_match('/class=["|\']([^"\']*wistia_async_([^\?&\"\'>\s]+)[^"\']*["|\'])/si', $this->_post->post_content, $match);
+            //return first video found
+            if (!$all && !empty($videos)) return $videos;
+
+            preg_match('/class=["|\']([^"\']*wistia_async_([^\?&\"\'<>\s]+)[^"\']*["|\'])/si', $this->_post->post_content, $match);
 
             if (isset($match[0])) {
-                $videos[] = esc_url('http://fast.wistia.net/embed/iframe/' . $match[2]);
+                $videos[] = array(
+                    'thumbnail' => $thumbnail,
+                    'src' => esc_url('https://fast.wistia.net/embed/iframe/' . $match[2]),
+                );
             }
+
+            //return first video found
+            if (!$all && !empty($videos)) return $videos;
 
             preg_match('/src=["|\']([^"\']*(.mpg|.mpeg|.mp4|.mov|.wmv|.asf|.avi|.ra|.ram|.rm|.flv)["|\'])/i', $this->_post->post_content, $match);
 
             if (isset($match[1])) {
-                $videos[] = esc_url($match[1]);
+                $videos[] = array(
+                    'thumbnail' => $thumbnail,
+                    'src' => esc_url($match[1]),
+                );
             }
+
         }
 
         return $videos;

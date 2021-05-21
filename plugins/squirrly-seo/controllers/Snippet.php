@@ -48,7 +48,7 @@ class SQ_Controllers_Snippet extends SQ_Classes_FrontController {
      * Hook the Head sequence in frontend when user is logged in
      */
     public function hookFronthead() {
-        if (current_user_can('sq_manage_snippet')) {
+        if (SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
             //prevent some compatibility errors with other plugins
             remove_all_actions('print_media_templates');
 
@@ -98,7 +98,7 @@ class SQ_Controllers_Snippet extends SQ_Classes_FrontController {
     public function hookTopmenuFrontend($wp_admin_bar) {
         global $wp_the_query;
 
-        if (is_admin() || !is_user_logged_in()) {
+        if (is_admin() || !function_exists('is_user_logged_in') || !is_user_logged_in()) {
             return;
         }
 
@@ -111,7 +111,7 @@ class SQ_Controllers_Snippet extends SQ_Classes_FrontController {
             return;
         }
 
-        if (!current_user_can('sq_manage_snippets')) {
+        if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippets')) {
             $current_object = $wp_the_query->get_queried_object();
 
             if (empty($current_object))
@@ -119,12 +119,12 @@ class SQ_Controllers_Snippet extends SQ_Classes_FrontController {
 
             if (!empty($current_object->post_type)
                 && ($post_type_object = get_post_type_object($current_object->post_type))
-                && current_user_can('edit_post', $current_object->ID)
+                && SQ_Classes_Helpers_Tools::userCan('edit_post', $current_object->ID)
                 && $post_type_object->show_in_admin_bar
                 && $edit_post_link = get_edit_post_link($current_object->ID)) {
             } elseif (!empty($current_object->taxonomy)
                 && ($tax = get_taxonomy($current_object->taxonomy))
-                && current_user_can('edit_term', $current_object->term_id)
+                && SQ_Classes_Helpers_Tools::userCan('edit_term', $current_object->term_id)
                 && $edit_term_link = get_edit_term_link($current_object->term_id, $current_object->taxonomy)) {
             } else {
                 return;
@@ -136,7 +136,7 @@ class SQ_Controllers_Snippet extends SQ_Classes_FrontController {
             //Dev Kit
             $style = '';
             if (SQ_Classes_Helpers_Tools::getOption('sq_devkit_logo')) {
-                $style = '<style>.sq_logo{background-image:url("' . SQ_Classes_Helpers_Tools::getOption('sq_devkit_logo') . '") !important;background-size: 100%;}</style>';
+                $style = '<style>.sq_logo{background-image:url("' . SQ_Classes_Helpers_Tools::getOption('sq_devkit_logo') . '") !important;background-size: 100%; background-repeat: no-repeat; background-position: center;}</style>';
             }
 
             $wp_admin_bar->add_node(array(
@@ -169,7 +169,7 @@ class SQ_Controllers_Snippet extends SQ_Classes_FrontController {
         parent::action();
 
         $response = array();
-        if (!current_user_can('sq_manage_snippet')) {
+        if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
             $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
             SQ_Classes_Helpers_Tools::setHeader('json');
             echo wp_json_encode($response);

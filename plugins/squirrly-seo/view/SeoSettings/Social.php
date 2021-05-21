@@ -4,7 +4,7 @@
     <?php do_action('sq_notices'); ?>
     <div class="d-flex flex-row my-0 bg-white" style="clear: both !important;">
         <?php
-        if (!current_user_can('sq_manage_settings')) {
+        if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
             echo '<div class="col-12 alert alert-success text-center m-0 p-3">' . esc_html__("You do not have permission to access this page. You need Squirrly SEO Admin role.", _SQ_PLUGIN_NAME_) . '</div>';
             return;
         }
@@ -59,6 +59,17 @@
                                             </div>
                                         </div>
                                         <div class="col-12 py-4 border-bottom tab-panel">
+                                            <div class="col-12 row py-2 mx-0 my-3">
+                                                <div class="col-4 p-0 pr-3 font-weight-bold">
+                                                    <?php echo esc_html__("Default Open Graph Image", _SQ_PLUGIN_NAME_); ?>:
+                                                    <div class="small text-black-50"><?php echo esc_html__("Set an Open Graph default Image to load when you don't have any image for a URL set.", _SQ_PLUGIN_NAME_); ?></div>
+                                                </div>
+                                                <div class="col-8 p-0 input-group input-group-lg">
+                                                    <input id="sq_og_image" type="text" class="form-control bg-input" name="sq_og_image" value="<?php echo((SQ_Classes_Helpers_Tools::getOption('sq_auto_metas') <> '') ? SQ_Classes_Helpers_Tools::getOption('sq_og_image') : '') ?>"/>
+                                                    <input type="button" class="sq_imageselect btn btn-primary rounded-right" data-destination="sq_og_image" value="<?php echo esc_html__("Select Image", _SQ_PLUGIN_NAME_) ?>"/>
+                                                </div>
+                                            </div>
+
 
                                             <div class="col-12 row py-2 mx-0 my-3 ">
                                                 <div class="col-4 p-1 pr-3">
@@ -272,6 +283,9 @@
                                             </div>
                                         </div>
 
+                                        <div class="bg-title p-2 ">
+                                            <h3 class="card-title"><?php echo esc_html__("Twitter Card Settings", _SQ_PLUGIN_NAME_); ?></h3>
+                                        </div>
                                         <div class="col-12 py-4 border-bottom tab-panel">
                                             <div class="col-12 row mb-1 ml-1">
                                                 <div class="checker col-12 row my-2 py-1">
@@ -286,24 +300,38 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
 
-                                            <div class="col-12 row mb-1 ml-1">
-                                                <div class="checker col-12 row my-2 py-1">
-                                                    <div class="col-12 p-0 sq-switch sq-switch-sm">
-                                                        <input type="hidden" name="socials[twitter_card_type]" value="summary"/>
-                                                        <input type="checkbox" id="twitter_card_type" name="socials[twitter_card_type]" class="sq-switch" <?php echo($socials->twitter_card_type == 'summary_large_image' ? 'checked="checked"' : '') ?> value="summary_large_image"/>
-                                                        <label for="twitter_card_type" class="ml-2"><?php echo esc_html__("Share Large Images", _SQ_PLUGIN_NAME_); ?>
-                                                            <a href="https://howto.squirrly.co/kb/social-media-settings/#twitter_card_large_images" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
-                                                        </label>
-                                                        <div class="offset-1 small text-black-50"><?php echo esc_html__("Activate this option only if you upload images with sizes between 500px and 4096px width in Twitter Card.", _SQ_PLUGIN_NAME_); ?></div>
-                                                        <div class="offset-1 small text-black-50"><?php echo sprintf(esc_html__("This option will show the twitter card image as a shared image and not as a summary. Visit %sSummary Card with Large Image%s", _SQ_PLUGIN_NAME_), '<a href="https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/summary-card-with-large-image.html" target="_blank" ><strong>', '</strong></a>'); ?></div>
-                                                        <div class="offset-1 small text-black-50"><?php echo sprintf(esc_html__("Every change needs %sTwitter Card Validator%s", _SQ_PLUGIN_NAME_), '<a href="https://cards-dev.twitter.com/validator?url=' . home_url() . '" target="_blank" ><strong>', '</strong></a>'); ?></div>
-                                                    </div>
+                                        <div class="col-12 py-4 tab-panel">
+                                            <div class="col-12 row py-2 mx-0 my-3">
+                                                <div class="col-4 p-0 pr-3 font-weight-bold">
+                                                    <?php echo esc_html__("Default Twitter Card Image", _SQ_PLUGIN_NAME_); ?>:
+                                                    <div class="small text-black-50"><?php echo esc_html__("Set a Twitter Card default Image to load when you don't have any image for a URL set.", _SQ_PLUGIN_NAME_); ?></div>
+                                                </div>
+                                                <div class="col-8 p-0 input-group input-group-lg">
+                                                    <input id="sq_tc_image" type="text" class="form-control bg-input" name="sq_tc_image" value="<?php echo((SQ_Classes_Helpers_Tools::getOption('sq_auto_metas') <> '') ? SQ_Classes_Helpers_Tools::getOption('sq_tc_image') : '') ?>"/>
+                                                    <input type="button" class="sq_imageselect btn btn-primary rounded-right" data-destination="sq_tc_image" value="<?php echo esc_html__("Select Image", _SQ_PLUGIN_NAME_) ?>"/>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="bg-title p-2">
+                                        <div class="col-12 row mb-1 ml-1">
+                                            <div class="checker col-12 row my-2 py-1">
+                                                <div class="col-12 p-0 sq-switch sq-switch-sm">
+                                                    <input type="hidden" name="socials[twitter_card_type]" value="summary"/>
+                                                    <input type="checkbox" id="twitter_card_type" name="socials[twitter_card_type]" class="sq-switch" <?php echo($socials->twitter_card_type == 'summary_large_image' ? 'checked="checked"' : '') ?> value="summary_large_image"/>
+                                                    <label for="twitter_card_type" class="ml-2"><?php echo esc_html__("Share Large Images", _SQ_PLUGIN_NAME_); ?>
+                                                        <a href="https://howto.squirrly.co/kb/social-media-settings/#twitter_card_large_images" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
+                                                    </label>
+                                                    <div class="offset-1 small text-black-50"><?php echo esc_html__("Activate this option only if you upload images with sizes between 500px and 4096px width in Twitter Card.", _SQ_PLUGIN_NAME_); ?></div>
+                                                    <div class="offset-1 small text-black-50"><?php echo sprintf(esc_html__("This option will show the twitter card image as a shared image and not as a summary. Visit %sSummary Card with Large Image%s", _SQ_PLUGIN_NAME_), '<a href="https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/summary-card-with-large-image.html" target="_blank" ><strong>', '</strong></a>'); ?></div>
+                                                    <div class="offset-1 small text-black-50"><?php echo sprintf(esc_html__("Every change needs %sTwitter Card Validator%s", _SQ_PLUGIN_NAME_), '<a href="https://cards-dev.twitter.com/validator?url=' . home_url() . '" target="_blank" ><strong>', '</strong></a>'); ?></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="bg-title mt-4 p-2">
                                             <h3 class="card-title"><?php echo esc_html__("Social Media Accounts", _SQ_PLUGIN_NAME_); ?>
                                                 <a href="https://howto.squirrly.co/kb/social-media-settings/#social_media_accounts" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
                                             </h3>
@@ -383,7 +411,7 @@
                                             <h3 class="card-title">
                                                 <?php echo esc_html__("Title & Description Lengths", _SQ_PLUGIN_NAME_); ?>:
                                                 <a href="https://howto.squirrly.co/kb/social-media-settings/#lengths" target="_blank"><i class="fa fa-question-circle m-0 px-2" style="display: inline;"></i></a>
-                                            </h3> 
+                                            </h3>
                                         </div>
                                         <div class="col-12 py-4 border-bottom tab-panel ">
                                             <div class="col-12 row py-2 mx-0 my-3">

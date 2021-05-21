@@ -3,7 +3,7 @@
     <ul class="p-0 m-0">
         <li id="sq_options_dasboard">
             <?php
-            if (SQ_Classes_Helpers_Tools::getMenuVisible('show_panel') && current_user_can('manage_options')) { ?>
+            if (SQ_Classes_Helpers_Tools::getMenuVisible('show_panel') && SQ_Classes_Helpers_Tools::userCan('manage_options')) { ?>
                 <span class="sq_push" style="display:none;">1</span>
                 <span class="sq_text"><a href="<?php echo SQ_Classes_RemoteController::getMySquirrlyLink('dashboard') ?>" title="<?php echo esc_html__("Go to Profile", _SQ_PLUGIN_NAME_) ?>" target="_blank"><span><?php echo esc_html__("Profile", _SQ_PLUGIN_NAME_) ?></span></a></span>
                 <a href="<?php echo SQ_Classes_RemoteController::getMySquirrlyLink('dashboard') ?>" title="<?php echo esc_html__("Profile", _SQ_PLUGIN_NAME_) ?>" target="_blank"><span class="sq_icon"></span></a>

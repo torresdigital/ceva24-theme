@@ -16,7 +16,7 @@ class SQ_Models_Services_Favicon extends SQ_Models_Abstract_Seo {
     public function generateFavicon($favicons = array()) {
         $rnd = '';
 
-        if (current_user_can('sq_manage_settings')) {
+        if (SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
             $rnd = '?' . md5(SQ_Classes_Helpers_Tools::getOption('favicon'));
         }
 

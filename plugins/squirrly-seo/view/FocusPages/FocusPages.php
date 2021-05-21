@@ -77,7 +77,7 @@ if (!empty($view->focuspages)) { ?>
                             if (isset($view->focuspage->id) && $view->focuspage->id <> '') {
 
                                 $view->post = $view->focuspage->getWppost();
-                                if (!current_user_can('sq_manage_focuspages')) continue;
+                                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_focuspages')) continue;
                                 if (!empty($keyword_labels) && $view->focuspage->audit_error) {
                                     continue;
                                 }

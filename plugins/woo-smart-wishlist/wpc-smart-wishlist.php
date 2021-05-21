@@ -3,20 +3,20 @@
 Plugin Name: WPC Smart Wishlist for WooCommerce
 Plugin URI: https://wpclever.net/
 Description: WPC Smart Wishlist is a simple but powerful tool that can help your customer save products for buy later.
-Version: 2.6.0
+Version: 2.7.0
 Author: WPClever
 Author URI: https://wpclever.net
 Text Domain: woosw
 Domain Path: /languages/
 Requires at least: 4.0
-Tested up to: 5.7
+Tested up to: 5.7.2
 WC requires at least: 3.0
-WC tested up to: 5.1
+WC tested up to: 5.3.0
 */
 
 defined( 'ABSPATH' ) || exit;
 
-! defined( 'WOOSW_VERSION' ) && define( 'WOOSW_VERSION', '2.6.0' );
+! defined( 'WOOSW_VERSION' ) && define( 'WOOSW_VERSION', '2.7.0' );
 ! defined( 'WOOSW_URI' ) && define( 'WOOSW_URI', plugin_dir_url( __FILE__ ) );
 ! defined( 'WOOSW_PATH' ) && define( 'WOOSW_PATH', plugin_dir_path( __FILE__ ) );
 ! defined( 'WOOSW_SUPPORT' ) && define( 'WOOSW_SUPPORT', 'https://wpclever.net/support?utm_source=support&utm_medium=woosw&utm_campaign=wporg' );
@@ -31,6 +31,10 @@ include 'includes/wpc-menu.php';
 include 'includes/wpc-kit.php';
 include 'notice/notice.php';
 
+// plugin activate
+register_activation_hook( __FILE__, 'woosw_plugin_activate' );
+
+// plugin init
 if ( ! function_exists( 'woosw_init' ) ) {
 	add_action( 'plugins_loaded', 'woosw_init', 11 );
 
@@ -46,7 +50,7 @@ if ( ! function_exists( 'woosw_init' ) ) {
 
 		if ( ! class_exists( 'WPCleverWoosw' ) ) {
 			class WPCleverWoosw {
-				protected static $added = array();
+				protected static $added_products = array();
 
 				function __construct() {
 					// add query var
@@ -87,6 +91,9 @@ if ( ! function_exists( 'woosw_init' ) ) {
 					add_filter( 'plugin_action_links', array( $this, 'action_links' ), 10, 2 );
 					add_filter( 'plugin_row_meta', array( $this, 'row_meta' ), 10, 2 );
 
+					// menu items
+					add_filter( 'wp_nav_menu_items', array( $this, 'woosw_nav_menu_items' ), 99, 2 );
+
 					// footer
 					add_action( 'wp_footer', array( $this, 'wp_footer' ) );
 
@@ -101,6 +108,10 @@ if ( ! function_exists( 'woosw_init' ) ) {
 						'woosw_product_sortable_columns'
 					) );
 					add_filter( 'request', array( $this, 'woosw_product_request' ) );
+
+					// user login & logout
+					add_action( 'wp_login', array( $this, 'woosw_wp_login' ), 10, 2 );
+					add_action( 'wp_logout', array( $this, 'woosw_wp_logout' ), 10, 1 );
 
 					// user columns
 					add_filter( 'manage_users_columns', array( $this, 'woosw_user_table' ) );
@@ -117,23 +128,11 @@ if ( ! function_exists( 'woosw_init' ) ) {
 				}
 
 				function init() {
-					// add page
-					$wishlist_page = get_page_by_path( 'wishlist', OBJECT );
+					// added products
+					$key = $_COOKIE['woosw_key'];
 
-					if ( empty( $wishlist_page ) ) {
-						$wishlist_page_data = array(
-							'post_status'    => 'publish',
-							'post_type'      => 'page',
-							'post_author'    => 1,
-							'post_name'      => 'wishlist',
-							'post_title'     => esc_html__( 'Wishlist', 'woosw' ),
-							'post_content'   => '[woosw_list]',
-							'post_parent'    => 0,
-							'comment_status' => 'closed'
-						);
-						$wishlist_page_id   = wp_insert_post( $wishlist_page_data );
-
-						update_option( 'woosw_page_id', $wishlist_page_id );
+					if ( get_option( 'woosw_list_' . $key ) ) {
+						self::$added_products = get_option( 'woosw_list_' . $key );
 					}
 
 					// rewrite
@@ -173,18 +172,11 @@ if ( ! function_exists( 'woosw_init' ) ) {
 					// add button for single
 					$button_position_single = apply_filters( 'woosw_button_position_single', get_option( 'woosw_button_position_single', '31' ) );
 
-					if ( $button_position_single !== '0' ) {
+					if ( ! empty( $button_position_single ) ) {
 						add_action( 'woocommerce_single_product_summary', array(
 							$this,
 							'add_button'
-						), $button_position_single );
-					}
-
-					// added products
-					$key = self::set_key();
-
-					if ( get_option( 'woosw_list_' . $key ) ) {
-						self::$added = get_option( 'woosw_list_' . $key );
+						), (int) $button_position_single );
 					}
 				}
 
@@ -355,7 +347,7 @@ if ( ! function_exists( 'woosw_init' ) ) {
 
 						$class = 'woosw-btn woosw-btn-' . esc_attr( $atts['id'] );
 
-						if ( array_key_exists( $atts['id'], self::$added ) ) {
+						if ( array_key_exists( $atts['id'], self::$added_products ) ) {
 							$class .= ' woosw-added';
 							$text  = get_option( 'woosw_button_text_added' );
 
@@ -905,11 +897,7 @@ if ( ! function_exists( 'woosw_init' ) ) {
 												<?php esc_html_e( 'Menu', 'woosw' ); ?>
                                             </th>
                                             <td>
-												<span style="color: #c9356e">
-											This feature is only available on the Premium Version. Click <a
-                                                            href="https://wpclever.net/downloads/woocommerce-smart-wishlist?utm_source=pro&utm_medium=woosw&utm_campaign=wporg"
-                                                            target="_blank">here</a> to buy, just $29.
-										</span>
+												<?php esc_html_e( 'Settings for the wishlist menu item.', 'woosw' ); ?>
                                             </td>
                                         </tr>
                                         <tr>
@@ -969,7 +957,6 @@ if ( ! function_exists( 'woosw_init' ) ) {
                                     <p><strong>Extra features for Premium Version:</strong></p>
                                     <ul style="margin-bottom: 0">
                                         <li>- Enable note for each product.</li>
-                                        <li>- Enable the wishlist menu.</li>
                                         <li>- Get lifetime update & premium support.</li>
                                     </ul>
                                 </div>
@@ -1190,6 +1177,44 @@ if ( ! function_exists( 'woosw_init' ) ) {
 					return apply_filters( 'woosw_wishlist_items', $items_html, $key );
 				}
 
+				function woosw_nav_menu_items( $items, $args ) {
+					$selected    = false;
+					$saved_menus = get_option( 'woosw_menus', array() );
+
+					if ( ! is_array( $saved_menus ) || empty( $saved_menus ) || ! property_exists( $args, 'menu' ) ) {
+						return $items;
+					}
+
+					if ( $args->menu instanceof WP_Term ) {
+						// menu object
+						if ( in_array( $args->menu->term_id, $saved_menus, false ) ) {
+							$selected = true;
+						}
+					} elseif ( is_numeric( $args->menu ) ) {
+						// menu id
+						if ( in_array( $args->menu, $saved_menus, false ) ) {
+							$selected = true;
+						}
+					} elseif ( is_string( $args->menu ) ) {
+						// menu slug or name
+						$menu = get_term_by( 'name', $args->menu, 'nav_menu' );
+
+						if ( ! $menu ) {
+							$menu = get_term_by( 'slug', $args->menu, 'nav_menu' );
+						}
+
+						if ( $menu && in_array( $menu->term_id, $saved_menus, false ) ) {
+							$selected = true;
+						}
+					}
+
+					if ( $selected ) {
+						$items .= '<li class="menu-item woosw-menu-item menu-item-type-woosw"><a href="' . self::get_url() . '"><span class="woosw-menu-item-inner" data-count="' . self::get_count() . '">' . esc_html__( 'Wishlist', 'woosw' ) . '</span></a></li>';
+					}
+
+					return $items;
+				}
+
 				function wp_footer() {
 					?>
                     <div id="woosw-area" class="woosw-area">
@@ -1197,7 +1222,7 @@ if ( ! function_exists( 'woosw_init' ) ) {
                             <div class="woosw-content">
                                 <div class="woosw-content-top">
 									<?php esc_html_e( 'Wishlist', 'woosw' ); ?> <span
-                                            class="woosw-count"><?php echo count( self::$added ); ?></span>
+                                            class="woosw-count"><?php echo count( self::$added_products ); ?></span>
                                     <span class="woosw-close"></span>
                                 </div>
                                 <div class="woosw-content-mid"></div>
@@ -1285,51 +1310,13 @@ if ( ! function_exists( 'woosw_init' ) ) {
 					return false;
 				}
 
-				public static function set_key() {
-					if ( ! is_user_logged_in() && ( get_option( 'woosw_disable_unauthenticated', 'no' ) === 'yes' ) ) {
-						return '#';
-					}
-
-					if ( is_user_logged_in() && ( ( $user_id = get_current_user_id() ) > 0 ) ) {
-						// for user
-						if ( get_user_meta( $user_id, 'woosw_key', true ) === '' ) {
-							$new_key = self::generate_key();
-
-							while ( self::exists_key( $new_key ) ) {
-								$new_key = self::generate_key();
-							}
-
-							update_user_meta( $user_id, 'woosw_key', $new_key );
-
-							return $new_key;
-						}
-
-						return get_user_meta( $user_id, 'woosw_key', true );
-					}
-
-					// for guest
-					if ( isset( $_COOKIE['woosw_key'] ) ) {
-						return esc_attr( $_COOKIE['woosw_key'] );
-					}
-
-					$new_key = self::generate_key();
-
-					while ( self::exists_key( $new_key ) ) {
-						$new_key = self::generate_key();
-					}
-
-					setcookie( 'woosw_key', $new_key, time() + 604800, COOKIEPATH, COOKIE_DOMAIN );
-
-					return $new_key;
-				}
-
 				public static function get_key() {
 					if ( ! is_user_logged_in() && ( get_option( 'woosw_disable_unauthenticated', 'no' ) === 'yes' ) ) {
 						return '#';
 					}
 
 					if ( is_user_logged_in() && ( ( $user_id = get_current_user_id() ) > 0 ) ) {
-						return get_user_meta( $user_id, 'woosw_key', true );
+						return get_user_meta( $user_id, 'woosw_key', true ) ?: '#';
 					}
 
 					if ( isset( $_COOKIE['woosw_key'] ) ) {
@@ -1402,6 +1389,44 @@ if ( ! function_exists( 'woosw_init' ) ) {
 					}
 
 					return $vars;
+				}
+
+				function woosw_wp_login( $user_login, $user ) {
+					if ( isset( $user->data->ID ) ) {
+						$user_key = get_user_meta( $user->data->ID, 'woosw_key', true );
+
+						if ( ! $user_key || empty( $user_key ) ) {
+							$user_key = self::generate_key();
+
+							while ( self::exists_key( $user_key ) ) {
+								$user_key = self::generate_key();
+							}
+
+							// set a new key
+							update_user_meta( $user->data->ID, 'woosw_key', $user_key );
+						}
+
+						$secure   = apply_filters( 'woosw_cookie_secure', wc_site_is_https() && is_ssl() );
+						$httponly = apply_filters( 'woosw_cookie_httponly', true );
+
+						if ( isset( $_COOKIE['woosw_key'] ) && ! empty( $_COOKIE['woosw_key'] ) ) {
+							wc_setcookie( 'woosw_key_ori', $_COOKIE['woosw_key'], time() + 604800, $secure, $httponly );
+						}
+
+						wc_setcookie( 'woosw_key', $user_key, time() + 604800, $secure, $httponly );
+					}
+				}
+
+				function woosw_wp_logout( $user_id ) {
+					if ( isset( $_COOKIE['woosw_key_ori'] ) && ! empty( $_COOKIE['woosw_key_ori'] ) ) {
+						$secure   = apply_filters( 'woosw_cookie_secure', wc_site_is_https() && is_ssl() );
+						$httponly = apply_filters( 'woosw_cookie_httponly', true );
+						
+						wc_setcookie( 'woosw_key', $_COOKIE['woosw_key_ori'], time() + 604800, $secure, $httponly );
+					} else {
+						unset( $_COOKIE['woosw_key_ori'] );
+						unset( $_COOKIE['woosw_key'] );
+					}
 				}
 
 				function dropdown_cats_multiple( $output, $r ) {
@@ -1558,6 +1583,29 @@ if ( ! function_exists( 'woosw_init' ) ) {
 	}
 } else {
 	add_action( 'admin_notices', 'woosw_notice_premium' );
+}
+
+if ( ! function_exists( 'woosw_plugin_activate' ) ) {
+	function woosw_plugin_activate() {
+		// create wishlist page
+		$wishlist_page = get_page_by_path( 'wishlist', OBJECT );
+
+		if ( empty( $wishlist_page ) ) {
+			$wishlist_page_data = array(
+				'post_status'    => 'publish',
+				'post_type'      => 'page',
+				'post_author'    => 1,
+				'post_name'      => 'wishlist',
+				'post_title'     => esc_html__( 'Wishlist', 'woosw' ),
+				'post_content'   => '[woosw_list]',
+				'post_parent'    => 0,
+				'comment_status' => 'closed'
+			);
+			$wishlist_page_id   = wp_insert_post( $wishlist_page_data );
+
+			update_option( 'woosw_page_id', $wishlist_page_id );
+		}
+	}
 }
 
 if ( ! function_exists( 'woosw_notice_wc' ) ) {

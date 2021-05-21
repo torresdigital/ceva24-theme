@@ -19,6 +19,24 @@ class SQ_Models_Domain_Patterns extends SQ_Models_Abstract_Domain {
         $this->_date = $value;
     }
 
+    protected $_post_day; //Replaced with the date of the post/page
+
+    public function getPost_day() {
+        return date('y', strtotime($this->_date));
+    }
+
+    protected $_post_month; //Replaced with the date of the post/page
+
+    public function getPost_month() {
+        return date('m', strtotime($this->_date));
+    }
+
+    protected $_post_year; //Replaced with the date of the post/page
+
+    public function getPost_year() {
+        return date('Y', strtotime($this->_date));
+    }
+
     //
     protected $_title; //Replaced with the title of the post/page
 
@@ -149,22 +167,9 @@ class SQ_Models_Domain_Patterns extends SQ_Models_Abstract_Domain {
             if ($this->_post_type == 'category') {
                 $this->_category = $this->title;
             } elseif ($this->_id > 0) {
-                //change category title if article
-                $categories = get_the_category($this->_id);
-                if (!empty($categories)) {
-                    foreach ($categories as $category) {
-                        $this->_category .= ($this->_category <> '' ? ',' : '') . $category->name;
-                    }
-                } else {
-                    //change category title if article
-                    $all_terms = wp_get_object_terms($this->_id, get_taxonomies(array('public' => true)));
-                    if (!is_wp_error($all_terms) && !empty($all_terms)) {
-                        foreach ($all_terms as $term) {
-                            if (strpos($term->slug, 'cat') !== false) {
-                                $this->_category .= ($this->_category <> '' ? ',' : '') . $term->name;
-                            }
-                        }
-                    }
+                $allcategories = SQ_Classes_ObjController::getClass('SQ_Models_Domain_Categories')->getAllCategories($this->_id);
+                if (!empty($allcategories)) {
+                    $this->_category = join(',', $allcategories);
                 }
             }
         }
@@ -177,24 +182,9 @@ class SQ_Models_Domain_Patterns extends SQ_Models_Abstract_Domain {
     public function getPrimary_category() {
         if (!isset($this->_primary_category) || $this->_primary_category == '') {
             if ($this->_id > 0) {
-                //change category title if article
-                $categories = get_the_category($this->_id);
-                if (!empty($categories)) {
-                    foreach ($categories as $category) {
-                        $this->_primary_category = $category->name;
-                        break;
-                    }
-                } else {
-                    //change category title if article
-                    $all_terms = wp_get_object_terms($this->_id, get_taxonomies(array('public' => true)));
-                    if (!is_wp_error($all_terms) && !empty($all_terms)) {
-                        foreach ($all_terms as $term) {
-                            if (strpos($term->slug, 'cat') !== false) {
-                                $this->_primary_category = $term->name;
-                                break;
-                            }
-                        }
-                    }
+                $getAllCategories = SQ_Classes_ObjController::getClass('SQ_Models_Domain_Categories')->getAllCategories($this->id);
+                if (!empty($getAllCategories)) {
+                    $this->_primary_category = current($getAllCategories);
                 }
             }
         }
@@ -257,7 +247,7 @@ class SQ_Models_Domain_Patterns extends SQ_Models_Abstract_Domain {
                     $all_terms = wp_get_object_terms($this->_id, get_taxonomies(array('public' => true)));
                     if (!is_wp_error($all_terms) && !empty($all_terms)) {
                         foreach ($all_terms as $term) {
-                            if (strpos($term->slug, 'tag') !== false) {
+                            if (strpos($term->taxonomy, 'tag') !== false) {
                                 $this->_tag .= ($this->_tag <> '' ? ',' : '') . $term->name;
                             }
                         }
@@ -289,7 +279,7 @@ class SQ_Models_Domain_Patterns extends SQ_Models_Abstract_Domain {
                     $all_terms = wp_get_object_terms($this->_id, get_taxonomies(array('public' => true)));
                     if (!is_wp_error($all_terms) && !empty($all_terms)) {
                         foreach ($all_terms as $term) {
-                            if (strpos($term->slug, 'tag') !== false) {
+                            if (strpos($term->taxonomy, 'tag') !== false) {
                                 $this->_tag_description = $term->description;
                             }
                         }
@@ -403,7 +393,67 @@ class SQ_Models_Domain_Patterns extends SQ_Models_Abstract_Domain {
 
     //
     protected $_pt_single; //Replaced with the post type single label
+    protected $_single; //Replaced with the post type single label
     protected $_pt_plural; //Replaced with the post type plural label
+    protected $_plural; //Replaced with the post type plural label
+
+    /**
+     * Get Post Type Lanbel Single
+     * @return stdClass|string
+     */
+    public function getPt_single() {
+        return $this->getSingle();
+
+    }
+
+    /**
+     * Get Post Type Lanbel Plural
+     * @return stdClass|string
+     */
+    public function getPt_plural() {
+        return $this->getPlural();
+    }
+
+    /**
+     * Get Post Type Lanbel Single
+     *
+     * @return string
+     */
+    public function getSingle() {
+        if (function_exists('get_post_type_object')) {
+            $post_type = $this->post_type;
+            if (strpos($post_type, '-') !== false) {
+                $post_type = substr($post_type, ((int)strpos($post_type, '-') + 1));
+            }
+            $post_type_obj = get_post_type_object($post_type);
+            if ($post_type_obj && isset($post_type_obj->labels->singular_name)) {
+                return $post_type_obj->labels->singular_name;
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * Get Post Type Lanbel Plural
+     *
+     * @return string
+     */
+    public function getPlural() {
+        if (function_exists('get_post_type_object')) {
+            $post_type = $this->post_type;
+            if (strpos($post_type, '-') !== false) {
+                $post_type = substr($post_type, ((int)strpos($post_type, '-') + 1));
+            }
+            $post_type_obj = get_post_type_object($post_type);
+            if ($post_type_obj && isset($post_type_obj->labels->name)) {
+                return $post_type_obj->labels->name;
+            }
+        }
+
+        return '';
+    }
+
     protected $_modified; //Replaced with the post/page modified time
 
     public function setPost_modified($value) {
@@ -477,7 +527,7 @@ class SQ_Models_Domain_Patterns extends SQ_Models_Abstract_Domain {
     protected $_focuskw; //Same as keyword
 
     public function setKeywords($value) {
-        $this->_focuskw = $this->_keyword =$value;
+        $this->_focuskw = $this->_keyword = $value;
     }
 
     public function getKeyword() {
@@ -590,6 +640,7 @@ class SQ_Models_Domain_Patterns extends SQ_Models_Abstract_Domain {
 
     protected $_product_price;
 
+
     public function getProduct_price() {
         global $product;
 
@@ -607,6 +658,7 @@ class SQ_Models_Domain_Patterns extends SQ_Models_Abstract_Domain {
                     }
 
                     $this->_product_price = wc_format_decimal($product->get_price(), wc_get_price_decimals());
+
                 } catch (Exception $e) {
 
                 }
@@ -614,6 +666,102 @@ class SQ_Models_Domain_Patterns extends SQ_Models_Abstract_Domain {
         }
 
         return $this->_product_price;
+    }
+
+    protected $_product_price_with_tax;
+
+    public function getProduct_price_with_tax() {
+        global $product;
+
+        if ($this->_post_type == 'product') {
+            if (!isset($this->_product_price_with_tax) && $this->_id > 0) {
+                if (!class_exists('WC_Product') || !function_exists('wc_format_decimal') || !function_exists('wc_get_price_decimals')) {
+                    return '';
+                }
+
+                try {
+                    $product = new WC_Product($this->_id);
+
+                    if (!$product instanceof WC_Product) {
+                        return '';
+                    }
+
+                    $price = $product->get_price();
+
+                    //Get the price with VAT if exists
+                    if (function_exists('wc_get_price_including_tax')) {
+                        $price = wc_get_price_including_tax($product);
+                    }
+
+                    $this->_product_price_with_tax = wc_format_decimal($price, wc_get_price_decimals());
+
+                } catch (Exception $e) {
+
+                }
+            }
+        }
+
+        return $this->_product_price_with_tax;
+    }
+
+    protected $_product_brand;
+
+    public function getProduct_brand() {
+        global $product;
+
+        if ($this->_post_type == 'product') {
+            if (!isset($this->_product_brand) && $this->_id > 0) {
+                if (!class_exists('WC_Product')) {
+                    return '';
+                }
+
+                try {
+                    $product = new WC_Product($this->_id);
+                    $taxonomy = 'product_cat';
+
+                    if (!$product instanceof WC_Product) {
+                        return '';
+                    }
+
+                    $sq_woocommerce = get_post_meta($this->_id, '_sq_woocommerce', true);
+
+                    if (isset($sq_woocommerce['brand']) && $sq_woocommerce['brand'] <> '') {
+                        $this->_product_brand = $sq_woocommerce['brand'];
+                    } elseif ((int)$this->_post->sq->primary_category > 0) {
+
+                        //check if the primary category was selected by the client
+                        $category = get_term((int)$this->_post->sq->primary_category, $taxonomy);
+                        if (isset($category->name) && $category->name <> '') {
+                            $this->_product_brand = $category->name;
+                        }
+
+                    } else {
+                        //compatible with Perfect Woocommerce Brands
+                        if (SQ_Classes_Helpers_Tools::isPluginInstalled('perfect-woocommerce-brands/perfect-woocommerce-brands.php')) {
+                            $brands = wp_get_post_terms($product->get_id(), 'pwb-brand');
+                            foreach ($brands as $brand) {
+                                $this->_product_brand = $brand->name;
+                                break;
+                            }
+                        }
+
+                        //compatible with YITH WooCommerce Brands Add-on
+                        if (SQ_Classes_Helpers_Tools::isPluginInstalled('yith-woocommerce-brands-add-on/init.php')) {
+                            $brands = wp_get_post_terms($product->get_id(), 'yith_product_brand');
+                            foreach ($brands as $brand) {
+                                $this->_product_brand = $brand->name;
+                                break;
+                            }
+                        }
+                    }
+
+                } catch (Exception $e) {
+
+                }
+            }
+        }
+
+        return $this->_product_brand;
     }
 
     protected $_product_sale;
@@ -674,4 +822,12 @@ class SQ_Models_Domain_Patterns extends SQ_Models_Abstract_Domain {
 
         return $this->_product_currency;
     }
+
+    protected $_custom_field;
+
+    public function getCustom_field() {
+        return '';
+    }
+
+
 }

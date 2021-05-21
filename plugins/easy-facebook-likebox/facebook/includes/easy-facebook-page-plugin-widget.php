@@ -54,7 +54,7 @@ class Easy_Facebook_Page_Plugin_Widget extends WP_Widget
         $defaults = [
             'title'        => '',
             'fb_appid'     => '',
-            'fanpage_url'  => 'https://www.facebook.com/innovationforce',
+            'fanpage_url'  => '',
             'box_width'    => 250,
             'box_height'   => '',
             'show_stream'  => 0,
@@ -105,7 +105,7 @@ class Easy_Facebook_Page_Plugin_Widget extends WP_Widget
         echo  esc_attr( $fanpage_url ) ;
         ?>"><br/>
             <i><?php 
-        _e( 'Full url including https://', 'easy-facebook-likebox' );
+        _e( 'Enter full URL of the page', 'easy-facebook-likebox' );
         ?></i>
         </p>
 

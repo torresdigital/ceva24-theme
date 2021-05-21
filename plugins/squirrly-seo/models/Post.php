@@ -124,7 +124,7 @@ class SQ_Models_Post {
             if (isset($proper_filename) && $proper_filename <> '')
                 $file['name'] = $proper_filename;
 
-            if ((!isset($type) || !isset($ext)) && !current_user_can('unfiltered_upload'))
+            if ((!isset($type) || !isset($ext)) && !SQ_Classes_Helpers_Tools::userCan('unfiltered_upload'))
                 return call_user_func($upload_error_handler, $file, esc_html__("Sorry, this file type is not permitted for security reasons.", _SQ_PLUGIN_NAME_));
 
             if (!$ext)

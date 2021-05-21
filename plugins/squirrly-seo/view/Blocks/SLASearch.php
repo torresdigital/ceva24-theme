@@ -5,7 +5,7 @@
 
 <div class="sq_box" style="display: none">
     <div class="sq_header"><span class="sq_logo"></span>
-        <?php echo esc_html__("Squirrly SEO", _SQ_PLUGIN_NAME_); ?>
+        <?php echo esc_html__("Live Assistant", _SQ_PLUGIN_NAME_); ?>
         <div class="sq_box_close" title="<?php echo esc_html__("Click to Close Squirrly Live Assistant", _SQ_PLUGIN_NAME_); ?>" style="display: none">x</div>
         <div class="sq_box_minimize" title="<?php echo esc_html__("Click to Minimize Box", _SQ_PLUGIN_NAME_); ?>" style="display: none">_</div>
         <div class="sq_box_maximize" title="<?php echo esc_html__("Click to Maximize Box", _SQ_PLUGIN_NAME_); ?>" style="display: none">&#x25a1;</div>
@@ -21,20 +21,10 @@
             </div>
             <input type="text" id="sq_briefcase_keyword" value="" autocomplete="off" placeholder="<?php echo esc_html__("Search in Briefcase ...", _SQ_PLUGIN_NAME_); ?>">
             <div id="sq_briefcase_content"></div>
-            <a href="<?php echo SQ_Classes_Helpers_Tools::getAdminUrl('sq_research', 'briefcase') ?>" class="sq_button" id="sq_briefcase_addbriefcase" target="_blank" style="background-color: #f7681a;"><?php echo esc_html__("Go to Briefcase", _SQ_PLUGIN_NAME_); ?></a>
+            <a href="<?php echo SQ_Classes_Helpers_Tools::getAdminUrl('sq_research', 'briefcase') ?>" class="sq_button" id="sq_briefcase_addbriefcase" target="_blank" style="background-color: rgb(38, 128, 180);"><?php echo esc_html__("Go to Briefcase", _SQ_PLUGIN_NAME_); ?></a>
             <div id="sq_briefcase_bottom"></div>
         </div>
         <div class="sq_keyword">
-            <?php
-            if (SQ_Classes_Helpers_Tools::getOption('sq_keyword_help')) {
-                ?>
-                <div id="sq_keyword_help" style="display:none">
-                    <span></span><?php echo esc_html__("Enter a keyword", _SQ_PLUGIN_NAME_); ?>
-                    <p><?php echo esc_html__("for Squirrly Live SEO optimization", _SQ_PLUGIN_NAME_); ?></p>
-                </div>
-                <?php
-            }
-            ?>
             <input type="text" id="sq_keyword" name="sq_keyword" value="<?php echo SQ_Classes_Helpers_Tools::getValue('keyword','') ?>" autocomplete="off" placeholder="<?php echo esc_html__("Type in your keyword...", _SQ_PLUGIN_NAME_) ?>"/>
             <input type="button" id="sq_keyword_check" value=">"/>
             <input type="button" id="sq_selectit" value="<?php echo esc_html__("Use this keyword", _SQ_PLUGIN_NAME_); ?>" style="display: none"/>

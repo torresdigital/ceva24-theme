@@ -10,7 +10,7 @@
                     <div class="card-body p-2 bg-title rounded-top row">
                         <div class="col-8 m-0 p-0 py-2 bg-title rounded-top">
                             <div class="sq_icons sq_squirrly_icon m-1 mx-3"></div>
-                            <h3 class="card-title"><?php echo esc_html__("Welcome to Squirrly SEO 2021 (Smart Strategy)", _SQ_PLUGIN_NAME_); ?></h3>
+                            <h3 class="card-title"><?php echo esc_html__("Welcome to", _SQ_PLUGIN_NAME_) . ' ' . apply_filters('sq_name', _SQ_MENU_NAME_); ?></h3>
                         </div>
                     </div>
                     <div class="card col-12 p-0 m-0 border-0  border-0">

@@ -112,7 +112,7 @@ class SQ_Models_Domain_Post extends SQ_Models_Abstract_Domain {
     public function getSq_adm() {
 
         if (!isset($this->_sq_adm) && isset($this->_post_type) && $this->_post_type <> '') {
-            if (is_user_logged_in()) {
+            if (function_exists('is_user_logged_in') && is_user_logged_in()) {
                 $this->_sq_adm = SQ_Classes_ObjController::getClass('SQ_Models_Qss')->getSqSeo($this->_hash);
 
                 if (!empty($this->_sq_adm)) {

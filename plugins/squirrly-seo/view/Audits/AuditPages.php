@@ -23,7 +23,7 @@
                                 foreach ($view->auditpages as $index => $auditpage) {
 
                                     if ($auditpage->permalink <> '') {
-                                        if (!current_user_can('sq_manage_focuspages')) continue;
+                                        if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_focuspages')) continue;
 
                                         ?>
                                         <tr id="sq_row_<?php echo (int)$auditpage->id ?>" class="<?php echo((int)$index % 2 ? 'even' : 'odd') ?>">
@@ -51,7 +51,7 @@
         <?php } elseif (!SQ_Classes_Error::isError()) { ?>
 
             <div class="card-body">
-                <h4 class="text-center"><?php echo esc_html__("Welcome to Squirrly SEO Audits", _SQ_PLUGIN_NAME_); ?></h4>
+                <h4 class="text-center"><?php echo esc_html__("Welcome to SEO Audits", _SQ_PLUGIN_NAME_); ?></h4>
                 <div class="col-12 m-2 text-center">
                     <a href="<?php echo SQ_Classes_Helpers_Tools::getAdminUrl('sq_audits', 'addpage') ?>" class="btn btn-lg btn-success"><i class="fa fa-plus-square-o"></i> <?php echo esc_html__("Add a new page for Audit to get started", _SQ_PLUGIN_NAME_); ?>
                     </a>

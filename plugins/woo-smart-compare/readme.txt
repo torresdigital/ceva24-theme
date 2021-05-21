@@ -3,8 +3,8 @@ Contributors: wpclever
 Donate link: https://wpclever.net
 Tags: woocommerce, woo, wpc, smart, compare, product-compare, smart-compare
 Requires at least: 4.0
-Tested up to: 5.7
-Stable tag: 3.5.3
+Tested up to: 5.7.2
+Stable tag: 3.5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -74,12 +74,8 @@ If you love our plugins, please give us a full five-star rating so that we know 
 
 To integrate with a theme, please use bellow filter to hide the default buttons.
 
-`add_filter( 'filter_wooscp_button_archive', function() {
-    return '0';
-} );
-add_filter( 'filter_wooscp_button_single', function() {
-    return '0';
-} );`
+`add_filter( 'filter_wooscp_button_archive', '__return_false' );
+add_filter( 'filter_wooscp_button_single', '__return_false' );`
 
 After that, use the shortcode to display the button where you want.
 
@@ -90,6 +86,16 @@ Example:
 `echo do_shortcode('[woosc id="99"]');`
 
 == Changelog ==
+
+= 3.5.6 =
+* Added: Filter hook 'wooscp_product_name'
+* Updated: Compatible with WordPress 5.7.2 & WooCommerce 5.3
+
+= 3.5.5 =
+* Fixed: Compare menu item
+
+= 3.5.4 =
+* Fixed: Compare menu item missed link
 
 = 3.5.3 =
 * Added: Enable/disable link to individual product
@@ -105,7 +111,7 @@ Example:
 * Updated: Optimized the code
 
 = 3.4.0 =
-* Updated: Compatible with WordPress 5.7.0 & WooCommerce 5.0.0
+* Updated: Compatible with WordPress 5.7 & WooCommerce 5.0
 
 = 3.3.5 =
 * Updated: Optimized the code
@@ -123,10 +129,10 @@ Example:
 * Fixed: The update checker URL
 
 = 3.3.0 =
-* Updated: Compatible with WordPress 5.6.0 & WooCommerce 4.8.0
+* Updated: Compatible with WordPress 5.6 & WooCommerce 4.8
 
 = 3.2.7 =
-* Updated: Compatible with WooCommerce 4.7.0
+* Updated: Compatible with WooCommerce 4.7
 
 = 3.2.6 =
 * Fixed: Some minor CSS & JS issues
@@ -152,11 +158,11 @@ Example:
 * Updated: Compatible with WordPress 5.5 & WooCommerce 4.3.2
 
 = 3.1.1 =
-* Updated: Compatible with WooCommerce 4.3.0
+* Updated: Compatible with WooCommerce 4.3
 * Updated: Optimized the code
 
 = 3.1.0 =
-* Updated: Compatible with WordPress 5.4.2 & WooCommerce 4.2.0
+* Updated: Compatible with WordPress 5.4.2 & WooCommerce 4.2
 
 = 3.0.4 =
 * Fixed: Variation product attributes
@@ -173,7 +179,7 @@ Example:
 * Updated: Compatible with WordPress 5.4 & WooCommerce 4.0.1
 
 = 3.0.0 =
-* Updated: Compatible with WooCommerce 4.0.0
+* Updated: Compatible with WooCommerce 4.0
 
 = 2.8.3 =
 * Added: Option to change the text after added
@@ -188,7 +194,7 @@ Example:
 * Updated: Optimized the code
 
 = 2.7.9 =
-* Updated: Compatible with WordPress 5.3 & WooCommerce 3.8.x
+* Updated: Compatible with WordPress 5.3 & WooCommerce 3.8
 
 = 2.7.8 =
 * Updated: Optimized the code
@@ -234,7 +240,7 @@ Example:
 
 = 2.6.7 =
 * Added: Choose image size option
-* Updated: Compatible with WooCommerce 3.6.x
+* Updated: Compatible with WooCommerce 3.6
 
 = 2.6.6 =
 * Updated: Display attributes list with checkbox in settings page (Premium Version)
@@ -266,7 +272,7 @@ Example:
 * Updated: Optimized the code
 
 = 2.5.8 =
-* Updated: Compatible with WooCommerce 3.5.0
+* Updated: Compatible with WooCommerce 3.5
 
 = 2.5.7 =
 * Updated: Optimize the code to reduce the loading time

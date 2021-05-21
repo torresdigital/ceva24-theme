@@ -31,7 +31,7 @@
                 </div>
             <?php } ?>
 
-            <?php if (current_user_can('sq_manage_snippets')) { ?>
+            <?php if (SQ_Classes_Helpers_Tools::userCan('sq_manage_snippets')) { ?>
                 <div class="card col-12 p-0 my-2">
                     <div class="my-4 py-4">
                         <div class="col-12 row py-0 m-0">

@@ -44,6 +44,11 @@ if ( ! class_exists( 'ESF_Admin' ) ) {
 				'esf_hide_rating_notice',
 			] );
 
+			add_action( 'wp_ajax_esf_hide_free_sidebar', [
+				$this,
+				'hide_free_sidebar',
+			] );
+
 			add_action( 'admin_head', [ $this, 'esf_hide_notices' ] );
 
 			add_action( 'pre_get_posts', [
@@ -105,7 +110,22 @@ if ( ! class_exists( 'ESF_Admin' ) ) {
 				'nonce'    => wp_create_nonce( 'fta-ajax-nonce' ),
 			] );
 
+			wp_enqueue_script( 'thickbox' );
+			wp_enqueue_style( 'thickbox' );
+
 			wp_enqueue_script( 'media-upload' );
+
+			wp_enqueue_script( 'esf-image-uploader', FTA_PLUGIN_URL . 'admin/assets/js/esf-image-uploader.js', [
+				'jquery',
+				'media-upload',
+				'thickbox'
+			], '1.0.0', true );
+
+			wp_localize_script( 'esf-image-uploader', 'esf_image_uploader', [
+				'title' => __( 'Select or Upload Image', 'easy-facebook-likebox' ),
+				'btn_text'    => __( 'Use this Image', 'easy-facebook-likebox' ),
+			] );
+
 
 			wp_enqueue_media();
 		}
@@ -234,7 +254,13 @@ if ( ! class_exists( 'ESF_Admin' ) ) {
 
 					$access_token = $esf_settings['plugins']['facebook']['access_token'];
 
-					unset( $esf_settings['plugins']['facebook']['approved_pages'] );
+					if( isset( $esf_settings['plugins']['facebook']['approved_pages'] ) ){
+						unset( $esf_settings['plugins']['facebook']['approved_pages'] );
+					}
+
+					if( isset( $esf_settings['plugins']['facebook']['approved_groups'] ) ){
+						unset( $esf_settings['plugins']['facebook']['approved_groups'] );
+                    }
 
 					unset( $esf_settings['plugins']['facebook']['access_token'] );
 
@@ -408,6 +434,26 @@ if ( ! class_exists( 'ESF_Admin' ) ) {
 			wp_die();
 		}
 
+		/**
+		 * Hide sidebar for free users
+         *
+         * @since 6.2.3
+		 */
+		public function hide_free_sidebar() {
+
+			$FTA = new Feed_Them_All();
+			$fta_settings = $FTA->fta_get_settings();
+			$id = sanitize_text_field( $_POST['id'] );
+			$fta_settings['hide_'.$id] = true;
+			$updated = update_option('fta_settings', $fta_settings);
+			if( isset( $updated ) && !is_wp_error( $updated ) ){
+				wp_send_json_success( __('Updated!', 'easy-facebook-likebox') );
+			}else{
+				wp_send_json_error( __( 'Something went wrong! Please try again', 'easy-facebook-likebox' ) );
+			}
+
+		}
+
 
 		/**
 		 * Add powered by text in admin footer
@@ -430,10 +476,6 @@ if ( ! class_exists( 'ESF_Admin' ) ) {
 				$fta_class = new Feed_Them_All();
 				$text      = '<i><a href="' . admin_url( '?page=feed-them-all' ) . '" title="' . __( 'Visit the Easy Social Feed page for more info', 'easy-facebook-likebox' ) . '">ESPF</a> v' . $fta_class->version . ' Please <a target="_blank" href="https://wordpress.org/support/plugin/easy-facebook-likebox/reviews/?filter=5#new-post" title="Rate the plugin">rate the plugin <span style="color: #ffb900;" class="stars">&#9733; &#9733; &#9733; &#9733; &#9733; </span></a> to help us spread the word. Thank you from the Easy Social Feed team!</i><div style="margin-left:5px;top: 1px;" class="fb-like" data-href="https://www.facebook.com/easysocialfeed" data-width="" data-layout="button" data-action="like" data-size="small" data-share="false"></div><div id="fb-root"></div><script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0&appId=1983264355330375&autoLogAppEvents=1"></script><style>#wpfooter{background-color: #fff;padding: 15px 20px;-webkit-box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.12), 0 1px 5px 0 rgba(0,0,0,.2);box-shadow: 0 2px 2px 0 rgba(0,0,0,.14), 0 3px 1px -2px rgba(0,0,0,.12), 0 1px 5px 0 rgba(0,0,0,.2);}.fb_iframe_widget{float:left;}#wpfooter a{text-decoration:none;}</style>';
 
-				if ( efl_fs()->is_free_plan() ) {
-
-				    $text .= '<style>#wpfooter{ bottom: auto;}</style>';
-				}
 			}
 
 			return $text;
@@ -545,6 +587,8 @@ if ( ! class_exists( 'ESF_Admin' ) ) {
 					$fta_settings['plugins']['facebook']['access_token_info']['is_valid'] = $fb_token_info->data->is_valid;
 
 					$fta_settings['plugins']['facebook']['access_token_info']['issued_at'] = $fb_token_info->data->issued_at;
+
+					$fta_settings['plugins']['facebook']['access_token_info']['app_id'] = $fb_token_info->data->app_id;
 
 					update_option( 'fta_settings', $fta_settings );
 

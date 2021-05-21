@@ -11,6 +11,7 @@ class SQ_Models_Domain_Sq extends SQ_Models_Abstract_Domain {
     protected $_do_twc;
     protected $_do_analytics;
     protected $_do_fpixel;
+    protected $_do_redirects;
 
     protected $_noindex;
     protected $_nofollow;
@@ -20,6 +21,7 @@ class SQ_Models_Domain_Sq extends SQ_Models_Abstract_Domain {
     protected $_description;
     protected $_keywords;
     protected $_canonical;
+    protected $_primary_category;
 
     protected $_robots;
     protected $_focuspage;
@@ -39,6 +41,9 @@ class SQ_Models_Domain_Sq extends SQ_Models_Abstract_Domain {
     protected $_jsonld_type;
     protected $_jsonld_types;
     protected $_fpixel;
+
+    protected $_redirect;
+    protected $_redirect_type;
 
     // lengths
     protected $_title_maxlength;
@@ -108,8 +113,13 @@ class SQ_Models_Domain_Sq extends SQ_Models_Abstract_Domain {
             $this->_noindex = 0;
         }
 
+        if($this->_noindex === 'yes'){
+            $this->_noindex = 1;
+        }
+
         return (int)$this->_noindex;
     }
+
 
     public function getNositemap() {
         if (!isset($this->_nositemap)) {
@@ -122,6 +132,10 @@ class SQ_Models_Domain_Sq extends SQ_Models_Abstract_Domain {
     public function getNofollow() {
         if (!isset($this->_nofollow)) {
             $this->_nofollow = 0;
+        }
+
+        if($this->_nofollow === 'yes'){
+            $this->_nofollow = 1;
         }
 
         return (int)$this->_nofollow;
@@ -180,8 +194,22 @@ class SQ_Models_Domain_Sq extends SQ_Models_Abstract_Domain {
             'do_og' => $this->do_og,
             'do_twc' => $this->do_twc,
             'do_analytics' => $this->do_analytics,
-            'do_fpixel' => $this->do_fpixel
+            'do_fpixel' => $this->do_fpixel,
+            'do_redirects' => $this->do_redirects,
         );
+    }
+
+    /**
+     * Set the redirect code
+     * Default 301 redirects
+     * @return int
+     */
+    public function getRedirect_type() {
+        if (!isset($this->_redirect_type)) {
+            $this->_redirect_type = 301;
+        }
+
+        return (int)$this->_redirect_type;
     }
 
     public function toArray() {
@@ -197,6 +225,9 @@ class SQ_Models_Domain_Sq extends SQ_Models_Abstract_Domain {
             'description' => $this->description,
             'keywords' => $this->keywords,
             'canonical' => $this->canonical,
+            'primary_category' => $this->primary_category,
+            'redirect' => $this->redirect,
+            'redirect_type' => $this->redirect_type,
             'robots' => $this->robots,
             'focuspage' => $this->focuspage,
             //

@@ -202,7 +202,7 @@ class SQ_Controllers_PostsList extends SQ_Classes_FrontController {
         parent::action();
         switch (SQ_Classes_Helpers_Tools::getValue('action')) {
             case 'sq_ajax_postslist':
-                if (!current_user_can('sq_manage_snippet')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
                     echo wp_json_encode($response);

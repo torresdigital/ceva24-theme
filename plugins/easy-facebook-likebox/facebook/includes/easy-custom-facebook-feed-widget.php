@@ -584,6 +584,7 @@ class Easy_Custom_Facebook_Feed_Widget extends WP_Widget
         if ( !empty($accesstoken) ) {
             $accesstoken = 'accesstoken="' . $accesstoken . '"';
         }
+        $efbl_filter_events = '';
         $show_logo = ( isset( $show_logo ) ? $show_logo : 0 );
         $show_image = ( isset( $show_image ) ? $show_image : 0 );
         $show_like_box = ( isset( $show_like_box ) ? $show_like_box : 0 );
@@ -594,7 +595,7 @@ class Easy_Custom_Facebook_Feed_Widget extends WP_Widget
         ?>
 
             <p style="background:#ddd; padding:5px; "><?php 
-        echo  '[efb_feed fanpage_id="' . $fanpage_id . '" ' . $accesstoken . ' ' . $filter . ' ' . $efbl_filter_events . ' layout="' . $layout . '" show_logo="' . $show_logo . '" show_image="' . $show_image . '" show_like_box="' . $show_like_box . '" load_more="' . $load_more . '" live_stream_only="' . $live_stream_only . '" links_new_tab="' . $links_new_tab . '" post_limit="' . $post_limit . '"  words_limit="' . $words_limit . '"  cache_unit="' . $cache_unit . '" cache_duration="' . $cache_duration . '" ]' ;
+        echo  '[efb_feed fanpage_id="' . $fanpage_id . '" ' . $accesstoken . ' ' . $filter . ' ' . $efbl_filter_events . '  show_like_box="' . $show_like_box . '" load_more="' . $load_more . '" live_stream_only="' . $live_stream_only . '" links_new_tab="' . $links_new_tab . '" post_limit="' . $post_limit . '"  words_limit="' . $words_limit . '"  cache_unit="' . $cache_unit . '" cache_duration="' . $cache_duration . '" ]' ;
         ?></p>
         </div>
 		<?php 

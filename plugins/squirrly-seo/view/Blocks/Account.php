@@ -23,7 +23,7 @@ if (isset($view->checkin->subscription_status) && isset($view->checkin->product_
     }
 }
 ?>
-<?php if (SQ_Classes_Helpers_Tools::getMenuVisible('show_panel') && current_user_can('manage_options')) { ?>
+<?php if (SQ_Classes_Helpers_Tools::getMenuVisible('show_panel') && SQ_Classes_Helpers_Tools::userCan('manage_options')) { ?>
     <div class="card-text col-12 p-0 m-0 border-0">
         <div class="author">
             <i class="avatar sq_icons sq_icon_package"></i>

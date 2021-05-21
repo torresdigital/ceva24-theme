@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PressX - Custom Codes 2.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/custom-codes\n"
-"POT-Creation-Date: 2021-02-06T21:11:28+00:00\n"
-"PO-Revision-Date: 2021-02-07 00:14+0300\n"
+"POT-Creation-Date: 2021-04-19T21:34:59+00:00\n"
+"PO-Revision-Date: 2021-04-20 00:35+0300\n"
 "Last-Translator: Bilal Tas <bilal@pressx.co>\n"
 "Language-Team: \n"
 "Language: tr_TR\n"
@@ -70,7 +70,7 @@ msgstr "Diğer"
 msgid "Frontend"
 msgstr "Önyüz"
 
-#: lib/admin-columns.php:79 lib/views/locations-area.php:158
+#: lib/admin-columns.php:79 lib/views/locations-area.php:184
 msgid "Backend"
 msgstr "Arkayüz"
 
@@ -78,63 +78,63 @@ msgstr "Arkayüz"
 msgid "All roles"
 msgstr "Tüm roller"
 
-#: lib/admin-columns.php:98
+#: lib/admin-columns.php:100
 msgid "Login"
 msgstr "Giriş"
 
-#: lib/admin-columns.php:103 lib/views/locations-area.php:171
+#: lib/admin-columns.php:105 lib/views/locations-area.php:197
 msgid "Everywhere"
 msgstr "Heryer"
 
-#: lib/admin-columns.php:108 lib/views/locations-area.php:173
+#: lib/admin-columns.php:110 lib/views/locations-area.php:199
 msgid "Nowhere"
 msgstr "Hiçbir yer"
 
-#: lib/admin-columns.php:116
+#: lib/admin-columns.php:118
 msgid "Page"
 msgstr "Sayfa"
 
-#: lib/admin-columns.php:119
+#: lib/admin-columns.php:121
 msgid "All pages"
 msgstr "Tüm sayfalar"
 
-#: lib/admin-columns.php:135
+#: lib/admin-columns.php:140
 msgid "Post"
 msgstr "Gönderi"
 
-#: lib/admin-columns.php:138
+#: lib/admin-columns.php:143
 msgid "All posts"
 msgstr "Tüm gönderiler"
 
-#: lib/admin-columns.php:154
+#: lib/admin-columns.php:162
 msgid "Post Type"
 msgstr "Gönderi Tipi"
 
-#: lib/admin-columns.php:157
+#: lib/admin-columns.php:165
 msgid "All post types"
 msgstr "Tüm gönderi tipleri"
 
-#: lib/admin-columns.php:174 lib/views/locations-area.php:105
+#: lib/admin-columns.php:185 lib/views/locations-area.php:131
 msgid "Categories / Terms"
 msgstr "Kategoriler"
 
-#: lib/admin-columns.php:177
+#: lib/admin-columns.php:188
 msgid "All terms"
 msgstr "Tüm kategoriler"
 
-#: lib/admin-columns.php:196 lib/views/locations-area.php:121
+#: lib/admin-columns.php:209 lib/views/locations-area.php:147
 msgid "Archives / Taxonomies"
 msgstr "Arşivler"
 
-#: lib/admin-columns.php:199
+#: lib/admin-columns.php:212
 msgid "All taxonomies"
 msgstr "Tüm arşivler"
 
-#: lib/admin-columns.php:216
+#: lib/admin-columns.php:231
 msgid "Template"
 msgstr "Şablon"
 
-#: lib/admin-columns.php:219
+#: lib/admin-columns.php:234
 msgid "All templates"
 msgstr "Tüm şablonlar"
 
@@ -162,35 +162,35 @@ msgstr "MOBİL DİKEY STİLLERİ"
 msgid "RETINA DISPLAY STYLES"
 msgstr "RETİNA EKRAN STİLLERİ"
 
-#: lib/editor-saver.php:284
+#: lib/editor-saver.php:285
 msgid "Could not be written to the file."
 msgstr "Dosyaya yazılamadı."
 
-#: lib/editor-saver.php:300
+#: lib/editor-saver.php:302
 msgid "Could not be written to the bundle file."
 msgstr "Paket dosyasına yazılamadı."
 
-#: lib/editor-saver.php:309 lib/editor-saver.php:348
+#: lib/editor-saver.php:311 lib/editor-saver.php:350
 msgid "Bundle file could not be deleted."
 msgstr "Paket dosyası silinemedi."
 
-#: lib/editor-saver.php:319
+#: lib/editor-saver.php:321
 msgid "File could not be deleted."
 msgstr "Dosya silinemedi."
 
-#: lib/editor-saver.php:336
+#: lib/editor-saver.php:338
 msgid "File output could not be deleted."
 msgstr "Dosya çıktısı silinemedi."
 
-#: lib/editor-saver.php:365 lib/editor-saver.php:464
+#: lib/editor-saver.php:367 lib/editor-saver.php:466
 msgid "No compiler found"
 msgstr "Derleyici bulunamadı"
 
-#: lib/editor-saver.php:391 lib/editor-saver.php:489
+#: lib/editor-saver.php:393 lib/editor-saver.php:491
 msgid "Compiled output could not be written to the file."
 msgstr "Derlenen çıktı dosyaya yazılamadı."
 
-#: lib/editor-saver.php:457
+#: lib/editor-saver.php:459
 msgid "Output could not be written to the file."
 msgstr "Çıktı dosyaya yazılamadı."
 
@@ -318,7 +318,7 @@ msgstr "“Cmd/Ctrl S” ile kaydet"
 msgid "Emmet Feature"
 msgstr "Emmet Özelliği"
 
-#: lib/register-data.php:260 lib/views/settings-area.php:152
+#: lib/register-data.php:260 lib/views/settings-area.php:151
 msgid "Initial Editor Tab"
 msgstr "Başlangıç Editör Sekmesi"
 
@@ -526,54 +526,174 @@ msgid "Autocomplete"
 msgstr "Otomatik Tamamlama"
 
 #. translators: 1: Editor Name 2: Language name
-#: lib/views/editor-area.php:167
+#: lib/views/editor-area.php:174
 msgid "Write your custom %1$s %2$s"
 msgstr "%1$s %2$s’inizi yazın"
 
-#: lib/views/editor-area.php:173
+#: lib/views/editor-area.php:180
 msgid "Insufficient permissions to write this editor"
 msgstr "Bu editöre yazmak için yeterli dosya izini bulunmuyor"
 
-#: lib/views/editor-area.php:176
+#: lib/views/editor-area.php:183
 msgid "Editor file might exist but content is not readable and writable"
 msgstr "Editör dosyası bulunuyor ancak okunabilir veya yazılabilir değil"
 
-#: lib/views/editor-area.php:211
+#: lib/views/editor-area.php:218
 msgid "Please click \"Update\" to confirm the new language."
 msgstr "Yeni dili onaylamak için “Güncelle” butonuna tıklayın."
 
-#: lib/views/editor-area.php:219
+#: lib/views/editor-area.php:226
 msgid "Dark Theme"
 msgstr "Koyu Tema"
 
-#: lib/views/editor-area.php:220
+#: lib/views/editor-area.php:227
 msgid "Light Theme"
 msgstr "Açık Tema"
 
-#: lib/views/editor-area.php:227
+#: lib/views/editor-area.php:234
 msgid "Font Size:"
 msgstr "Yazı Boyutu:"
 
-#: lib/views/editor-area.php:273
+#: lib/views/editor-area.php:280
 msgid "OUTPUT"
 msgstr "ÇIKTI"
 
-#: lib/views/editor-area.php:274
+#: lib/views/editor-area.php:281
 msgid "SAVE"
 msgstr "KAYDET"
+
+#: lib/views/includes-area.php:26
+msgid "PRO Feature"
+msgstr "PRO Özelliği"
 
 #: lib/views/includes-area.php:30
 msgid "Includes"
 msgstr "Dahil Edilenler"
 
+#: lib/views/includes-area.php:92
+msgid ""
+"You can simply include a file or URL to this code instead of writing "
+"snippets inside of the editor."
+msgstr ""
+"Editör içinde başka bir kod veya URL çağırmak yerine buradan kolayca dahil "
+"edebilirsiniz."
+
+#: lib/views/includes-area.php:98
+msgid "Type"
+msgstr "Tip"
+
+#: lib/views/includes-area.php:101
+msgid "Code or URL"
+msgstr "Kod veya URL"
+
+#: lib/views/includes-area.php:104 lib/views/settings-area.php:58
+msgid "Editor"
+msgstr "Editör"
+
+#: lib/views/includes-area.php:107
+msgid "Placement"
+msgstr "Konum"
+
+#: lib/views/includes-area.php:110
+msgid "Order"
+msgstr "Sıralama"
+
+#: lib/views/includes-area.php:113
+msgid "Delete"
+msgstr "Sil"
+
+#: lib/views/includes-area.php:122
+msgid "Custom Code"
+msgstr "Kod"
+
+#: lib/views/includes-area.php:123
+msgid "URL"
+msgstr "URL"
+
+#: lib/views/includes-area.php:133
+msgid "There's no code that can be included"
+msgstr "Dahil edilebilecek bir kod bulunamadı"
+
+#: lib/views/includes-area.php:135
+msgid "Select a Custom Code"
+msgstr "Bir Kod Seçin"
+
+#: lib/views/includes-area.php:154
+msgid "Output"
+msgstr "Çıktı"
+
+#: lib/views/includes-area.php:155
+msgid "Default Editor"
+msgstr "Varsayılan Editör"
+
+#: lib/views/includes-area.php:156
+msgid "Desktop"
+msgstr "Masaüstü"
+
+#: lib/views/includes-area.php:157
+msgid "Tablet Landscape"
+msgstr "Tablet Yatay"
+
+#: lib/views/includes-area.php:158
+msgid "Tablet Portrait"
+msgstr "Tablet Dikey"
+
+#: lib/views/includes-area.php:159
+msgid "Mobile Landscape"
+msgstr "Mobil Yatay"
+
+#: lib/views/includes-area.php:160
+msgid "Mobile Portrait"
+msgstr "Mobil Dikey"
+
+#: lib/views/includes-area.php:161
+msgid "Retina"
+msgstr "Retina Ekran"
+
+#: lib/views/includes-area.php:166
+msgid "Head"
+msgstr "Head"
+
+#: lib/views/includes-area.php:167
+msgid "Opening Body"
+msgstr "Body Açılışı"
+
+#: lib/views/includes-area.php:168
+msgid "Closing Body"
+msgstr "Body Kapanışı"
+
+#: lib/views/includes-area.php:173
+msgid "N/A"
+msgstr "Uygulanmıyor"
+
+#: lib/views/includes-area.php:179
+msgid "Top"
+msgstr "Üst"
+
+#: lib/views/includes-area.php:180
+msgid "Bottom"
+msgstr "Alt"
+
+#: lib/views/includes-area.php:193
+msgid "No file or URL has been included yet."
+msgstr "Henüz bir dosya veya URL dahil edilmedi."
+
+#: lib/views/includes-area.php:201 lib/views/includes-area.php:203
+msgid "+ Include a File or URL"
+msgstr "+ Bir Dosya veya URL Dahil Et"
+
+#: lib/views/includes-area.php:205
+msgid "Upgrade Now"
+msgstr "Şimdi Yükseltin"
+
 #: lib/views/locations-area.php:55
 msgid "Pages"
 msgstr "Sayfalar"
 
-#: lib/views/locations-area.php:58 lib/views/locations-area.php:71
-#: lib/views/locations-area.php:93 lib/views/locations-area.php:108
-#: lib/views/locations-area.php:124 lib/views/locations-area.php:136
-#: lib/views/locations-area.php:160
+#: lib/views/locations-area.php:58 lib/views/locations-area.php:84
+#: lib/views/locations-area.php:119 lib/views/locations-area.php:134
+#: lib/views/locations-area.php:150 lib/views/locations-area.php:162
+#: lib/views/locations-area.php:186
 msgid "Optional"
 msgstr "İsteğe Bağlı"
 
@@ -581,127 +701,123 @@ msgstr "İsteğe Bağlı"
 msgid "Select specific page(s):"
 msgstr "Sayfa(lar) seçin:"
 
-#: lib/views/locations-area.php:64
+#: lib/views/locations-area.php:77
 msgid "If none of them selected, codes will be applied all pages."
 msgstr "Hiçbiri seçilmemişse kod tüm sayfalara uygulanacak."
 
-#: lib/views/locations-area.php:68
+#: lib/views/locations-area.php:81
 msgid "Posts"
 msgstr "Gönderiler"
 
-#: lib/views/locations-area.php:71
+#: lib/views/locations-area.php:84
 msgid "Select specific post(s):"
 msgstr "Gönderi(ler) seçin:"
 
-#: lib/views/locations-area.php:86 lib/views/locations-area.php:101
+#: lib/views/locations-area.php:112 lib/views/locations-area.php:127
 msgid "If none of them selected, codes will be applied all single posts."
 msgstr "Hiçbiri seçilmemişse kod tüm tekil gönderilere uygulanacak."
 
-#: lib/views/locations-area.php:90
+#: lib/views/locations-area.php:116
 msgid "Post Types"
 msgstr "Gönderi Tipleri"
 
-#: lib/views/locations-area.php:93
+#: lib/views/locations-area.php:119
 msgid "Select specific post type(s):"
 msgstr "Gönderi tip(leri) seçin:"
 
-#: lib/views/locations-area.php:108
+#: lib/views/locations-area.php:134
 msgid "Select specific term(s):"
 msgstr "Kategorilendirme(ler) seçin:"
 
-#: lib/views/locations-area.php:124
+#: lib/views/locations-area.php:150
 msgid "Select specific taxonomy(s):"
 msgstr "Arşiv(ler) seçin:"
 
-#: lib/views/locations-area.php:133
+#: lib/views/locations-area.php:159
 msgid "Templates"
 msgstr "Şablonlar"
 
-#: lib/views/locations-area.php:136
+#: lib/views/locations-area.php:162
 msgid "Select specific template(s):"
 msgstr "Şablon(lar) seçin:"
 
-#: lib/views/locations-area.php:153
+#: lib/views/locations-area.php:179
 msgid ""
 "If none of them selected, codes will be applied all the pages that have any "
 "assigned custom template."
 msgstr "Hiçbiri seçilmemişse kod tüm şablon seçilmiş sayfalara uygulanacak."
 
-#: lib/views/locations-area.php:160
+#: lib/views/locations-area.php:186
 msgid "Select specific role(s):"
 msgstr "Rol(ler) seçin:"
 
-#: lib/views/locations-area.php:166
+#: lib/views/locations-area.php:192
 msgid "If none of them selected, codes will be applied all roles."
 msgstr "Hiçbiri seçilmemişse kod tüm rollere uygulanacak."
 
-#: lib/views/locations-area.php:169
+#: lib/views/locations-area.php:195
 msgid "Login Screen"
 msgstr "Giriş Ekranı"
 
-#: lib/views/locations-area.php:181
+#: lib/views/locations-area.php:207
 msgid "Current Editor File:"
 msgstr "Editör Dosyası:"
 
-#: lib/views/locations-area.php:182 lib/views/locations-area.php:184
-#: lib/views/locations-area.php:191 lib/views/locations-area.php:193
+#: lib/views/locations-area.php:208 lib/views/locations-area.php:210
+#: lib/views/locations-area.php:217 lib/views/locations-area.php:219
 msgid "Copied!"
 msgstr "Kopyalandı!"
 
-#: lib/views/locations-area.php:182 lib/views/locations-area.php:184
-#: lib/views/locations-area.php:191 lib/views/locations-area.php:193
+#: lib/views/locations-area.php:208 lib/views/locations-area.php:210
+#: lib/views/locations-area.php:217 lib/views/locations-area.php:219
 msgid "Click to Copy"
 msgstr "Kopyalamak İçin Tıkla"
 
-#: lib/views/locations-area.php:184 lib/views/locations-area.php:193
+#: lib/views/locations-area.php:210 lib/views/locations-area.php:219
 msgid "Compiled"
 msgstr "Derlenmiş"
 
-#: lib/views/locations-area.php:190
+#: lib/views/locations-area.php:216
 msgid "Output File:"
 msgstr "Çıktı Dosyası:"
 
-#: lib/views/locations-area.php:204
+#: lib/views/locations-area.php:230
 msgid "Release Order:"
 msgstr "Yayın Sırası:"
 
-#: lib/views/settings-area.php:48
+#: lib/views/settings-area.php:47
 msgid "Custom Codes Settings"
 msgstr "Custom Codes Ayarları"
 
-#: lib/views/settings-area.php:53
+#: lib/views/settings-area.php:52
 msgid "Premium Support"
 msgstr "Öncelikli Destek"
 
-#: lib/views/settings-area.php:53
+#: lib/views/settings-area.php:52
 msgid "Support"
 msgstr "Destek"
 
-#: lib/views/settings-area.php:54
+#: lib/views/settings-area.php:53
 msgid "Feedback"
 msgstr "Geribildirim"
 
 #: lib/views/settings-area.php:59
-msgid "Editor"
-msgstr "Editör"
-
-#: lib/views/settings-area.php:60
 msgid "Style"
 msgstr "Stiller"
 
-#: lib/views/settings-area.php:61
+#: lib/views/settings-area.php:60
 msgid "Plugin"
 msgstr "Eklenti"
 
-#: lib/views/settings-area.php:62
+#: lib/views/settings-area.php:61
 msgid "PRO"
 msgstr "PRO"
 
-#: lib/views/settings-area.php:73
+#: lib/views/settings-area.php:72
 msgid "Settings saved."
 msgstr "Ayarlar kaydedildi."
 
-#: lib/views/settings-area.php:73
+#: lib/views/settings-area.php:72
 msgid ""
 "Note: If you just update the media queries, you need to update the style "
 "codes to apply new ones."
@@ -709,204 +825,213 @@ msgstr ""
 "Not: Eğer media sorgularında bir değişiklik yaptıysanız uygulamak için "
 "kodları yeniden kaydetmeniz gerekir."
 
-#: lib/views/settings-area.php:74
+#: lib/views/settings-area.php:73
 msgid "Dismiss this notice."
 msgstr "Bu bildirimi kapat."
 
-#: lib/views/settings-area.php:86
+#: lib/views/settings-area.php:85
 msgid "Editor Settings"
 msgstr "Editör Ayarları"
 
-#: lib/views/settings-area.php:87
+#: lib/views/settings-area.php:86
 msgid "Change the general settings"
 msgstr "Genel ayarları değiştir"
 
-#: lib/views/settings-area.php:96 lib/views/settings-area.php:110
-#: lib/views/settings-area.php:308
+#: lib/views/settings-area.php:95 lib/views/settings-area.php:109
+#: lib/views/settings-area.php:307
 msgid "Yes, please"
 msgstr "Evet, lütfen"
 
-#: lib/views/settings-area.php:96 lib/views/settings-area.php:110
-#: lib/views/settings-area.php:121
+#: lib/views/settings-area.php:95 lib/views/settings-area.php:109
+#: lib/views/settings-area.php:120
 msgid "Recommended for better experience"
 msgstr "Daha iyi deneyim için önerilir"
 
-#: lib/views/settings-area.php:97
+#: lib/views/settings-area.php:96
 msgid "No, use default WP post saver"
 msgstr "Hayır, varsayılan WP yazı kaydedicisini kullan"
 
-#: lib/views/settings-area.php:105
+#: lib/views/settings-area.php:104
 msgid "Only works if AJAX saver enabled"
 msgstr "Sadece AJAX kaydedici aktif olduğunda çalışır"
 
-#: lib/views/settings-area.php:111
+#: lib/views/settings-area.php:110
 msgid "No sound"
 msgstr "Ses yok"
 
-#: lib/views/settings-area.php:121
+#: lib/views/settings-area.php:120
 msgid "Yes, use keyboard shortcut"
 msgstr "Evet, klavye kısayolunu kullan"
 
-#: lib/views/settings-area.php:122
+#: lib/views/settings-area.php:121
 msgid "No keyboard shortcut"
 msgstr "Klavye kısayolu yok"
 
-#: lib/views/settings-area.php:132
+#: lib/views/settings-area.php:131
 msgid "Active"
 msgstr "Aktif"
 
-#: lib/views/settings-area.php:132
+#: lib/views/settings-area.php:131
 msgid "Recommended"
 msgstr "Önerilen"
 
-#: lib/views/settings-area.php:133
+#: lib/views/settings-area.php:132
 msgid "Deactive"
 msgstr "Deaktif"
 
-#: lib/views/settings-area.php:146
+#: lib/views/settings-area.php:145
 msgid "Style Settings"
 msgstr "Stil Ayarları"
 
-#: lib/views/settings-area.php:147
+#: lib/views/settings-area.php:146
 msgid "Change the settings related to styles"
 msgstr "Stillerle alakalı ayarları değiştir"
 
-#: lib/views/settings-area.php:158
+#: lib/views/settings-area.php:157
 msgid "First Editor"
 msgstr "İlk Editör"
 
-#: lib/views/settings-area.php:158 lib/views/settings-area.php:193
-#: lib/views/settings-area.php:207 lib/views/settings-area.php:221
-#: lib/views/settings-area.php:235 lib/views/settings-area.php:249
-#: lib/views/settings-area.php:263
+#: lib/views/settings-area.php:157 lib/views/settings-area.php:192
+#: lib/views/settings-area.php:206 lib/views/settings-area.php:220
+#: lib/views/settings-area.php:234 lib/views/settings-area.php:248
+#: lib/views/settings-area.php:262
 msgid "Default"
 msgstr "Varsayılan"
 
-#: lib/views/settings-area.php:162
+#: lib/views/settings-area.php:161
 msgid "Global Editor"
 msgstr "Genel Editör"
 
-#: lib/views/settings-area.php:162
+#: lib/views/settings-area.php:161
 msgid "Editor without Media Query"
 msgstr "Media Sorgusu Olmayan Editör"
 
-#: lib/views/settings-area.php:175
+#: lib/views/settings-area.php:174
 msgid "Mobile First"
 msgstr "Mobil Öncelikli"
 
-#: lib/views/settings-area.php:176
+#: lib/views/settings-area.php:175
 msgid "Recommended for mobile performance"
 msgstr "Mobil performansı için önerilir"
 
-#: lib/views/settings-area.php:180
+#: lib/views/settings-area.php:179
 msgid "Desktop First"
 msgstr "Masaüstü Öncelikli"
 
-#: lib/views/settings-area.php:192 lib/views/settings-area.php:195
-#: lib/views/settings-area.php:206 lib/views/settings-area.php:220
-#: lib/views/settings-area.php:234 lib/views/settings-area.php:248
-#: lib/views/settings-area.php:250 lib/views/settings-area.php:262
+#: lib/views/settings-area.php:191 lib/views/settings-area.php:194
+#: lib/views/settings-area.php:205 lib/views/settings-area.php:219
+#: lib/views/settings-area.php:233 lib/views/settings-area.php:247
+#: lib/views/settings-area.php:249 lib/views/settings-area.php:261
 msgid "No media query"
 msgstr "Media sorgusu yok"
 
-#: lib/views/settings-area.php:271
+#: lib/views/settings-area.php:270
 msgid "Reset Media Queries as"
 msgstr "Medya sorgularını şuna göre sıfırla"
 
-#: lib/views/settings-area.php:274
+#: lib/views/settings-area.php:273
 msgid "Mobile First (Min Width)"
 msgstr "Mobil Öncelikli (Min Width)"
 
-#: lib/views/settings-area.php:275
+#: lib/views/settings-area.php:274
 msgid "Desktop First (Max Width)"
 msgstr "Masaüstü Öncelikli (Max Width)"
 
-#: lib/views/settings-area.php:287
+#: lib/views/settings-area.php:286
 msgid "Plugin Settings"
 msgstr "Eklenti Ayarları"
 
-#: lib/views/settings-area.php:288
+#: lib/views/settings-area.php:287
 msgid "Change the core plugin settings"
 msgstr "Ana eklenti ayarlarını değiştir"
 
-#: lib/views/settings-area.php:297
+#: lib/views/settings-area.php:296
 msgid "Yes, show the menu"
 msgstr "Evet, menüyü göster"
 
-#: lib/views/settings-area.php:297
+#: lib/views/settings-area.php:296
 msgid "Recommended for easy access"
 msgstr "Kolay erişim için önerilir"
 
-#: lib/views/settings-area.php:298
+#: lib/views/settings-area.php:297
 msgid "Hide the menu on admin bar"
 msgstr "Menüyü admin çubuğundan kaldır"
 
-#: lib/views/settings-area.php:308
+#: lib/views/settings-area.php:307
 msgid "Recommended for later use"
 msgstr "Daha sonra kullanım için önerilir"
 
-#: lib/views/settings-area.php:309
+#: lib/views/settings-area.php:308
 msgid "Delete the codes"
 msgstr "Kodları sil"
 
-#: lib/views/settings-area.php:322
+#: lib/views/settings-area.php:321
 msgid "Custom Codes PRO"
 msgstr "Custom Codes PRO"
 
-#: lib/views/settings-area.php:323
+#: lib/views/settings-area.php:322
 msgid "Here are all the additional professional features available:"
 msgstr "Tüm ilave profesyonel özellikler:"
 
-#: lib/views/settings-area.php:327
+#: lib/views/settings-area.php:326
 msgid "Priority support"
 msgstr "Öncelikli destek"
 
-#: lib/views/settings-area.php:328
+#: lib/views/settings-area.php:327
 msgid "LESS Editor"
 msgstr "LESS Editörü"
 
-#: lib/views/settings-area.php:329
+#: lib/views/settings-area.php:328
 msgid "Stylus Editor"
 msgstr "Stylus Editörü"
 
-#: lib/views/settings-area.php:330
+#: lib/views/settings-area.php:329
 msgid "CoffeeScript Editor"
 msgstr "CoffeeScript Editörü"
 
-#: lib/views/settings-area.php:331
+#: lib/views/settings-area.php:330
 msgid "PUG Editor"
 msgstr "PUG Editörü"
 
-#: lib/views/settings-area.php:332
+#: lib/views/settings-area.php:331
 msgid "Editor Code Folding"
 msgstr "Editör Kod Katlama"
 
-#: lib/views/settings-area.php:333
+#: lib/views/settings-area.php:332
 msgid "Editor Code Hints"
 msgstr "Editör Kod Önerileri"
 
-#: lib/views/settings-area.php:334
+#: lib/views/settings-area.php:333
 msgid "Custom Code Groups/Categories"
 msgstr "Kod Grupları/Kategorileri"
 
-#: lib/views/settings-area.php:335
+#: lib/views/settings-area.php:334
 msgid "Custom Code Includes"
 msgstr "Kod Dahil Etme"
 
-#: lib/views/settings-area.php:336
+#: lib/views/settings-area.php:335
 msgid "Advanced Code Release Locations"
 msgstr "Gelişmiş Kod Yayınlama Konumları"
 
-#: lib/views/settings-area.php:337
+#: lib/views/settings-area.php:336
 msgid "And, much more coming soon..."
 msgstr "Ve yakında çok daha fazlası..."
 
-#: lib/views/settings-area.php:352
+#: lib/views/settings-area.php:341
+msgid "Thank you for purchasing Custom Codes PRO!"
+msgstr "Custom Codes PRO'yu satın aldığınız için teşekkürler!"
+
+#: lib/views/settings-area.php:342
+msgid "Share Us Your Feedback"
+msgstr "Önerilerinizi Bizimle Paylaşın"
+
+#: lib/views/settings-area.php:344
+msgid "UPGRADE NOW"
+msgstr "ŞİMDİ YÜKSELTİN"
+
+#: lib/views/settings-area.php:351
 msgid "Save Changes"
 msgstr "Değişiklikleri Kaydet"
-
-#~ msgid "Order"
-#~ msgstr "Sıralama"
 
 #~ msgid "Code Order:"
 #~ msgstr "Kod Sırası:"
@@ -919,9 +1044,6 @@ msgstr "Değişiklikleri Kaydet"
 
 #~ msgid "All"
 #~ msgstr "Tüm"
-
-#~ msgid "Custom Code"
-#~ msgstr "Kod"
 
 #~ msgid "<i>Optional</i> - Select specific role(s):"
 #~ msgstr "<i>İsteğe Bağlı</i> - Rol(ler) seçin:"

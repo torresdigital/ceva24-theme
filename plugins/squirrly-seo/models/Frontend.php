@@ -128,6 +128,12 @@ class SQ_Models_Frontend {
 
                     $buffer = preg_replace('/(<head(\s[^>]*|)>)/si', sprintf("$1\n%s", $header_str) . "\n", $buffer, 1);
 
+                    if (SQ_Classes_Helpers_Tools::getOption('sq_auto_links')) {
+                        if (SQ_Classes_Helpers_Tools::getOption('sq_external_nofollow') || SQ_Classes_Helpers_Tools::getOption('sq_external_blank')) {
+                            $buffer = $this->fixSEOLinks($buffer);
+                        }
+                    }
+
                     unset($header);
                     unset($header_str);
                 } catch (Exception $e) {
@@ -137,7 +143,6 @@ class SQ_Models_Frontend {
 
         return $buffer;
     }
-
 
     /**
      * Overwrite the header with the correct parameters
@@ -226,6 +231,11 @@ class SQ_Models_Frontend {
      */
     public function loadSeoLibrary() {
         if ($this->_post && isset($this->_post->sq->doseo) && $this->_post->sq->doseo) {
+
+            if (SQ_Classes_Helpers_Tools::getOption('sq_auto_redirects')) {
+                SQ_Classes_ObjController::getClass('SQ_Models_Services_Redirects');
+            }
+
             //load all services
             if (SQ_Classes_Helpers_Tools::getOption('sq_auto_metas')) {
                 if (SQ_Classes_Helpers_Tools::getOption('sq_auto_title')) {
@@ -338,10 +348,20 @@ class SQ_Models_Frontend {
 
             if (get_option('page_for_posts') > 0) {
                 $posts_url = get_permalink(get_option('page_for_posts'));
+
+                if (is_paged() && $posts_url <> '') {
+                    $page = (int)get_query_var('paged');
+                    if ($page && $page > 1) {
+                        $posts_url = trailingslashit($posts_url) . "page/" . "$page/";
+                    }
+                }
+
                 if (rtrim($posts_url, '/') == rtrim($current_url, '/')) {
                     $current_post = get_post(get_option('page_for_posts'));
                 }
+
             } elseif (get_option('page_on_front') > 0) {
+
                 $posts_url = get_permalink(get_option('page_on_front'));
                 if (rtrim($posts_url, '/') == rtrim($current_url, '/')) {
                     $current_post = get_post(get_option('page_on_front'));
@@ -360,6 +380,7 @@ class SQ_Models_Frontend {
     public function getPostDetails($post) {
 
         if ($post instanceof WP_Post) {
+
             /** @var SQ_Models_Domain_Post $post */
             $post = SQ_Classes_ObjController::getDomain('SQ_Models_Domain_Post', $post);
 
@@ -582,10 +603,31 @@ class SQ_Models_Frontend {
 
         }
 
+        //Check if archive
+        if (is_archive()) {
+
+            if ($archive = $this->getArchiveDetails()) {
+                $post->url = $archive->url;
+
+                if ($archive->path <> '') {
+                    $post->post_type = 'archive';
+                    $post->hash = md5('archive' . $archive->path);
+                    $post->post_date = date(get_option('date_format'), strtotime($archive->path));
+                } else {
+                    $post->post_type = 'archive' . '-' . $archive->post_type;
+                    $post->hash = md5($post->post_type);
+                }
+
+                SQ_Debug::dump($archive, $post);
+
+                return $post;
+            }
+        }
+
         //In case of post type in archieve like gurutheme
         if ($post->post_type = $this->getCutomPostType()) {
             $post->debug = 'cutomPostType:' . $post->post_type;
-            SQ_Debug::dump($post);
+
             $post->hash = md5($post->post_type);
 
             if ((int)$post->term_id > 0) {
@@ -596,22 +638,6 @@ class SQ_Models_Frontend {
                 $post->url = get_post_type_archive_link($post->post_type);
             }
             return $post;
-        }
-
-        //Check if archive
-        if (is_archive()) {
-            if ($archive = $this->getArchiveDetails()) {
-                $post->post_type = 'archive';
-                if ($archive->path <> '') {
-                    $post->debug = 'is_archive:' . $post->post_type . $archive->path;
-
-                    $post->hash = md5($post->post_type . $archive->path);
-                    $post->url = $archive->url;
-                    $post->post_date = date(get_option('date_format'), strtotime($archive->path));
-                }
-
-                return $post;
-            }
         }
 
         return false;
@@ -637,8 +663,9 @@ class SQ_Models_Frontend {
      * @return array|bool|mixed|object
      */
     private function getArchiveDetails() {
+        $archive = false;
+
         if (is_date()) {
-            $archive = false;
             if (is_day()) {
                 $archive = array(
                     'path' => get_query_var('year') . '-' . get_query_var('monthnum') . '-' . get_query_var('day'),
@@ -659,6 +686,24 @@ class SQ_Models_Frontend {
             if (!empty($archive)) {
                 return json_decode(wp_json_encode($archive));
             }
+        }
+
+        if (is_post_type_archive()) {
+            $post_type = get_query_var('post_type');
+            if (is_array($post_type)) {
+                $post_type = current($post_type);
+            }
+
+            $archive = array(
+                'post_type' => $post_type,
+                'path' => '',
+                'url' => get_post_type_archive_link($post_type),
+            );
+
+        }
+
+        if (!empty($archive)) {
+            return json_decode(wp_json_encode($archive));
         }
 
         return false;
@@ -834,35 +879,75 @@ class SQ_Models_Frontend {
     }
 
     /**
-     * Check for changed permalink in the Posts and redirect the article to the new URL
+     * Fix the SEO Links in the source code
+     * @param $buffer
+     * @return mixed
      */
-    public function redirectPermalinks() {
-        if (is_404() && isset($_SERVER['REQUEST_URI'])) {
-            $query_string = false;
-            $url_request = strtolower(urldecode($_SERVER['REQUEST_URI']));
+    public function fixSEOLinks($buffer) {
 
-            if (parse_url($url_request, PHP_URL_PATH)) {
-                if (strpos($url_request, '?')) {
-                    $query_string = explode('?', $url_request);
-                    $query_string = (isset($query_string[1])) ? $query_string[1] : false;
+        preg_match_all('/<a[^>]*href=[\'"]([^\'"]+)[\'"][^>]*>/i', $buffer, $out);
+
+        if (empty($out) || empty($out[0])) {
+            return $buffer;
+        }
+
+        $domain = parse_url(home_url(), PHP_URL_HOST);
+
+        foreach ($out[0] as $index => $link) {
+            $newlink = $link;
+
+            //only for external links
+            if (isset($out[1][$index])) {
+                //If it's not a valid link
+                if (!$linkdomain = parse_url($out[1][$index], PHP_URL_HOST)) {
+                    continue;
                 }
 
-                $url_request = trim(parse_url($url_request, PHP_URL_PATH), '/');
+                //If it's not an external link
+                if (strpos($linkdomain, $domain) !== false) {
+                    continue;
+                }
 
-                global $wpdb;
-                if ($row = $wpdb->get_row($wpdb->prepare("SELECT post_id  FROM `$wpdb->postmeta` WHERE `meta_key` = %s AND `meta_value` = %s", '_sq_old_slug', $url_request))) {
-                    if (get_post_status($row->post_id) == 'publish') {
-                        if ($permalink = get_permalink($row->post_id)) {
-                            $permalink = ($query_string) ? $permalink . "?" . $query_string : $permalink;
-
-                            header('HTTP/1.1 301 Moved Permanently');
-                            header('Location: ' . $permalink, true, 301);
-                            exit();
+                //If it's not an exception link
+                $exceptions = SQ_Classes_Helpers_Tools::getOption('sq_external_exception');
+                if (!empty($exceptions)) {
+                    foreach ($exceptions as $exception) {
+                        if (strpos($exception, $linkdomain) !== false || strpos($linkdomain, $exception) !== false) {
+                            continue 2;
                         }
                     }
                 }
             }
+
+            //If nofollow rel is set
+            if (SQ_Classes_Helpers_Tools::getOption('sq_external_nofollow')) {
+
+                if (strpos($newlink, 'rel=') === false) {
+                    $newlink = str_replace('<a', '<a rel="nofollow" ', $newlink);
+                } elseif (strpos($newlink, 'nofollow') === false) {
+                    $newlink = preg_replace('/(rel=[\'"])([^\'"]+)([\'"])/i', '$1nofollow $2$3', $newlink);
+                }
+
+            }
+
+            //if force external open
+            if (SQ_Classes_Helpers_Tools::getOption('sq_external_blank')) {
+
+                if (strpos($newlink, 'target=') === false) {
+                    $newlink = str_replace('<a', '<a target="_blank" ', $newlink);
+                } elseif (strpos($link, '_blank') === false) {
+                    $newlink = preg_replace('/(target=[\'"])([^\'"]+)([\'"])/i', '$1_blank$3', $newlink);
+                }
+
+            }
+
+            //Check the link and replace it
+            if ($newlink <> $link) {
+                $buffer = str_replace($link, $newlink, $buffer);
+            }
         }
 
+        return $buffer;
     }
+
 }

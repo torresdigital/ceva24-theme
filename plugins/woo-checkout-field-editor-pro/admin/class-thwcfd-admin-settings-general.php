@@ -27,7 +27,7 @@ class THWCFD_Admin_Settings_General extends THWCFD_Admin_Settings{
 		$this->page_id    = 'fields';
 		$this->section_id = 'billing';
 
-		$this->tabs = array( 'fields' => 'Checkout Fields', 'advanced_settings' => 'Advanced Settings');
+		$this->tabs = array( 'fields' => 'Checkout Fields', 'advanced_settings' => 'Advanced Settings', 'pro' => 'Premium Features');
 		$this->sections = array('billing' => 'Billing Fields', 'shipping' => 'Shipping Fields', 'additional' => 'Additional Fields');
 	}
 

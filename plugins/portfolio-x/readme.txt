@@ -3,8 +3,8 @@ Contributors: quantumcloud
 Donate link: http://www.quantumcloud.com
 Tags: portfolio, portfolio gallery, portfolio grid, client showcase, portfolio widget
 Requires at least: 4.6
-Tested up to: 5.6
-Stable tag: 3.4.2
+Tested up to: 5.7
+Stable tag: 3.5.2
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.quantumcloud.com

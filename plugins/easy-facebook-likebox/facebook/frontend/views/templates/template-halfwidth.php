@@ -241,7 +241,9 @@ if ( $is_album_feed ) {
             echo  $link_target ;
             ?>">
 									<?php 
-            echo  $story->attachments->data['0']->title ;
+            if ( isset( $story->attachments->data['0']->title ) ) {
+                echo  $story->attachments->data['0']->title ;
+            }
             ?>
                                 </a>
                             </p>
@@ -307,10 +309,26 @@ if ( $is_album_feed ) {
     
     if ( $feed_type == 'shared_story' ) {
         $efbl_shared_img_col = 12;
+        
         if ( !isset( $shared_src ) || empty($shared_src) ) {
-            $shared_src = $story->full_picture;
+            
+            if ( isset( $story->full_picture ) ) {
+                $shared_src = $story->full_picture;
+            } else {
+                $shared_src = '';
+            }
+        
+        } else {
+            $shared_src = '';
         }
-        $shared_src = $story->attachments->data['0']->media->image->src;
+        
+        
+        if ( isset( $story->attachments->data['0']->media->image->src ) ) {
+            $shared_src = $story->attachments->data['0']->media->image->src;
+        } else {
+            $shared_src = '';
+        }
+        
         ?>
 				<?php 
         
@@ -477,7 +495,7 @@ if ( $is_album_feed ) {
 
 						<?php 
         
-        if ( $efbl_skin_values['design']['show_feed_caption'] ) {
+        if ( $efbl_skin_values['design']['show_feed_caption'] && isset( $story->attachments->data['0']->description ) ) {
             ?>
 
                             <p class="efbl_link_description"><?php 

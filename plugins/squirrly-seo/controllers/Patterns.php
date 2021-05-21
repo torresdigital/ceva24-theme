@@ -67,9 +67,19 @@ class SQ_Controllers_Patterns extends SQ_Classes_FrontController {
         if (!empty($values)) {
             foreach ($values as $name => $value) {
                 if ($name <> '' && !is_array($value) && $value <> '') {
+//                    if (strpos($value, '#') !== false) { //in case there are still patterns from AIOS
+//                        $value = preg_replace('/#([a-z_]+)/s', '{{$1}}', $value);
+//                        $object->$name = preg_replace('/#([a-z_]+)/s', '{{$1}}', $object->$name);
+//                    }
+
                     if (strpos($value, '%%') !== false) { //in case there are still patterns from Yoast
                         $value = preg_replace('/%%([^\%]+)%%/s', '{{$1}}', $value);
                         $object->$name = preg_replace('/%%([^\%]+)%%/s', '{{$1}}', $object->$name);
+                    }
+
+                    if (strpos($value, '%') !== false) { //in case there are still patterns from Rank Math
+                        $value = preg_replace('/%([^\%]+)%/s', '{{$1}}', $value);
+                        $object->$name = preg_replace('/%([^\%]+)%/s', '{{$1}}', $object->$name);
                     }
 
                     if(is_string($value) && $value <> '') {
@@ -89,6 +99,7 @@ class SQ_Controllers_Patterns extends SQ_Classes_FrontController {
                         }
                     }
                 }
+
             }
         }
 
@@ -103,7 +114,7 @@ class SQ_Controllers_Patterns extends SQ_Classes_FrontController {
     public function action() {
         parent::action();
 
-        if (!current_user_can('sq_manage_snippet')) {
+        if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
             $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
             SQ_Classes_Helpers_Tools::setHeader('json');
             echo wp_json_encode($response);
@@ -139,12 +150,7 @@ class SQ_Controllers_Patterns extends SQ_Classes_FrontController {
                     //return json with the results
                     SQ_Classes_Helpers_Tools::setHeader('json');
 
-                    if (SQ_Classes_Helpers_Tools::getValue('sq_debug') !== 'on') {
-                        echo wp_json_encode(array('json' => wp_json_encode($all_patterns)));
-                    } else {
-                        SQ_Debug::dump($all_patterns, $patterns);
-                    }
-
+                    echo wp_json_encode(array('json' => wp_json_encode($all_patterns)));
                     exit();
                 }
                 break;

@@ -127,7 +127,7 @@ $tasks_incompleted = SQ_Classes_ObjController::getClass('SQ_Controllers_CheckSeo
         sq_profilelevel(0);
     }, 1000);
 
-    <?php if (current_user_can('sq_manage_snippets')) {?>
+    <?php if (SQ_Classes_Helpers_Tools::userCan('sq_manage_snippets')) {?>
     (function ($) {
         $.fn.sq_widget_recheck = function () {
             var $this = this;

@@ -4,7 +4,7 @@
     <?php do_action('sq_notices'); ?>
     <div class="d-flex flex-row my-0 bg-white" style="clear: both !important;">
         <?php
-        if (!current_user_can('sq_manage_settings')) {
+        if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
             echo '<div class="col-12 alert alert-success text-center m-0 p-3">' . esc_html__("You do not have permission to access this page. You need Squirrly SEO Admin role.", _SQ_PLUGIN_NAME_) . '</div>';
             return;
         }

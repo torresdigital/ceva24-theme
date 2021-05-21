@@ -4,7 +4,7 @@
     <?php do_action('sq_notices'); ?>
     <div class="d-flex flex-row my-0 bg-white" style="clear: both !important;">
         <?php
-        if (!current_user_can('sq_manage_settings')) {
+        if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
             echo '<div class="col-12 alert alert-success text-center m-0 p-3">' . esc_html__("You do not have permission to access this page. You need Squirrly SEO Admin role", _SQ_PLUGIN_NAME_) . '</div>';
             return;
         }
@@ -48,7 +48,6 @@
                                                     <div class="font-weight-bold"><?php echo esc_html__("Import Settings From", _SQ_PLUGIN_NAME_); ?>:
                                                     </div>
                                                     <div class="small text-black-50"><?php echo esc_html__("Select the plugin or theme you want to import the Settings from.", _SQ_PLUGIN_NAME_); ?></div>
-                                                    <div class="small text-danger"><?php echo esc_html__("Note! It will overwrite the settings you set in Squirrly SEO.", _SQ_PLUGIN_NAME_); ?></div>
                                                 </div>
                                                 <div class="col-8 p-0 input-group">
                                                     <?php
@@ -65,6 +64,9 @@
                                                         <?php SQ_Classes_Helpers_Tools::setNonce('sq_seosettings_importsettings', 'sq_nonce'); ?>
                                                         <input type="hidden" name="action" value="sq_seosettings_importsettings"/>
                                                         <button type="submit" class="btn rounded-0 btn-success px-2 mx-2" style="min-width: 140px"><?php echo esc_html__("Import Settings", _SQ_PLUGIN_NAME_); ?></button>
+                                                        <div class="col-12 p-0 m-0">
+                                                            <div class="small text-danger"><?php echo esc_html__("Note! It will overwrite the settings you set in Squirrly SEO.", _SQ_PLUGIN_NAME_); ?></div>
+                                                        </div>
                                                     <?php } else { ?>
                                                         <div class="col-12 my-2"><?php echo esc_html__("We couldn't find any SEO plugin or theme to import from.", _SQ_PLUGIN_NAME_); ?></div>
                                                     <?php } ?>
@@ -77,8 +79,7 @@
                                                 <div class="col-4 p-0 pr-3">
                                                     <div class="font-weight-bold"><?php echo esc_html__("Import SEO From", _SQ_PLUGIN_NAME_); ?>:
                                                     </div>
-                                                    <div class="small text-black-50"><?php echo esc_html__("Select the plugin or theme you want to import the SEO settings from.", _SQ_PLUGIN_NAME_); ?></div>
-                                                    <div class="small text-danger"><?php echo esc_html__("Note! It will import only the SEO for the pages that were not yet optimized with Squirrly SEO.", _SQ_PLUGIN_NAME_); ?></div>
+                                                    <div class="small text-black-50"><?php echo esc_html__("Select the plugin or theme you want to import the SEO & Patterns from.", _SQ_PLUGIN_NAME_); ?></div>
                                                 </div>
                                                 <div class="col-8 p-0 input-group">
                                                     <?php
@@ -95,6 +96,17 @@
                                                         <?php SQ_Classes_Helpers_Tools::setNonce('sq_seosettings_importseo', 'sq_nonce'); ?>
                                                         <input type="hidden" name="action" value="sq_seosettings_importseo"/>
                                                         <button type="submit" class="btn rounded-0 btn-success px-2 mx-2" style="min-width: 140px"><?php echo esc_html__("Import SEO", _SQ_PLUGIN_NAME_); ?></button>
+
+                                                        <div class="col-12 p-0 m-0">
+                                                            <div class="checker m-0 py-2 px-0">
+                                                                <div class="sq-switch sq-switch-sm ">
+                                                                    <label for="sq_import_overwrite" class="mr-2" style="font-size: 14px;"><?php echo esc_html__("Overwrite all existing SEO Snippets optimizations", _SQ_PLUGIN_NAME_); ?></label for="sq_import_overwrite" >
+                                                                    <input type="checkbox" id="sq_import_overwrite" name="sq_import_overwrite" class="sq-switch" value="1"/>
+                                                                    <label for="sq_import_overwrite"></label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
                                                     <?php } else { ?>
                                                         <div class="col-12 my-2"><?php echo esc_html__("We couldn't find any SEO plugin or theme to import from.", _SQ_PLUGIN_NAME_); ?></div>
                                                     <?php } ?>

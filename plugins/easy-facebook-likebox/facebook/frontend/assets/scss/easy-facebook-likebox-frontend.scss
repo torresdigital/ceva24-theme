@@ -117,7 +117,9 @@
   }
 
 }
-
+#efblcf_holder .efbl_popup_left_container{
+  background: #fff;
+}
 
 /*-----------------------------------------------
 ---------common css end------------- 
@@ -1418,6 +1420,7 @@
 ---------------------------------------------*/
 
 .efbl-grid-skin {
+
   .efbl-grid-wrapper {
     background: #fff;
     border: $border-color solid 1px;
@@ -1468,8 +1471,28 @@
           font-size: 20px;
         }
       }
+      .efbl-content-holder{
+        color: #fff;
+        padding: 0 10px;
+        text-align: center;
+        margin-top: 50%;
+        transform: translate(0px, -50%);
+        p{
+          color: #fff;
+        }
+      }
 
       &:hover .efbl-overlay {
+        opacity: 1;
+      }
+    }
+  }
+
+ .efbl-moderate-selected{
+    .efbl-grid-wrapper{
+      border: #37a0e6 solid 5px;
+      padding: 0;
+      .efbl-overlay{
         opacity: 1;
       }
     }
@@ -2313,6 +2336,7 @@ html {
       }
 
       .efbl-image {
+        width: 100%;
         .efbl-media-item {
           img {
             max-height: calc(100vh - 180px);
@@ -2321,7 +2345,10 @@ html {
 
           @media screen and (max-width: 991px) {
             padding-right: 0;
+            width: 100%;
+            text-align: center;
           }
+
         }
 
         > img {
@@ -2338,9 +2365,13 @@ html {
           padding-bottom: 80px;
           @media screen and (max-width: 991px) {
             padding-bottom: 54px;
+            width: 100%;
           }
 
           .efbl-media-preview-section {
+            @media screen and (max-width: 991px) {
+              width: 100%;
+            }
           }
 
           .efbl-media-thumbnail-section {
@@ -2446,7 +2477,7 @@ html {
   }
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 991px){
 
   html body .efbl-popup .efbl-image>img, html body .efbl-popup .efbl-image .efbl-media-item img {
     width: 100%;
@@ -2458,7 +2489,7 @@ html {
     display: block;
   }
   html body .efbl-popup .efbl-d-columns-wrapper {
-    flex-wrap: no-wrap;
+    flex-wrap: nowrap;
   }
 
 }
@@ -2629,6 +2660,13 @@ html {
         padding: 10px;
         border: 1px solid transparent;
         border-radius: 5px;
+        ol{
+          padding-left: 15px;
+          margin-top: 5px;
+          li{
+            font-size: 15px;
+          }
+        }
       }
 
       .efbl_albums_data_holder {
@@ -3237,6 +3275,6 @@ html {
     }
   }
 }
-.efbl_feed_popup_container.fancybox-container{
+.efbl_feed_popup_container.fancybox-container, .fancybox-container{
   z-index: 99999999;
 }

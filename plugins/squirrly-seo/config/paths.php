@@ -8,11 +8,11 @@ define('_SQ_MENU_NAME_', 'Squirrly SEO');
 define('_SQ_NAMESPACE_', 'SQ');
 define('_SQ_PLUGIN_NAME_', 'squirrly-seo'); //THIS LINE WILL BE CHANGED WITH THE USER SETTINGS
 
-defined('SQ_SSL') || define('SQ_SSL', (((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") || (defined('FORCE_SSL_ADMIN') && FORCE_SSL_ADMIN) || (function_exists('is_ssl') && is_ssl())) ? 'https:' : 'http:')); //CHECK SSL
+defined('SQ_SSL') || define('SQ_SSL', (((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") || (defined('FORCE_SSL_ADMIN') && FORCE_SSL_ADMIN) || (function_exists('is_ssl') && is_ssl())) ? true : false)); //CHECK SSL
 defined('SQ_CHECK_SSL') || define('SQ_CHECK_SSL', SQ_SSL);
 defined('SQ_URI') || define('SQ_URI', 'wp530');
 defined('_SQ_DASH_URL_') || define('_SQ_DASH_URL_', 'https://cloud.squirrly.co/');
-defined('_SQ_APIV2_URL_') || define('_SQ_APIV2_URL_', SQ_SSL . '//api.squirrly.co/v2/');
+defined('_SQ_APIV2_URL_') || define('_SQ_APIV2_URL_', (SQ_SSL ? 'https:' : 'http:') . '//api.squirrly.co/v2/');
 define('_SQ_SITE_HOST_', parse_url(home_url(), PHP_URL_HOST));
 
 define('_SQ_SUPPORT_EMAIL_', 'support@squirrly.co');

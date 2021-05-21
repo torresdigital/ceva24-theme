@@ -56,9 +56,9 @@ class SQ_Models_Services_OpenGraph extends SQ_Models_Abstract_Seo {
             }
 
             if ($this->_post->sq->og_type <> '') {
-                if($this->_post->sq->og_type == 'newsarticle') {
+                if ($this->_post->sq->og_type == 'newsarticle') {
                     $og['og:type'] = 'article';
-                }else {
+                } else {
                     $og['og:type'] = $this->_post->sq->og_type;
                 }
             } else {
@@ -79,6 +79,19 @@ class SQ_Models_Services_OpenGraph extends SQ_Models_Abstract_Seo {
                 }
             } else {
                 $this->_setMedia($og);
+            }
+
+            //Get the default global image for Open Graph
+            if (SQ_Classes_Helpers_Tools::getOption('sq_og_image')) {
+                if (!isset($og['og:image'])) {
+                    $og['og:image'] = SQ_Classes_Helpers_Tools::getOption('sq_og_image');
+                    $og['og:image:width'] = '500';
+
+                    $imagetype = $this->getImageType(SQ_Classes_Helpers_Tools::getOption('sq_og_image'));
+                    if ($imagetype) {
+                        $og['og:image:type'] = $imagetype;
+                    }
+                }
             }
 
             $og['og:site_name'] = get_bloginfo('title');
@@ -143,6 +156,13 @@ class SQ_Models_Services_OpenGraph extends SQ_Models_Abstract_Seo {
                     $og['product:category'] = $this->_post->category;
                 }
 
+                if ((int)$this->_post->sq->primary_category > 0) {
+                    $category = get_term((int)$this->_post->sq->primary_category,'product_cat');
+                    if(isset($category->name) && $category->name <> ''){
+                        $og['product:category'] = $category->name;
+                    }
+                }
+
                 global $product;
                 if (class_exists('WC_Product') && $product instanceof WC_Product) {
                     $currency = 'USD';
@@ -205,15 +225,16 @@ class SQ_Models_Services_OpenGraph extends SQ_Models_Abstract_Seo {
 
     protected function _setMedia(&$og) {
         if ($og['og:type'] == 'video') {
-            $videos = $this->getPostVideos();
-            if (!empty($videos)) {
-                $video = current($videos);
-                if ($video <> '') {
-                    $video = preg_replace('/(?:http(?:s)?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"\'>\s]+)/si', "https://www.youtube.com/v/$1", $video);
+            if($videos = $this->getPostVideos()) {
+                if (!empty($videos)) {
+                    $video = current($videos);
+                    if ($video['src'] <> '') {
+                        $video['src'] = preg_replace('/(?:http(?:s)?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:(?:watch)?\?(?:.*&)?v(?:i)?=|(?:embed|v|vi|user)\/))([^\?&\"\'>\s]+)/si', "https://www.youtube.com/v/$1", $video['src']);
 
-                    $og['og:video'] = $video;
-                    $og['og:video:width'] = '500';
-                    $og['og:video:height'] = '280';
+                        $og['og:video'] = $video['src'];
+                        $og['og:video:width'] = '500';
+                        $og['og:video:height'] = '280';
+                    }
                 }
             }
         } else {
@@ -246,7 +267,7 @@ class SQ_Models_Services_OpenGraph extends SQ_Models_Abstract_Seo {
         if (function_exists('wpml_get_language_information') && (int)$this->_post->ID > 0) {
             if ($language = wpml_get_language_information((int)$this->_post->ID)) {
                 if (!is_wp_error($language) && isset($language['locale'])) {
-                    if($locale <> 'en') {
+                    if ($locale <> 'en') {
                         $locale = $language['locale'];
                     }
                 }
@@ -279,7 +300,7 @@ class SQ_Models_Services_OpenGraph extends SQ_Models_Abstract_Seo {
     function get_locale() {
         global $locale, $wp_local_package;
 
-        if ( isset( $locale ) ) {
+        if (isset($locale)) {
             /**
              * Filters the locale ID of the WordPress installation.
              *
@@ -287,41 +308,41 @@ class SQ_Models_Services_OpenGraph extends SQ_Models_Abstract_Seo {
              *
              * @param string $locale The locale ID.
              */
-            return apply_filters( 'sq_locale', $locale );
+            return apply_filters('sq_locale', $locale);
         }
 
-        if ( isset( $wp_local_package ) ) {
+        if (isset($wp_local_package)) {
             $locale = $wp_local_package;
         }
 
         // WPLANG was defined in wp-config.
-        if ( defined( 'WPLANG' ) ) {
+        if (defined('WPLANG')) {
             $locale = WPLANG;
         }
 
         // If multisite, check options.
-        if ( is_multisite() ) {
+        if (is_multisite()) {
             // Don't check blog option when installing.
-            if ( wp_installing() || ( false === $ms_locale = get_option( 'WPLANG' ) ) ) {
-                $ms_locale = get_site_option( 'WPLANG' );
+            if (wp_installing() || (false === $ms_locale = get_option('WPLANG'))) {
+                $ms_locale = get_site_option('WPLANG');
             }
 
-            if ( $ms_locale !== false ) {
+            if ($ms_locale !== false) {
                 $locale = $ms_locale;
             }
         } else {
-            $db_locale = get_option( 'WPLANG' );
-            if ( $db_locale !== false ) {
+            $db_locale = get_option('WPLANG');
+            if ($db_locale !== false) {
                 $locale = $db_locale;
             }
         }
 
-        if ( empty( $locale ) ) {
+        if (empty($locale)) {
             $locale = 'en_US';
         }
 
         /** This filter is documented in wp-includes/l10n.php */
-        return apply_filters( 'sq_locale', $locale );
+        return apply_filters('sq_locale', $locale);
     }
 
     /**

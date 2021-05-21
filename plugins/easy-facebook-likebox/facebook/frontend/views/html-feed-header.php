@@ -56,9 +56,15 @@ if ( $efbl_bio_data ) {
                 </div>
 				<?php if ( isset( $efbl_bio_data->about ) && $efbl_skin_values['design']['show_bio'] ) : ?>
 
-                    <p class="efbl_bio"><?php echo $efbl_bio_data->about; ?></p>
+                    <p class="efbl_bio"><?php echo ecff_makeClickableLinks( $efbl_bio_data->about ); ?></p>
 
 				<?php endif; ?>
+
+	            <?php if ( isset( $efbl_bio_data->description ) && $efbl_skin_values['design']['show_bio'] ) : ?>
+
+                    <p class="efbl_bio"><?php echo ecff_makeClickableLinks( $efbl_bio_data->description ); ?></p>
+
+	            <?php endif; ?>
             </div>
         </div>
     </div>

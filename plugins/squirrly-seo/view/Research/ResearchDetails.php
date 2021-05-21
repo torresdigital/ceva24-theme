@@ -22,9 +22,9 @@ if (!empty($view->kr)) {
         <tr class="<?php echo($in_briefcase ? 'bg-briefcase' : '') ?> <?php echo($row->initial ? 'bg-selected' : '') ?>">
             <td style="width: 33%;"><?php echo(isset($row->keyword) ? SQ_Classes_Helpers_Sanitize::escapeKeyword($row->keyword) : '') ?></td>
             <td style="width: 1%;"><?php echo(isset($view->country) ? esc_html($view->country) : 'com') ?></td>
-            <td style="width: 20%; color: <?php echo esc_attr($row->stats->sc->color) ?>"><?php echo(isset($row->stats->sc->text) ? '<span data-value="' . esc_attr($row->stats->sc->value) . '">' . esc_html($row->stats->sc->text) . '</span>' : '') ?></td>
+            <td style="width: 20%; color: <?php echo esc_attr($row->stats->sc->color) ?>"><?php echo(isset($row->stats->sc->text) ? '<span data-value="' . esc_attr($row->stats->sc->value) . '">' . $view->getReasearchStatsText('sc',$row->stats->sc->value) . '</span>' : '') ?></td>
             <td style="width: 13%"><?php echo(isset($row->stats->sv) ? '<span data-value="' . (int)$row->stats->sv->absolute . '">' . (is_numeric($row->stats->sv->absolute) ? number_format($row->stats->sv->absolute, 0, '.', ',') . '</span>' : esc_html($row->stats->sv->absolute)) : '') ?></td>
-            <td style="width: 15%;"><?php echo(isset($row->stats->tw) ? '<span data-value="' . esc_attr($row->stats->tw->value) . '">' . esc_html($row->stats->tw->text) . '</span>' : '') ?></td>
+            <td style="width: 15%;"><?php echo(isset($row->stats->tw) ? '<span data-value="' . esc_attr($row->stats->tw->value) . '">' . $view->getReasearchStatsText('tw',$row->stats->tw->value) . '</span>' : '') ?></td>
             <td style="width: 12%;">
                 <?php if (isset($row->stats->td)) { ?>
                     <div style="width: 60px; height: 30px;">

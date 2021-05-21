@@ -28,7 +28,7 @@
                                 <div class="row col-12 m-0 py-3 px-0 border-0 ">
                                     <div class="col-6">
                                         <div class="col-12 my-3 p-0 text-right">
-                                            <?php if (current_user_can('sq_manage_snippet')) { ?>
+                                            <?php if (SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) { ?>
                                                 <form method="POST">
                                                     <?php SQ_Classes_Helpers_Tools::setNonce('sq_create_demo', 'sq_nonce'); ?>
                                                     <input type="hidden" name="action" value="sq_create_demo"/>

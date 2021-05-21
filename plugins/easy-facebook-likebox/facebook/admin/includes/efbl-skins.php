@@ -111,13 +111,12 @@ if ( !class_exists( 'EFBL_SKINS' ) ) {
                 'post_type'      => 'efbl_skins',
                 'post_status'    => [ 'publish', 'draft', 'pending' ],
             ];
-            $efbl_skins = new WP_Query( $efbl_skins );
+            $efbl_skins = get_posts( $efbl_skins );
             
-            if ( $efbl_skins->have_posts() ) {
+            if ( isset( $efbl_skins ) && !empty($efbl_skins) ) {
                 $efbl_skins_holder = [];
-                while ( $efbl_skins->have_posts() ) {
-                    $efbl_skins->the_post();
-                    $id = get_the_ID();
+                foreach ( $efbl_skins as $skin ) {
+                    $id = $skin->ID;
                     $design_arr = [];
                     $design_arr = get_option( 'efbl_skin_' . $id, false );
                     $layout = get_post_meta( $id, 'layout', true );
@@ -132,19 +131,18 @@ if ( !class_exists( 'EFBL_SKINS' ) ) {
                         }
                     }
                     
-                    $title = get_the_title();
+                    $title = $skin->post_title;
                     if ( empty($title) ) {
                         $title = __( 'Skin', 'easy-facebook-likebox' );
                     }
                     $efbl_skins_holder[$id] = [
                         'ID'          => $id,
                         'title'       => $title,
-                        'description' => get_the_content(),
+                        'description' => $skin->post_content,
                         'layout'      => $layout,
                     ];
                     $efbl_skins_holder[$id]['design'] = wp_parse_args( $design_arr, $this->efbl_default_skin_settings() );
                 }
-                wp_reset_postdata();
             } else {
                 return __( 'No skin found.', 'easy-facebook-likebox' );
             }

@@ -1,7 +1,7 @@
 <?php
 
 do_action( 'esf_insta_before_feed_footer', $esf_insta_feed );
-$combined_atts = $hashtag . '+' . $feeds_per_page . '+' . $caption_words . '+' . $skin_id . '+' . $cache_seconds . '+' . $user_id . '+' . $link_target;
+$combined_atts = $hashtag . '+' . $feeds_per_page . '+' . $caption_words . '+' . $skin_id . '+' . $cache_seconds . '+' . $user_id . '+' . $link_target . '+' . $is_moderate . '+' . $profile_picture;
 
 if ( $mif_instagram_type == 'personal' ) {
     $mif_self_name = $mif_instagram_personal_accounts[$user_id]['username'];
@@ -17,6 +17,9 @@ if ( $hashtag && !empty($hashtag) ) {
     $mif_self_name = '#' . $hashtag;
 }
 
+if ( isset( $insta_settings['moderated'][$user_id]['ids'] ) && !empty($insta_settings['moderated'][$user_id]['ids']) ) {
+    $i = $feeds_per_page;
+}
 ?>
 
     <div class="esf_insta_load_more_btns_wrap">

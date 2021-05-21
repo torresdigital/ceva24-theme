@@ -10,22 +10,6 @@ do_action( 'efbl_before_feed_meta', $story );
 
 if ( isset( $efbl_queried_data['has_album_data'] ) && !empty($efbl_queried_data['has_album_data']) ) {
 } else {
-    
-    if ( isset( $story->reactions->data ) ) {
-        $reactions_arr = $story->reactions->data;
-    } else {
-        $reactions_arr = '';
-    }
-    
-    // if($filter && $filter == 'albums'):
-    //   $reactions_arr = $story->photos->data[0]->reactions->data;
-    // endif;
-    $efbl_love = efbl_check_reaction( 'LOVE', $reactions_arr );
-    $efbl_wow = efbl_check_reaction( 'WOW', $reactions_arr );
-    $efbl_angry = efbl_check_reaction( 'ANGRY', $reactions_arr );
-    $efbl_haha = efbl_check_reaction( 'HAHA', $reactions_arr );
-    $efbl_likes = efbl_check_reaction( 'LIKE', $reactions_arr );
-    $efbl_reactions_class = '';
     ?>
                 <div class="efbl-reacted efbl-d-flex efbl-align-items-center">
 

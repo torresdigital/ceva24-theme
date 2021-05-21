@@ -81,9 +81,9 @@
                                                     <td>
                                                         <span style="display: block; clear: left; float: left;"><?php echo esc_html($row->country) ?></span>
                                                     </td>
-                                                    <td style="width: 20%; color: <?php echo esc_attr($research->sc->color) ?>"><?php echo(isset($research->sc->text) ? '<span data-value="' . esc_attr($research->sc->value) . '">' . esc_html($research->sc->text) . '</span>' : '') ?></td>
+                                                    <td style="width: 20%; color: <?php echo esc_attr($research->sc->color) ?>"><?php echo(isset($research->sc->text) ? '<span data-value="' . esc_attr($research->sc->value) . '">' . $view->getReasearchStatsText('sc',$research->sc->value) . '</span>' : '') ?></td>
                                                     <td style="width: 13%; "><?php echo(isset($research->sv) ? '<span data-value="' . (int)$research->sv->absolute . '">' . (is_numeric($research->sv->absolute) ? number_format($research->sv->absolute, 0, '.', ',') . '</span>' : esc_html($research->sv->absolute)) : '') ?></td>
-                                                    <td style="width: 15%; "><?php echo(isset($research->tw) ? '<span data-value="' . esc_attr($research->tw->value) . '">' . esc_html($research->tw->text) . '</span>' : '') ?></td>
+                                                    <td style="width: 15%; "><?php echo(isset($research->tw) ? '<span data-value="' . esc_attr($research->tw->value) . '">' . $view->getReasearchStatsText('tw',$research->tw->value) . '</span>' : '') ?></td>
                                                     <td style="width: 100px;">
                                                         <?php if (isset($research->td)) { ?>
                                                             <?php
@@ -129,7 +129,7 @@
                                                                             <?php echo esc_html__("Add to briefcase", _SQ_PLUGIN_NAME_); ?>
                                                                         </li>
                                                                     <?php } ?>
-                                                                    <?php if (current_user_can('sq_manage_settings')) { ?>
+                                                                    <?php if (SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) { ?>
                                                                         <li class="sq_delete_found m-0 p-1 py-2" data-id="<?php echo (int)$row->id ?>" data-keyword="<?php echo SQ_Classes_Helpers_Sanitize::escapeKeyword($row->keyword) ?>">
                                                                             <i class="sq_icons_small fa fa-trash-o"></i>
                                                                             <?php echo esc_html__("Delete Keyword", _SQ_PLUGIN_NAME_) ?>

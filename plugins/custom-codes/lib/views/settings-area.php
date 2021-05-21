@@ -190,8 +190,8 @@ function codes_settings_page() {
 							<fieldset>
 								<input class="regular-text" placeholder="<?php esc_html_e( 'No media query', 'custom-codes' ); ?>" type="text" name="_codes_desktop" value="<?php echo esc_attr( get_option( '_codes_desktop' ) ); ?>">
 								<p class="description"><?php esc_html_e( 'Default', 'custom-codes' ); ?>:
-									<span class="default mobile-first">@media (min-width: 1200px)</span>
-									<span class="default desktop-first empty hidden"><?php esc_html_e( 'No media query', 'custom-codes' ); ?></span>
+									<span class="default mobile-first hidden">@media (min-width: 1200px)</span>
+									<span class="default desktop-first empty"><?php esc_html_e( 'No media query', 'custom-codes' ); ?></span>
 								</p>
 							</fieldset>
 
@@ -204,8 +204,8 @@ function codes_settings_page() {
 							<fieldset>
 								<input class="regular-text" placeholder="<?php esc_html_e( 'No media query', 'custom-codes' ); ?>" type="text" name="_codes_tablet_l" value="<?php echo esc_attr( get_option( '_codes_tablet_l' ) ); ?>">
 								<p class="description"><?php esc_html_e( 'Default', 'custom-codes' ); ?>:
-									<span class="default mobile-first">@media (min-width: 992px)</span>
-									<span class="default desktop-first hidden">@media (max-width: 1199px)</span>
+									<span class="default mobile-first hidden">@media (min-width: 992px)</span>
+									<span class="default desktop-first">@media (max-width: 1199px)</span>
 								</p>
 							</fieldset>
 
@@ -218,8 +218,8 @@ function codes_settings_page() {
 							<fieldset>
 								<input class="regular-text" placeholder="<?php esc_html_e( 'No media query', 'custom-codes' ); ?>" type="text" name="_codes_tablet_p" value="<?php echo esc_attr( get_option( '_codes_tablet_p' ) ); ?>">
 								<p class="description"><?php esc_html_e( 'Default', 'custom-codes' ); ?>:
-									<span class="default mobile-first">@media (min-width: 768px)</span>
-									<span class="default desktop-first hidden">@media (max-width: 991px)</span>
+									<span class="default mobile-first hidden">@media (min-width: 768px)</span>
+									<span class="default desktop-first">@media (max-width: 991px)</span>
 								</p>
 							</fieldset>
 
@@ -232,8 +232,8 @@ function codes_settings_page() {
 							<fieldset>
 								<input class="regular-text" placeholder="<?php esc_html_e( 'No media query', 'custom-codes' ); ?>" type="text" name="_codes_phone_l" value="<?php echo esc_attr( get_option( '_codes_phone_l' ) ); ?>">
 								<p class="description"><?php esc_html_e( 'Default', 'custom-codes' ); ?>:
-									<span class="default mobile-first">@media (min-width: 480px)</span>
-									<span class="default desktop-first hidden">@media (max-width: 767px)</span>
+									<span class="default mobile-first hidden">@media (min-width: 480px)</span>
+									<span class="default desktop-first">@media (max-width: 767px)</span>
 								</p>
 							</fieldset>
 
@@ -246,8 +246,8 @@ function codes_settings_page() {
 							<fieldset>
 								<input class="regular-text" placeholder="<?php esc_html_e( 'No media query', 'custom-codes' ); ?>" type="text" name="_codes_phone_p" value="<?php echo esc_attr( get_option( '_codes_phone_p' ) ); ?>">
 								<p class="description"><?php esc_html_e( 'Default', 'custom-codes' ); ?>:
-									<span class="default mobile-first empty"><?php esc_html_e( 'No media query', 'custom-codes' ); ?></span>
-									<span class="default desktop-first hidden">@media (max-width: 479px)</span>
+									<span class="default mobile-first empty hidden"><?php esc_html_e( 'No media query', 'custom-codes' ); ?></span>
+									<span class="default desktop-first">@media (max-width: 479px)</span>
 								</p>
 							</fieldset>
 
@@ -338,10 +338,10 @@ function codes_settings_page() {
 
 				<p>
 				<?php if ( codes_fs()->is_premium() ) : ?>
-					<b>Thank you for purchasing Custom Codes PRO!</b><br><br>
-					<a href="mailto:info@pressx.co?subject=Feedback<?php echo codes_fs()->is_premium() ? '(Premium)' : ''; ?>" class="button">Share Us Your Feedback</a>
+					<b><?php esc_html_e( 'Thank you for purchasing Custom Codes PRO!', 'custom-codes' ); ?></b><br><br>
+					<a href="mailto:info@pressx.co?subject=Feedback<?php echo codes_fs()->is_premium() ? '(Premium)' : ''; ?>" class="button"><?php esc_html_e( 'Share Us Your Feedback', 'custom-codes' ); ?></a>
 				<?php else : ?>
-					<a href="<?php echo esc_url( codes_fs()->get_upgrade_url() ); ?>" class="button button-hero button-primary">UPGRADE NOW</a>
+					<a href="<?php echo esc_url( codes_fs()->get_upgrade_url() ); ?>" class="button button-hero button-primary"><?php esc_html_e( 'UPGRADE NOW', 'custom-codes' ); ?></a>
 				<?php endif; ?>
 				</p>
 

@@ -3,7 +3,7 @@
 <div class="card col-12 p-0 border-0">
     <div class="card-body">
         <?php if ($tab == 'login') { ?>
-            <form method="post">
+            <form method="post" >
                 <?php SQ_Classes_Helpers_Tools::setNonce('sq_login', 'sq_nonce'); ?>
                 <input type="hidden" name="action" value="sq_login"/>
                 <div class="form-group">

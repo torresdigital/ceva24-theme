@@ -67,17 +67,19 @@ class ESF_Instagram_Feed_Widget extends WP_Widget
             $fb_access_token = $fta_settings['plugins']['facebook']['access_token'];
         }
         $defaults = [
-            'title'          => '',
-            'wrapper_class'  => null,
-            'user_id'        => null,
-            'hashtag'        => null,
-            'skin_id'        => $mif_skin_default_id,
-            'feeds_per_page' => 9,
-            'caption_words'  => 25,
-            'links_new_tab'  => 1,
-            'load_more'      => 1,
-            'cache_unit'     => 1,
-            'cache_duration' => 'days',
+            'title'           => '',
+            'wrapper_class'   => null,
+            'user_id'         => null,
+            'hashtag'         => null,
+            'skin_id'         => $mif_skin_default_id,
+            'feeds_per_page'  => 9,
+            'caption_words'   => 25,
+            'links_new_tab'   => 1,
+            'load_more'       => 1,
+            'show_stories'    => 1,
+            'profile_picture' => null,
+            'cache_unit'      => 1,
+            'cache_duration'  => 'days',
         ];
         $instance = wp_parse_args( (array) $instance, $defaults );
         extract( $instance, EXTR_SKIP );
@@ -105,86 +107,112 @@ class ESF_Instagram_Feed_Widget extends WP_Widget
 
             <p>
 				<?php 
-        $efbl_page_options = null;
-        ?>
+        $show_auth_msg = true;
+        $mif_personal_connected_accounts = esf_insta_personal_account();
+        $esf_insta_business_accounts = esf_insta_business_accounts();
+        if ( esf_insta_instagram_type() == 'personal' && !empty($mif_personal_connected_accounts) ) {
+            $show_auth_msg = false;
+        }
+        if ( esf_insta_instagram_type() != 'personal' && $esf_insta_business_accounts ) {
+            $show_auth_msg = false;
+        }
+        
+        if ( $show_auth_msg ) {
+            ?>
+                    <span style="color: #ff0303; font-weight: bold;"><?php 
+            esc_html_e( "No account found, Please connect your Instagram account with plugin first from authentication tab", "easy-facebook-likebox" );
+            ?>
+                            <a href="<?php 
+            echo  esc_url( admin_url( 'admin.php?page=mif' ) ) ;
+            ?>"><?php 
+            esc_html_e( "Yes, take me there", "easy-facebook-likebox" );
+            ?></a>
+                        </span>
+               <?php 
+        } else {
+            ?>
                     <label style="font-weight: bold;"
                            for="<?php 
-        echo  $this->get_field_id( 'user_id' ) ;
-        ?>"><?php 
-        _e( 'Select Account:', 'easy-facebook-likebox' );
-        ?></label>
+            echo  $this->get_field_id( 'user_id' ) ;
+            ?>"><?php 
+            _e( 'Select Account:', 'easy-facebook-likebox' );
+            ?></label>
                     <select <?php 
-        if ( class_exists( 'Esf_Multifeed_Instagram_Frontend' ) ) {
-            ?> multiple <?php 
-        }
-        ?>  style="width: 100%;"
+            if ( class_exists( 'Esf_Multifeed_Instagram_Frontend' ) ) {
+                ?> multiple <?php 
+            }
+            ?>  style="width: 100%;"
                             id="<?php 
-        echo  $this->get_field_id( 'user_id' ) ;
-        ?>"
+            echo  $this->get_field_id( 'user_id' ) ;
+            ?>"
                             name="<?php 
-        echo  $this->get_field_name( 'user_id' ) ;
-        if ( class_exists( 'Esf_Multifeed_Instagram_Frontend' ) ) {
-            ?>[]<?php 
-        }
-        ?>">
+            echo  $this->get_field_name( 'user_id' ) ;
+            if ( class_exists( 'Esf_Multifeed_Instagram_Frontend' ) ) {
+                ?>[]<?php 
+            }
+            ?>">
 
                         <?php 
-        $mif_personal_connected_accounts = esf_insta_personal_account();
-        
-        if ( esf_insta_instagram_type() == 'personal' && !empty($mif_personal_connected_accounts) ) {
-            $i = 0;
-            foreach ( $mif_personal_connected_accounts as $personal_id => $mif_personal_connected_account ) {
-                $i++;
-                ?>
-
-                            <option value="<?php 
-                echo  $personal_id ;
-                ?>" <?php 
-                selected( $personal_id, $user_id, true );
-                ?> ><?php 
-                echo  $mif_personal_connected_account['username'] ;
-                ?></option>
-                            <?php 
-            }
-        }
-        
-        $esf_insta_business_accounts = esf_insta_business_accounts();
-        if ( esf_insta_instagram_type() != 'personal' && $esf_insta_business_accounts ) {
             
-            if ( $esf_insta_business_accounts ) {
+            if ( esf_insta_instagram_type() == 'personal' && !empty($mif_personal_connected_accounts) ) {
                 $i = 0;
-                foreach ( $esf_insta_business_accounts as $mif_insta_single_account ) {
+                foreach ( $mif_personal_connected_accounts as $personal_id => $mif_personal_connected_account ) {
                     $i++;
                     ?>
-                                    <option value="<?php 
-                    echo  $mif_insta_single_account->id ;
+
+                            <option value="<?php 
+                    echo  $personal_id ;
                     ?>" <?php 
-                    selected( $user_id, $mif_insta_single_account->id, true );
+                    selected( $personal_id, $user_id, true );
                     ?> ><?php 
-                    echo  $mif_insta_single_account->username ;
+                    echo  $mif_personal_connected_account['username'] ;
                     ?></option>
-		                        <?php 
+                            <?php 
                 }
-            } else {
-                ?>
+            }
+            
+            if ( esf_insta_instagram_type() != 'personal' && $esf_insta_business_accounts ) {
+                
+                if ( $esf_insta_business_accounts ) {
+                    $i = 0;
+                    foreach ( $esf_insta_business_accounts as $mif_insta_single_account ) {
+                        $i++;
+                        ?>
+                                    <option value="<?php 
+                        echo  $mif_insta_single_account->id ;
+                        ?>" <?php 
+                        selected( $user_id, $mif_insta_single_account->id, true );
+                        ?> ><?php 
+                        echo  $mif_insta_single_account->username ;
+                        ?></option>
+		                        <?php 
+                    }
+                } else {
+                    ?>
 
                                 <option value="" disabled
                                         selected><?php 
-                esc_html_e( "No accounts found, Please connect your Instagram account with plugin first", 'easy-facebook-likebox' );
-                ?></option>
+                    esc_html_e( "No accounts found, Please connect your Instagram account with plugin first", 'easy-facebook-likebox' );
+                    ?></option>
 	                        <?php 
+                }
+            
             }
-        
-        }
-        ?>
-                    </select><br/>
+            ?>
+                    </select>
+
+                <br/>
 
                     <i><?php 
-        __( "List of connected accounts, Select one to display it's feeds", 'easy-facebook-likebox' );
-        ?></i>
-            </p>
+            __( "List of connected accounts, Select one to display it's feeds", 'easy-facebook-likebox' );
+            ?></i>
 
-			<?php 
+               <?php 
+        }
+        
+        ?>
+            </p>
+            <?php 
         ?>
 
             <p>
@@ -337,10 +365,10 @@ class ESF_Instagram_Feed_Widget extends WP_Widget
             ?>
                 <p class="widget-half" style="width: 100%;float: left;">
                     <label style="font-weight: bold;"><?php 
-            _e( 'Load More', 'easy-facebook-likebox' );
+            _e( 'Show Stories', 'easy-facebook-likebox' );
             ?>:</label>
 					<?php 
-            _e( "We're sorry, load more feature is not included in your plan. Please upgrade to premium version to unlock this and all other cool features.", 'easy-facebook-likebox' );
+            _e( "We're sorry, Account Stories not included in your plan. Please upgrade to premium version to unlock this and all other cool features.", 'easy-facebook-likebox' );
             ?>
                     <a href="<?php 
             echo  esc_url( efl_fs()->get_upgrade_url() ) ;
@@ -350,6 +378,30 @@ class ESF_Instagram_Feed_Widget extends WP_Widget
                 </p>
 
 			<?php 
+        }
+        
+        ?>
+
+	        <?php 
+        
+        if ( efl_fs()->is_plan( 'instagram_premium', true ) or efl_fs()->is_plan( 'combo_premium', true ) ) {
+        } else {
+            ?>
+                <p class="widget-half" style="width: 100%;float: left;">
+                    <label style="font-weight: bold;"><?php 
+            _e( 'Load More', 'easy-facebook-likebox' );
+            ?>:</label>
+			        <?php 
+            _e( "We're sorry, load more feature is not included in your plan. Please upgrade to premium version to unlock this and all other cool features.", 'easy-facebook-likebox' );
+            ?>
+                    <a href="<?php 
+            echo  esc_url( efl_fs()->get_upgrade_url() ) ;
+            ?>"><?php 
+            _e( 'Upgrade to PRO', 'easy-facebook-likebox' );
+            ?></a>
+                </p>
+
+	        <?php 
         }
         
         ?>
@@ -431,15 +483,39 @@ class ESF_Instagram_Feed_Widget extends WP_Widget
             $instance['user_id'] = '';
         }
         
+        $instance['profile_picture'] = ( !empty($new_instance['profile_picture']) ? strip_tags( $new_instance['profile_picture'] ) : '' );
         $instance['hashtag'] = ( !empty($new_instance['hashtag']) ? strip_tags( $new_instance['hashtag'] ) : '' );
         $instance['skin_id'] = ( !empty($new_instance['skin_id']) ? strip_tags( $new_instance['skin_id'] ) : '' );
         $instance['feeds_per_page'] = ( !empty($new_instance['feeds_per_page']) ? strip_tags( $new_instance['feeds_per_page'] ) : '' );
         $instance['caption_words'] = ( !empty($new_instance['caption_words']) ? strip_tags( $new_instance['caption_words'] ) : '' );
         $instance['links_new_tab'] = ( !empty($new_instance['links_new_tab']) ? strip_tags( $new_instance['links_new_tab'] ) : '' );
         $instance['load_more'] = ( !empty($new_instance['load_more']) ? strip_tags( $new_instance['load_more'] ) : '' );
+        $instance['show_stories'] = ( !empty($new_instance['show_stories']) ? strip_tags( $new_instance['show_stories'] ) : '' );
         $instance['cache_unit'] = ( !empty($new_instance['cache_unit']) ? strip_tags( $new_instance['cache_unit'] ) : '' );
         $instance['cache_duration'] = ( !empty($new_instance['cache_duration']) ? strip_tags( $new_instance['cache_duration'] ) : '' );
         return $instance;
     }
 
 }
+function esf_photo_upload_option( $hook )
+{
+    if ( $hook != 'widgets.php' ) {
+        return;
+    }
+    wp_enqueue_script(
+        'esf-image-uploader',
+        FTA_PLUGIN_URL . 'admin/assets/js/esf-image-uploader.js',
+        [ 'jquery', 'media-upload', 'thickbox' ],
+        '1.0.0',
+        true
+    );
+    wp_localize_script( 'esf-image-uploader', 'esf_image_uploader', [
+        'title'    => __( 'Select or Upload Image', 'easy-facebook-likebox' ),
+        'btn_text' => __( 'Use this Image', 'easy-facebook-likebox' ),
+    ] );
+    wp_enqueue_script( 'media-upload' );
+    wp_enqueue_script( 'thickbox' );
+    wp_enqueue_style( 'thickbox' );
+}
+
+add_action( 'admin_enqueue_scripts', 'esf_photo_upload_option' );

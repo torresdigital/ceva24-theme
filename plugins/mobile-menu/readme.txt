@@ -3,8 +3,8 @@ Contributors: takanakui, freemius
 link: http://profiles.wordpress.org/takanakui
 Tags:   mobile, navigation, responsive, menu,  responsive menu, mobile menu,  tablet menu, hamburger menu, hamburger, wordpress responsive menu, wordpress mobile menu, canvas menu
 Requires at least: 4.4
-Tested up to: 5.6
-Stable tag: 2.8.1.8.1
+Tested up to: 5.7
+Stable tag: 2.8.2.2
 Requires PHP: 5.6
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
@@ -132,6 +132,22 @@ Not available at the moment
  
 == Changelog ==
 
+
+
+= 2.8.2.2 =
+* Fix! - Fix Menu settings and widgetized areas in translated websites
+* Fix! - Fix Walker Menu filter
+
+= 2.8.2.1 =
+* Fix! - Change code that only worked with PHP 7.4
+
+= 2.8.2 =
+* Fix! - Remove metabox upgrade
+* New! - New Settings Design/UX
+* Improvment! - Remove metabox upgrade
+* Improvment! - Initial process of removing TitanFramework
+* Improvment! - Update Freemius SDK
+
 = 2.8.1.8.1 =
 * Fix! - Remove piece of premium option
 
@@ -141,7 +157,6 @@ Not available at the moment
 
 = 2.8.1.7 =
 * New! - Visual tool to identify menus and other elements to hide
-
 
 = 2.8.1.6.1 =
 * Fix! - Fix error on function that doesn't exist

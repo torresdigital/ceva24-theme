@@ -36,7 +36,7 @@
                 <a href="<?php echo esc_url_raw( $this->instagram_url ); ?>/<?php echo sanitize_text_field( $mif_self_username ); ?>"
                    title="@<?php echo sanitize_text_field( $mif_self_username ); ?>"
                    target="<?php echo $link_target ?>">
-                    <img src="<?php echo esc_url( apply_filters( 'esf_insta_post_header_image', $esf_insta_user_data->profile_picture_url, $esf_insta_user_data ) ); ?>"/>
+                    <img src="<?php echo esc_url( apply_filters( 'esf_insta_post_header_image', $profile_picture, $esf_insta_user_data ) ); ?>"/>
                 </a>
             </div>
 

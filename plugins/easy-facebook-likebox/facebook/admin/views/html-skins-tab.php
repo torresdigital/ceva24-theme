@@ -325,9 +325,7 @@ if ( efl_fs()->is_free_plan() || efl_fs()->is_plan( 'instagram_premium', true ) 
     echo  $efbl_page_options ;
     ?>
                     </select>
-                    <a class="btn waves-effect  waves-light efbl_skin_redirect_free <?php 
-    echo  $efbl_redirect_class ;
-    ?> modal-trigger"
+                    <a class="btn waves-effect  waves-light efbl_skin_redirect_free  modal-trigger"
                        href="#efbl-free-grid-upgrade"><span><?php 
     esc_html_e( "Edit", 'easy-facebook-likebox' );
     ?></span><i
@@ -389,9 +387,7 @@ if ( efl_fs()->is_free_plan() || efl_fs()->is_plan( 'instagram_premium', true ) 
     echo  $efbl_page_options ;
     ?>
                     </select>
-                    <a class="btn waves-effect  waves-light efbl_skin_redirect_free <?php 
-    echo  $efbl_redirect_class ;
-    ?> modal-trigger"
+                    <a class="btn waves-effect  waves-light efbl_skin_redirect_free  modal-trigger"
                        href="#efbl-free-masonry-upgrade"><span><?php 
     esc_html_e( "Edit", 'easy-facebook-likebox' );
     ?></span><i
@@ -454,9 +450,7 @@ if ( efl_fs()->is_free_plan() || efl_fs()->is_plan( 'instagram_premium', true ) 
     echo  $efbl_page_options ;
     ?>
                     </select>
-                    <a class="btn waves-effect  waves-light efbl_skin_redirect_free <?php 
-    echo  $efbl_redirect_class ;
-    ?> modal-trigger"
+                    <a class="btn waves-effect  waves-light efbl_skin_redirect_free  modal-trigger"
                        href="#efbl-free-carousel-upgrade"><span><?php 
     esc_html_e( "Edit", 'easy-facebook-likebox' );
     ?></span><i

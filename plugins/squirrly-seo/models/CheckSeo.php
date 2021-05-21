@@ -58,7 +58,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 1,
                 'ignorable' => false,
-                'tools' => array('On-Page SEO'),
+                'tools' => array(esc_html__('On-Page SEO',_SQ_PLUGIN_NAME_)),
                 'time' => 10
             ),
             'getAMPWebsite' => array(
@@ -72,7 +72,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 1,
                 'ignorable' => true,
-                'tools' => array('On-Page SEO'),
+                'tools' => array(esc_html__('On-Page SEO',_SQ_PLUGIN_NAME_)),
                 'time' => 10
             ),
             'getSeoSquirrlyTitle' => array(
@@ -86,7 +86,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 1,
                 'ignorable' => true,
-                'tools' => array('On-Page SEO'),
+                'tools' => array(esc_html__('On-Page SEO',_SQ_PLUGIN_NAME_)),
                 'time' => 10
             ),
             'getBadLinkStructure' => array(
@@ -113,7 +113,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 1,
                 'ignorable' => true,
-                'tools' => array('On-Page SEO'),
+                'tools' => array(esc_html__('On-Page SEO',_SQ_PLUGIN_NAME_)),
                 'time' => 30
             ),
             'getRobots' => array(
@@ -127,7 +127,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 1,
                 'ignorable' => true,
-                'tools' => array('On-Page SEO'),
+                'tools' => array(esc_html__('On-Page SEO',_SQ_PLUGIN_NAME_)),
                 'time' => 10
             ),
 
@@ -142,7 +142,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 2,
                 'ignorable' => true,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
                 'time' => 50
             ),
             'NoFocusPages' => array( //MISSING FOCUS PAGES
@@ -156,7 +156,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 2,
                 'ignorable' => true,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
                 'time' => false
             ),
             'getDefaultTagline' => array(
@@ -183,7 +183,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 3,
                 'ignorable' => true,
-                'tools' => array('Focus Pages', 'SEO Snippet'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('SEO Snippet',_SQ_PLUGIN_NAME_)),
                 'time' => 300
             ),
             'FocusPagesVisibility' => array(
@@ -197,7 +197,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 3,
                 'ignorable' => true,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
                 'time' => 300
             ),
             'getSafeBrowsing' => array( //remote
@@ -224,7 +224,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 4,
                 'ignorable' => true,
-                'tools' => array('On-Page SEO'),
+                'tools' => array(esc_html__('On-Page SEO',_SQ_PLUGIN_NAME_)),
                 'time' => 300
             ),
             'getDuplicateTC' => array(
@@ -238,7 +238,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 4,
                 'ignorable' => true,
-                'tools' => array('On-Page SEO'),
+                'tools' => array(esc_html__('On-Page SEO',_SQ_PLUGIN_NAME_)),
                 'time' => 300
             ),
             'BriefcaseKeywords' => array( //remote
@@ -252,7 +252,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 5,
                 'ignorable' => false,
-                'tools' => array('Keyword Research'),
+                'tools' => array(esc_html__('Keyword Research',_SQ_PLUGIN_NAME_)),
                 'time' => 600
             ),
             'FocusPagesKeywordOptimized30' => array( //remote
@@ -266,7 +266,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 5,
                 'ignorable' => false,
-                'tools' => array('Focus Pages', 'Live Assistant'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('Live Assistant',_SQ_PLUGIN_NAME_)),
                 'time' => 1200
             ),
             'FocusPagesKeyword' => array( //remote
@@ -280,7 +280,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 6,
                 'ignorable' => false,
-                'tools' => array('Focus Pages', 'Keyword Research', 'Live Assistant'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('Keyword Research',_SQ_PLUGIN_NAME_), esc_html__('Live Assistant',_SQ_PLUGIN_NAME_)),
                 'time' => 1200
             ),
             'FocusPagesKeywordResearched' => array( //remote
@@ -294,7 +294,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 6,
                 'ignorable' => false,
-                'tools' => array('Focus Pages', 'Keyword Research', 'Live Assistant'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('Keyword Research',_SQ_PLUGIN_NAME_), esc_html__('Live Assistant',_SQ_PLUGIN_NAME_)),
                 'time' => 600
             ),
             'FocusPagesKeywordCompetition' => array( //remote
@@ -307,12 +307,12 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 7,
                 'ignorable' => true,
-                'tools' => array('Focus Pages', 'Keyword Research', 'Live Assistant'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('Keyword Research',_SQ_PLUGIN_NAME_), esc_html__('Live Assistant',_SQ_PLUGIN_NAME_)),
                 'time' => 600
             ),
             'FocusPagesKeywordOptimized60' => array( //remote
                 'completed' => false,
-                'warning' => esc_html__("Try to boost traffic by over +285% by optimizing with SEO Live Assistant", _SQ_PLUGIN_NAME_),
+                'warning' => esc_html__("Try to boost traffic by over +285&#37; by optimizing with SEO Live Assistant", _SQ_PLUGIN_NAME_),
                 'message' => esc_html__("Our data shows that users who optimize their content over 60% using the Live Assistant get up to +285% increase in traffic compared to those who optimize below this percentage. As a future SEO Star, you need to practice optimizing your content as much as you can.", _SQ_PLUGIN_NAME_),
                 'solution' => esc_html__("Your text needs to be optimized to over 60% using the SEO Live Assistant. Re-index your pages with Google Search Console after you finish optimizing.", _SQ_PLUGIN_NAME_),
                 'goal' => esc_html__("Optimize Your Focus Pages over 60% to get up to 285% increase in traffic.", _SQ_PLUGIN_NAME_),
@@ -321,7 +321,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 8,
                 'ignorable' => false,
-                'tools' => array('Focus Pages', 'Live Assistant'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('Live Assistant',_SQ_PLUGIN_NAME_)),
                 'time' => 1200
             ),
             //////
@@ -349,7 +349,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 10,
                 'ignorable' => false,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
                 'time' => 60
             ),
             'UsedBriefcaseInSerpCheck' => array( //remote
@@ -363,7 +363,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 11,
                 'ignorable' => false,
-                'tools' => array('Briefcase', 'Rankings'),
+                'tools' => array(esc_html__('Briefcase',_SQ_PLUGIN_NAME_), esc_html__('Rankings',_SQ_PLUGIN_NAME_)),
                 'time' => 300
             ),
 
@@ -378,7 +378,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 11,
                 'ignorable' => false,
-                'tools' => array('Focus Pages', 'Keyword Research', 'Live Assistant'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('Keyword Research',_SQ_PLUGIN_NAME_), esc_html__('Live Assistant',_SQ_PLUGIN_NAME_)),
                 'time' => 300
             ),
             'FocusPagesKeywordOptimized90' => array( //remote
@@ -392,7 +392,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 12,
                 'ignorable' => false,
-                'tools' => array('Focus Pages', 'Keyword Research', 'Live Assistant'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('Keyword Research',_SQ_PLUGIN_NAME_), esc_html__('Live Assistant',_SQ_PLUGIN_NAME_)),
                 'time' => 1200
             ),
             'FocusPagesDoFollowLinks' => array( //remote
@@ -406,7 +406,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 13,
                 'ignorable' => true,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
                 'time' => 300
             ),
             'GoogleAnalytics' => array( //remote
@@ -433,7 +433,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 14,
                 'ignorable' => false,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
                 'time' => 600
             ),
             'FocusPagesKeywordsFromBriefcase' => array( //remote
@@ -447,7 +447,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 15,
                 'ignorable' => false,
-                'tools' => array('Focus Pages', 'Live Assistant', 'Multiple Keyword Optimization'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('Live Assistant',_SQ_PLUGIN_NAME_), esc_html__('Multiple Keyword Optimization',_SQ_PLUGIN_NAME_)),
                 'time' => 2400
             ),
             'ExtraUsedBriefcaseInSerpCheck' => array( //remote
@@ -461,7 +461,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 15,
                 'ignorable' => true,
-                'tools' => array('Briefcase', 'Rankings'),
+                'tools' => array(esc_html__('Briefcase',_SQ_PLUGIN_NAME_), esc_html__('Rankings',_SQ_PLUGIN_NAME_)),
                 'time' => 300
             ),
             'FocusPagesKeywordsInImage' => array( //remote
@@ -475,7 +475,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 16,
                 'ignorable' => true,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
                 'time' => 600
             ),
             'BriefcaseKeywordsLabel' => array( //remote
@@ -489,7 +489,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 16,
                 'ignorable' => true,
-                'tools' => array('Briefcase'),
+                'tools' => array(esc_html__('Briefcase',_SQ_PLUGIN_NAME_)),
                 'time' => 600
             ),
             'FocusPagesInnerLinks' => array( //remote
@@ -503,7 +503,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 16,
                 'ignorable' => false,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
                 'time' => 600
             ),
             'UsedBriefcaseInSerpCheck3' => array( //remote
@@ -517,7 +517,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 16,
                 'ignorable' => false,
-                'tools' => array('Briefcase', 'Rankings'),
+                'tools' => array(esc_html__('Briefcase',_SQ_PLUGIN_NAME_), esc_html__('Rankings',_SQ_PLUGIN_NAME_)),
                 'time' => 300
             ),
             'BriefcaseKeywords10' => array( //remote
@@ -531,7 +531,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 17,
                 'ignorable' => false,
-                'tools' => array('Keyword Research'),
+                'tools' => array(esc_html__('Keyword Research',_SQ_PLUGIN_NAME_)),
                 'time' => 600
             ),
             'getSeoPatterns' => array( //remote
@@ -545,7 +545,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 18,
                 'ignorable' => false,
-                'tools' => array('On-Page SEO', 'SEO Automation'),
+                'tools' => array(esc_html__('On-Page SEO',_SQ_PLUGIN_NAME_), esc_html__('SEO Automation',_SQ_PLUGIN_NAME_)),
                 'time' => 10
             ),
             'FocusPagesHistoryPostUpdate' => array( //remote
@@ -559,7 +559,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 19,
                 'ignorable' => true,
-                'tools' => array('Focus Pages', 'Live Assistant'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('Live Assistant',_SQ_PLUGIN_NAME_)),
                 'time' => 1200
             ),
             'FocusPagesKeywordSEOMetas' => array( //remote
@@ -573,7 +573,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 19,
                 'ignorable' => true,
-                'tools' => array('Focus Pages', 'SEO Snippet'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('SEO Snippet',_SQ_PLUGIN_NAME_)),
                 'time' => 300
             ),
             'FocusPagesTwitterCard' => array( //remote
@@ -587,7 +587,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 19,
                 'ignorable' => false,
-                'tools' => array('Focus Pages', 'SEO Snippet'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('SEO Snippet',_SQ_PLUGIN_NAME_)),
                 'time' => 300
             ),
             'FocusPagesOpenGraph' => array( //remote
@@ -601,7 +601,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 19,
                 'ignorable' => false,
-                'tools' => array('Focus Pages', 'SEO Snippet'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('SEO Snippet',_SQ_PLUGIN_NAME_)),
                 'time' => 300
             ),
             'FocusPagesSnippet' => array(
@@ -615,7 +615,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 20,
                 'ignorable' => false,
-                'tools' => array('Focus Pages', 'SEO Snippet'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('SEO Snippet',_SQ_PLUGIN_NAME_)),
                 'time' => 600
             ),
             'FocusPagesArticleLength' => array( //remote
@@ -629,7 +629,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 21,
                 'ignorable' => false,
-                'tools' => array('Focus Pages', 'Live Assistant'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('Live Assistant',_SQ_PLUGIN_NAME_)),
                 'time' => 1200
             ),
             'FocusPagesContent' => array(
@@ -643,7 +643,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 22,
                 'ignorable' => true,
-                'tools' => array('Focus Pages', 'Live Assistant'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('Live Assistant',_SQ_PLUGIN_NAME_)),
                 'time' => 1200
             ),
             'SeoSettingsGreen' => array(
@@ -657,7 +657,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 22,
                 'ignorable' => true,
-                'tools' => array('Focus Pages', 'SEO Snippet'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_), esc_html__('SEO Snippet',_SQ_PLUGIN_NAME_)),
                 'time' => 600
             ),
             'SeoAuditScore' => array(
@@ -671,7 +671,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 22,
                 'ignorable' => true,
-                'tools' => array('Audits'),
+                'tools' => array(esc_html__('Audits',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesInnerLinks3' => array(
                 'completed' => false,
@@ -684,7 +684,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 23,
                 'ignorable' => false,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
                 'time' => 1200
             ),
             'FocusPagesTraffic10' => array(
@@ -698,7 +698,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 23,
                 'ignorable' => false,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'getDuplicateTitle' => array(
                 'completed' => false,
@@ -711,7 +711,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 24,
                 'ignorable' => false,
-                'tools' => array('On-Page SEO'),
+                'tools' => array(esc_html__('On-Page SEO',_SQ_PLUGIN_NAME_)),
                 'time' => 600
             ),
             'getDuplicateDescription' => array(
@@ -725,7 +725,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 24,
                 'ignorable' => false,
-                'tools' => array('On-Page SEO'),
+                'tools' => array(esc_html__('On-Page SEO',_SQ_PLUGIN_NAME_)),
                 'time' => 600
             ),
             'getEmptyTitle' => array(
@@ -739,7 +739,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 24,
                 'ignorable' => false,
-                'tools' => array('On-Page SEO'),
+                'tools' => array(esc_html__('On-Page SEO',_SQ_PLUGIN_NAME_)),
                 'time' => 600
             ),
             'getEmptyDescription' => array(
@@ -753,7 +753,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 24,
                 'ignorable' => false,
-                'tools' => array('On-Page SEO'),
+                'tools' => array(esc_html__('On-Page SEO',_SQ_PLUGIN_NAME_)),
                 'time' => 600
             ),
             'CheckForDuplicates' => array( //remote
@@ -767,7 +767,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 24,
                 'ignorable' => true,
-                'tools' => array('On-Page SEO'),
+                'tools' => array(esc_html__('On-Page SEO',_SQ_PLUGIN_NAME_)),
                 'time' => 600
             ),
             'FocusPagesSpeed' => array( //remote
@@ -781,7 +781,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 24,
                 'ignorable' => false,
-                'tools' => array('On-Page SEO'),
+                'tools' => array(esc_html__('On-Page SEO',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesBounceRate' => array( //remote
                 'completed' => false,
@@ -794,7 +794,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 26,
                 'ignorable' => true,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesAverageTime60' => array( //remote
                 'completed' => false,
@@ -807,7 +807,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 26,
                 'ignorable' => true,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesSocialSignals20' => array( //remote
                 'completed' => false,
@@ -820,7 +820,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 27,
                 'ignorable' => false,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesAuthority' => array( //remote
                 'completed' => false,
@@ -833,7 +833,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 27,
                 'ignorable' => true,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'GSCKeywordClicks' => array( //remote
                 'completed' => false,
@@ -846,7 +846,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 28,
                 'ignorable' => false,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'SeoAuditScore50' => array(
                 'completed' => false,
@@ -859,7 +859,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 28,
                 'ignorable' => false,
-                'tools' => array('Audits'),
+                'tools' => array(esc_html__('Audits',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesInnerLinks5' => array( //remote
                 'completed' => false,
@@ -872,7 +872,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 29,
                 'ignorable' => false,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesAverageTime90' => array( //remote
                 'completed' => false,
@@ -885,7 +885,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 30,
                 'ignorable' => true,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesReferringDomains10' => array( //remote
                 'completed' => false,
@@ -898,7 +898,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 31,
                 'ignorable' => true,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesSocialSignals40' => array( //remote
                 'completed' => false,
@@ -911,7 +911,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 29,
                 'ignorable' => false,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesAuthority20' => array( //remote
                 'completed' => false,
@@ -924,7 +924,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 32,
                 'ignorable' => true,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'SeoAuditScore70' => array(
                 'completed' => false,
@@ -937,7 +937,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 32,
                 'ignorable' => false,
-                'tools' => array('Audits'),
+                'tools' => array(esc_html__('Audits',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesTraffic30' => array(
                 'completed' => false,
@@ -950,7 +950,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 34,
                 'ignorable' => false,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesAverageTime120' => array( //remote
                 'completed' => false,
@@ -963,7 +963,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 30,
                 'ignorable' => true,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesReferringDomains20' => array( //remote
                 'completed' => false,
@@ -976,7 +976,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 35,
                 'ignorable' => true,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesReferringDomains30' => array( //remote
                 'completed' => false,
@@ -989,7 +989,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 36,
                 'ignorable' => true,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesTraffic70' => array(
                 'completed' => false,
@@ -1002,7 +1002,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 37,
                 'ignorable' => false,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesAuthority35' => array( //remote
                 'completed' => false,
@@ -1015,7 +1015,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => true,
                 'priority' => 38,
                 'ignorable' => true,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesBacklinks' => array(
                 'completed' => false,
@@ -1028,7 +1028,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 38,
                 'ignorable' => false,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'FocusPagesBacklinks10' => array(
                 'completed' => false,
@@ -1041,7 +1041,7 @@ class SQ_Models_CheckSeo {
                 'bullet' => false,
                 'priority' => 38,
                 'ignorable' => false,
-                'tools' => array('Focus Pages'),
+                'tools' => array(esc_html__('Focus Pages',_SQ_PLUGIN_NAME_)),
             ),
             'pluginReview' => array( //remote
                 'completed' => false,
@@ -1429,7 +1429,7 @@ class SQ_Models_CheckSeo {
         }
 
 
-        //Counr the post types
+        //Count the post types
         $stats['post_types_count'] = count($post_types);
 
 

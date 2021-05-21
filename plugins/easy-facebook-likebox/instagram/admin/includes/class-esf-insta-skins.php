@@ -95,15 +95,14 @@ if ( !class_exists( 'ESF_Insta_Skins' ) ) {
                 'post_type'      => 'mif_skins',
                 'post_status'    => [ 'publish', 'draft', 'pending' ],
             ];
-            $fta_skins = new WP_Query( $fta_skins );
+            $fta_skins = get_posts( $fta_skins );
             /* If any fta_skins are in database. */
             
-            if ( $fta_skins->have_posts() ) {
+            if ( isset( $fta_skins ) && !empty($fta_skins) ) {
                 $fta_skins_holder = [];
-                while ( $fta_skins->have_posts() ) {
-                    $fta_skins->the_post();
-                    $id = get_the_ID();
-                    $design_arr = null;
+                foreach ( $fta_skins as $skin ) {
+                    $id = $skin->ID;
+                    $design_arr = [];
                     $design_arr = get_option( 'mif_skin_' . $id, false );
                     $layout = get_post_meta( $id, 'layout', true );
                     
@@ -117,19 +116,18 @@ if ( !class_exists( 'ESF_Insta_Skins' ) ) {
                         }
                     }
                     
-                    $title = get_the_title();
+                    $title = $skin->post_title;
                     if ( empty($title) ) {
                         $title = __( 'Skin', 'easy-facebook-likebox' );
                     }
                     $fta_skins_holder[$id] = [
                         'ID'          => $id,
                         'title'       => $title,
-                        'description' => get_the_content(),
+                        'description' => $skin->post_content,
                         'layout'      => $layout,
                     ];
                     $fta_skins_holder[$id]['design'] = wp_parse_args( $design_arr, $this->esf_insta_default_skin_settings() );
                 }
-                wp_reset_postdata();
             } else {
                 return __( 'No skins found.', 'easy-facebook-likebox' );
             }
@@ -143,6 +141,7 @@ if ( !class_exists( 'ESF_Insta_Skins' ) ) {
                 'show_load_more_btn'           => true,
                 'number_of_cols'               => 3,
                 'show_header'                  => false,
+                'header_round_dp'              => true,
                 'show_dp'                      => true,
                 'show_no_of_followers'         => true,
                 'show_next_prev_icon'          => true,

@@ -21,7 +21,7 @@
                             }
 
                             //make sure the user has the capabilities
-                            if (current_user_can($item['capability'])) {
+                            if (SQ_Classes_Helpers_Tools::userCan($item['capability'])) {
                                 if ($menuid <> 'sq_dashboard') {
                                     ?>
                                     <li class="nav-item">

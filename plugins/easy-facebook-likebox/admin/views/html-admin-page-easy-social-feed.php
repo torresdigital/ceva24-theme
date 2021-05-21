@@ -9,6 +9,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 $FTA = new Feed_Them_All();
 
 $fta_all_plugs = $FTA->fta_plugins();
+$fta_settings = $FTA->fta_get_settings();
+if( isset($fta_settings['hide_plugin'] ) ){
+	$hide_plugin = $fta_settings['hide_plugin'];
+}
+
+if( isset($fta_settings['hide_upgrade'] ) ){
+	$hide_upgrade = $fta_settings['hide_upgrade'];
+}
+
+if( isset( $hide_plugin ) && isset( $hide_upgrade ) ){
+	$hide_sidebar_class = 'esf-sidebar-is-hide';
+}else{
+	$hide_sidebar_class = '';
+}
 ?>
     <div class="esf_loader_wrap">
         <div class="esf_loader_inner">
@@ -17,7 +31,7 @@ $fta_all_plugs = $FTA->fta_plugins();
     </div>
     <h1 class="esf-main-heading"><?php esc_html_e( "Easy Social Feed (Previously Easy Facebook Likebox)", 'easy-facebook-likebox' ); ?></h1>
 
-    <div class="fta_wrap_outer" <?php if( efl_fs()->is_free_plan() ){?> style="width: 78%" <?php } ?>>
+    <div class="fta_wrap_outer <?php echo $hide_sidebar_class; ?>" <?php if( efl_fs()->is_free_plan() ){?> style="width: 78%" <?php } ?>>
         <div class="fta_wrap z-depth-1">
         <div class="fta_wrap_inner">
             <div class="fta_tabs_holder">
@@ -127,7 +141,7 @@ $fta_all_plugs = $FTA->fta_plugins();
     </div>
 
 <?php if ( efl_fs()->is_free_plan() ) {
-
+	if( !isset( $hide_plugin ) && !isset( $hide_upgrade ) ){
 	$mt_plugins = $this->mt_plugins_info();
 	?>
 
@@ -136,9 +150,10 @@ $fta_all_plugs = $FTA->fta_plugins();
 
 <?php if ( $mt_plugins ) { ?>
 
-    <div class="fta-other-plugins-wrap z-depth-1">
+    <div class="fta-other-plugins-wrap z-depth-1 esf-hide-plugin">
 
         <div class="fta-other-plugins-head">
+            <div class="dashicons dashicons-no-alt esf-hide-free-sidebar" data-id="plugin"></div>
             <h5><?php esc_html_e( 'Love this plugin?', 'easy-facebook-likebox' ); ?></h5>
             <p><?php esc_html_e( 'Then why not try our other FREE plugins.', 'easy-facebook-likebox' ); ?></p>
         </div>
@@ -200,9 +215,11 @@ $fta_all_plugs = $FTA->fta_plugins();
 
 <?php } ?>
 
-	    <?php $banner_info = $this->esf_upgrade_banner(); ?>
+	    <?php $banner_info = $this->esf_upgrade_banner();
+		if( !isset( $fta_settings['hide_upgrade']) ){ ?>
 
-        <div class="espf-upgrade z-depth-2">
+        <div class="espf-upgrade z-depth-2 esf-hide-upgrade">
+            <div class="dashicons dashicons-no-alt esf-hide-free-sidebar" data-id="upgrade"></div>
             <h2><?php  esc_html_e( $banner_info['name'] ); ?>
                 <b><?php  esc_html_e( $banner_info['bold'] ); ?></b></h2>
             <p><?php  esc_html_e( $banner_info['fb-description'] ); ?></p>
@@ -213,6 +230,10 @@ $fta_all_plugs = $FTA->fta_plugins();
             </a>
         </div>
 
+        <?php } ?>
+
     </div>
 
-<?php } ?>
+<?php
+}
+} ?>

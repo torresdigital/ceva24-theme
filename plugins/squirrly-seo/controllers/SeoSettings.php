@@ -121,7 +121,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
         switch (SQ_Classes_Helpers_Tools::getValue('action')) {
 
             case 'sq_seosettings_links':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
 
@@ -149,7 +149,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
 
             ///////////////////////////////////////////SEO SETTINGS METAS
             case 'sq_seosettings_metas':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
 
@@ -195,7 +195,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
 
             ///////////////////////////////////////////SEO SETTINGS AUTOMATION
             case 'sq_seosettings_automation':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
 
@@ -214,7 +214,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
             case 'sq_seosettings_tracking':
             case 'sq_seosettings_webmaster':
             case 'sq_seosettings_advanced':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
 
@@ -237,7 +237,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
 
             ///////////////////////////////////////////SEO SETTINGS METAS
             case 'sq_seosettings_sitemap':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
 
@@ -275,7 +275,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
 
             //Save the JSON-LD page from SEO Settings
             case 'sq_seosettings_jsonld':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
 
@@ -304,7 +304,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
 
             //Save the Robots permissions
             case 'sq_seosettings_robots':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
 
@@ -336,7 +336,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
 
             //Save the Favicon image
             case 'sq_seosettings_favicon':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
 
@@ -365,7 +365,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
 
                 break;
             case 'sq_seosettings_ga_revoke':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
 
@@ -378,7 +378,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
                 }
                 break;
             case 'sq_seosettings_gsc_revoke':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
 
@@ -392,7 +392,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
                 break;
             case 'sq_seosettings_ga_check':
             case 'sq_seosettings_gsc_check':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
                 //Refresh the checkin on login
@@ -401,7 +401,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
                 break;
 
             case 'sq_seosettings_backupsettings':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     SQ_Classes_Helpers_Tools::setHeader('json');
                     echo wp_json_encode($response);
@@ -418,7 +418,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
                 }
                 exit();
             case 'sq_seosettings_restoresettings':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
 
@@ -461,7 +461,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
                 }
                 break;
             case 'sq_seosettings_backupseo':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
 
@@ -476,7 +476,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
                 }
                 exit();
             case 'sq_seosettings_restoreseo':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
 
@@ -540,7 +540,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
                 }
                 break;
             case 'sq_seosettings_importsettings':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
 
@@ -554,18 +554,20 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
                 }
                 break;
             case 'sq_seosettings_importseo':
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     return;
                 }
 
                 $platform = SQ_Classes_Helpers_Tools::getValue('sq_import_platform', '');
                 $overwrite = SQ_Classes_Helpers_Tools::getValue('sq_import_overwrite', false);
+
                 if ($platform <> '') {
                     $seo = SQ_Classes_ObjController::getClass('SQ_Models_ImportExport')->importDBSeo($platform);
                     if (!empty($seo)) {
                         foreach ($seo as $sq_hash => $metas) {
                             $sq = SQ_Classes_ObjController::getClass('SQ_Models_Qss')->getSqSeo($sq_hash);
                             if ($overwrite || !($sq->title && $sq->description)) {
+
                                 SQ_Classes_ObjController::getClass('SQ_Models_Qss')->saveSqSEO(
                                     (isset($metas['url']) ? $metas['url'] : ''),
                                     $sq_hash,
@@ -577,6 +579,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
                                     )),
                                     maybe_serialize($metas),
                                     gmdate('Y-m-d H:i:s'));
+
                             }
                         }
                     }
@@ -640,7 +643,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
             case 'sq_ajax_seosettings_save':
                 SQ_Classes_Helpers_Tools::setHeader('json');
                 $response = array();
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     echo wp_json_encode($response);
                     exit();
@@ -664,7 +667,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
                 SQ_Classes_Helpers_Tools::setHeader('json');
 
                 $response = array();
-                if (!current_user_can('sq_manage_snippet')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     echo wp_json_encode($response);
                     exit();
@@ -677,7 +680,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
                 SQ_Classes_Helpers_Tools::setHeader('json');
 
                 $response = array();
-                if (!current_user_can('sq_manage_snippet')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     echo wp_json_encode($response);
                     exit();
@@ -698,7 +701,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
                 SQ_Classes_Helpers_Tools::setHeader('json');
 
                 $response = array();
-                if (!current_user_can('sq_manage_snippet')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     echo wp_json_encode($response);
                     exit();
@@ -717,7 +720,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
                 SQ_Classes_Helpers_Tools::setHeader('json');
 
                 $response = array();
-                if (!current_user_can('sq_manage_snippet')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippet')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     echo wp_json_encode($response);
                     exit();
@@ -735,7 +738,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
             case 'sq_ajax_automation_addpostype':
                 SQ_Classes_Helpers_Tools::setHeader('json');
                 $response = array();
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     echo wp_json_encode($response);
                     exit();
@@ -745,6 +748,13 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
                 $posttype = SQ_Classes_Helpers_Tools::getValue('value', false);
                 $filter = array('public' => true, '_builtin' => false);
                 $types = get_post_types($filter);
+                foreach ($types as $pattern => $type) {
+                    if($post_type_obj = get_post_type_object( $pattern )){
+                        if($post_type_obj->has_archive) {
+                            $types['archive-' . $pattern] = 'archive-' . $pattern;
+                        }
+                    }
+                }
 
                 $filter = array('public' => true,);
                 $taxonomies = get_taxonomies($filter);
@@ -777,7 +787,7 @@ class SQ_Controllers_SeoSettings extends SQ_Classes_FrontController {
             case 'sq_ajax_automation_deletepostype':
                 SQ_Classes_Helpers_Tools::setHeader('json');
                 $response = array();
-                if (!current_user_can('sq_manage_settings')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_settings')) {
                     $response['error'] = SQ_Classes_Error::showNotices(esc_html__("You do not have permission to perform this action", _SQ_PLUGIN_NAME_), 'sq_error');
                     echo wp_json_encode($response);
                     exit();

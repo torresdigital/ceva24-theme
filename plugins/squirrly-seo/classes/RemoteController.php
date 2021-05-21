@@ -1337,7 +1337,7 @@ class SQ_Classes_RemoteController {
                             prevNonce: "' . wp_create_nonce('post_preview_' . $sq_postID) . '",
                             __keyword: "' . esc_html__('Keyword:', _SQ_PLUGIN_NAME_) . '",
                             __date: "' . esc_html__('date', _SQ_PLUGIN_NAME_) . '",
-                            __noconnection: "' . esc_html__("To load Squirrly Live Assistant and optimize this page, click to connect to Squirrly Data Cloud.", _SQ_PLUGIN_NAME_) . '",
+                            __noconnection: "' . esc_html__("To load the Live Assistant and optimize this page, click to connect to Squirrly Cloud.", _SQ_PLUGIN_NAME_) . '",
                             __saved: "' . esc_html__('Saved!', _SQ_PLUGIN_NAME_) . '",
                             __readit: "' . esc_html__('Read it!', _SQ_PLUGIN_NAME_) . '",
                             __insertit: "' . esc_html__('Insert it!', _SQ_PLUGIN_NAME_) . '",
@@ -1370,12 +1370,16 @@ class SQ_Classes_RemoteController {
                             __add_keyword_briefcase: "' . esc_html__('Add Keyword to Briefcase', _SQ_PLUGIN_NAME_) . '",
                             __usekeyword: "' . esc_html__('Select', _SQ_PLUGIN_NAME_) . '",
                             __new_post_title: "' . esc_html__('Auto Draft') . '",
-                            __frontend_optimized: "' . esc_html__('You’ve already used the Live Assistant to optimize this post when creating it in your Page Builder. Please go back and resume your optimization work there.', _SQ_PLUGIN_NAME_) . '",
+                            __enter_keyword: "' . esc_html__('Enter keyword above and press ENTER', _SQ_PLUGIN_NAME_) . '",
+                            __add_keyword: "' . esc_html__('Add Keywords from Briefcase', _SQ_PLUGIN_NAME_) . '",
+                            __frontend_optimized: "' . esc_html__('Live Assistant was used to optimize this page with the Page Builder. Please go back and resume your optimization work there.', _SQ_PLUGIN_NAME_) . '",
                         };
                         $.sq_params = {
                               max_length_title: ' . (int)$metas->title_maxlength . ',
                               max_length_description: ' . (int)$metas->description_maxlength . ',
                         };
+                        
+
                     })(jQuery);
                      </script>';
 

@@ -113,42 +113,42 @@ function codes_register_data()
         'type'        => 'string',
         'description' => __( 'Output Order', 'custom-codes' ),
         'single'      => true,
-        'default'     => 'mobile-first',
+        'default'     => 'desktop-first',
     ) );
     // Desktop Media Query.
     register_setting( 'codes_settings', '_codes_desktop', array(
         'type'        => 'string',
         'description' => __( 'Desktop <br> Media Query', 'custom-codes' ),
         'single'      => true,
-        'default'     => '@media (min-width: 1200px)',
+        'default'     => '',
     ) );
     // Tablet Landscape Media Query.
     register_setting( 'codes_settings', '_codes_tablet_l', array(
         'type'        => 'string',
         'description' => __( 'Tablet Landscape <br> Media Query', 'custom-codes' ),
         'single'      => true,
-        'default'     => '@media (min-width: 992px)',
+        'default'     => '@media (max-width: 1199px)',
     ) );
     // Tablet Portrait Media Query.
     register_setting( 'codes_settings', '_codes_tablet_p', array(
         'type'        => 'string',
         'description' => __( 'Tablet Portrait <br> Media Query', 'custom-codes' ),
         'single'      => true,
-        'default'     => '@media (min-width: 768px)',
+        'default'     => '@media (max-width: 991px)',
     ) );
     // Smartphone Landscape Media Query.
     register_setting( 'codes_settings', '_codes_phone_l', array(
         'type'        => 'string',
         'description' => __( 'Smartphone Landscape <br> Media Query', 'custom-codes' ),
         'single'      => true,
-        'default'     => '@media (min-width: 480px)',
+        'default'     => '@media (max-width: 767px)',
     ) );
     // Smartphone Portrait Media Query.
     register_setting( 'codes_settings', '_codes_phone_p', array(
         'type'        => 'string',
         'description' => __( 'Smartphone Portrait <br> Media Query', 'custom-codes' ),
         'single'      => true,
-        'default'     => '',
+        'default'     => '@media (max-width: 479px)',
     ) );
     // Retina Displays Media Query.
     register_setting( 'codes_settings', '_codes_retina', array(

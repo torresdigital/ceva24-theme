@@ -1,16 +1,16 @@
 <?php
 /*
 Plugin Name: Advanced Product Search For WooCommerce
-Plugin URI: https://athemeart.com/downloads/advanced-product-search-for-woo/
+Plugin URI: https://www.athemeart.com/downloads/advanced-product-search-for-woo/
 Description:Advanced Product Search For woocommerce  – powerful & simple live search plugin for WooCommerce
-Version: 1.0.5
+Version: 1.0.6
 Author: aThemeArt
 Author URI:  https://athemeart.com
 Text Domain: apsw-lang
 Domain Path: /languages/
-Tested up to: 5.5.5
+Tested up to: 5.7.4
 WC requires at least: 3.0.0
-WC tested up to: 4.5.3
+WC tested up to: 5.7.3
 */
 
 if ( ! defined('ABSPATH')) exit;  // if direct access

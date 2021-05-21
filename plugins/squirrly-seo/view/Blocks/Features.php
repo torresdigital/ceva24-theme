@@ -10,7 +10,7 @@
             </div>
             <div class="col px-2 py-3">
                 <div class="col-12 m-0 p-0 pl-4">
-                    <h3><?php echo esc_html__("Squirrly SEO Feature Categories", _SQ_PLUGIN_NAME_) ?></h3>
+                    <h3><?php echo esc_html__("Squirrly SEO Main Features", _SQ_PLUGIN_NAME_) ?></h3>
                     <div class="small text-black-50"><?php echo esc_html__("Manage the features & access them directly from here.", _SQ_PLUGIN_NAME_); ?></div>
                 </div>
                 <div class="sq_separator"></div>
@@ -30,52 +30,65 @@
         </div>
 
         <?php
-        add_filter('sq_plugins', array(SQ_Classes_ObjController::getClass('SQ_Models_ImportExport'), 'getAvailablePlugins'));
-        $platforms = apply_filters('sq_importList', false);
-        ?>
+        $platforms = array();
+        if (!SQ_Classes_Helpers_Tools::getIsset('sfeature')) {
+            if (SQ_Classes_Helpers_Tools::getOption('sq_alert_overview') && SQ_Classes_Helpers_Tools::getOption('sq_api')) {
+                add_filter('sq_plugins', array(SQ_Classes_ObjController::getClass('SQ_Models_ImportExport'), 'getAvailablePlugins'));
+                $platforms = apply_filters('sq_importList', false);
+            }
+        } ?>
+
         <?php if (!empty($platforms)) { ?>
             <?php if (in_array('wordpress-seo', array_keys($platforms))) { ?>
                 <div class="text-center">
                     <a href="https://completeseofunnel.com/yoast-alternative/" target="_blank"><img src="<?php echo _SQ_ASSETS_URL_ . 'img/settings/sq-vs-yoast.png' ?>" alt="" style="width: 100%"></a>
                 </div>
                 <div class="py-3 text-center">
-                    <a href="https://completeseofunnel.com/yoast-alternative/" target="_blank">
-                        <h4><?php echo esc_html__("Click here if you want to see a comparison between them", _SQ_PLUGIN_NAME_) ?></h4>
-                    </a>
+                    <h4>
+                        <a href="https://completeseofunnel.com/yoast-alternative/" target="_blank">
+                            <?php echo esc_html__("Click here if you want to see a comparison between them", _SQ_PLUGIN_NAME_) ?>
+                        </a>
+                    </h4>
                 </div>
             <?php } elseif (in_array('rank-math', array_keys($platforms))) { ?>
                 <div class="text-center">
                     <a href="http://completeseofunnel.com/rankmath-alternative/" target="_blank"><img src="<?php echo _SQ_ASSETS_URL_ . 'img/settings/sq-vs-rank-math.png' ?>" alt="" style="width: 100%"></a>
                 </div>
                 <div class="py-3 text-center">
-                    <a href="http://completeseofunnel.com/rankmath-alternative/" target="_blank">
-                        <h4><?php echo esc_html__("Click here if you want to see a comparison between them", _SQ_PLUGIN_NAME_) ?></h4>
-                    </a>
+                    <h4>
+                        <a href="http://completeseofunnel.com/rankmath-alternative/" target="_blank">
+                            <?php echo esc_html__("Click here if you want to see a comparison between them", _SQ_PLUGIN_NAME_) ?>
+                        </a>
+                    </h4>
                 </div>
             <?php } elseif (in_array('wp-seopress', array_keys($platforms))) { ?>
                 <div class="text-center">
                     <a href="http://completeseofunnel.com/seopress-alternative/" target="_blank"><img src="<?php echo _SQ_ASSETS_URL_ . 'img/settings/sq-vs-seo-press.png' ?>" alt="" style="width: 100%"></a>
                 </div>
                 <div class="py-3 text-center">
-                    <a href="http://completeseofunnel.com/seopress-alternative/" target="_blank">
-                        <h4><?php echo esc_html__("Click here if you want to see a comparison between them", _SQ_PLUGIN_NAME_) ?></h4>
-                    </a>
+                    <h4>
+                        <a href="http://completeseofunnel.com/seopress-alternative/" target="_blank">
+                            <?php echo esc_html__("Click here if you want to see a comparison between them", _SQ_PLUGIN_NAME_) ?>
+                        </a>
+                    </h4>
                 </div>
             <?php } elseif (in_array('all-in-one-seo-pack', array_keys($platforms))) { ?>
                 <div class="text-center">
                     <a href="https://completeseofunnel.com/allinoneseo-alternative/" target="_blank"><img src="<?php echo _SQ_ASSETS_URL_ . 'img/settings/sq-vs-all-in-one-seo.png' ?>" alt="" style="width: 100%"></a>
                 </div>
                 <div class="py-3 text-center">
-                    <a href="https://completeseofunnel.com/allinoneseo-alternative/" target="_blank">
-                        <h4><?php echo esc_html__("Click here if you want to see a comparison between them", _SQ_PLUGIN_NAME_) ?></h4>
-                    </a>
+                    <h4>
+                        <a href="https://completeseofunnel.com/allinoneseo-alternative/" target="_blank">
+                            <?php echo esc_html__("Click here if you want to see a comparison between them", _SQ_PLUGIN_NAME_) ?>
+                        </a>
+                    </h4>
                 </div>
             <?php } ?>
 
         <?php } ?>
     <?php } else { ?>
         <div class="text-center sq_save_ajax">
-            <input type="image" src="<?php echo _SQ_ASSETS_URL_ . 'img/settings/all-features_auto.jpg' ?>" alt="" style="width: 95%" data-action="sq_ajax_seosettings_save" data-confirm="<?php echo esc_html__('Do you want to activate manual feature setup?', _SQ_PLUGIN_NAME_)?>" data-name="sq_seoexpert"  value="1"/>
+            <input type="image" src="<?php echo _SQ_ASSETS_URL_ . 'img/settings/all-features_auto.jpg' ?>" alt="" style="width: 95%" data-action="sq_ajax_seosettings_save" data-confirm="<?php echo esc_html__('Do you want to activate manual feature setup?', _SQ_PLUGIN_NAME_) ?>" data-name="sq_seoexpert" value="1"/>
         </div>
     <?php } ?>
 

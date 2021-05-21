@@ -110,6 +110,24 @@ $wp_customize->add_control(
     'settings'    => 'top_store_top_slider_optn',
   ) ) );
 
+  $wp_customize->add_setting('top_store_top_slider_speed', array(
+            'default'           => 1000,
+            'capability'        => 'edit_theme_options',
+            'sanitize_callback' =>'top_store_sanitize_number',
+        )
+    );
+    $wp_customize->add_control('top_store_top_slider_speed', array(
+            'type'        => 'number',
+            'section'     => 'top_store_top_slider_section',
+            'label'       => __( 'Slider Speed', 'top-store' ),
+            'input_attrs' => array(
+                'min'  => 100,
+                'step' => 1,
+                'max'  => 20000,
+            ),
+        )
+    ); 
+
 
 // slider-layout-2
 $wp_customize->add_setting('top_store_lay2_adimg', array(

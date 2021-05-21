@@ -3,11 +3,11 @@
  * Plugin Name: Portfolio X
  * Plugin URI: https://www.quantumcloud.com/
  * Description: Portfolio X is a responsive portfolio plugin with categories and description for web designers, digital artists & studios. Awesome filterable portfolio with Showcase & Widgets.
- * Version: 3.4.2
+ * Version: 3.5.2
  * Author: QuantumCloud
  * Author URI: https://www.quantumcloud.com/
  * Requires at least: 4.6
- * Tested up to: 5.6
+ * Tested up to: 5.7
  * Text Domain: portfolio-x
  * Domain Path: /lang/
  * License: GPL2

@@ -53,11 +53,13 @@ function codes_location_box_html( $post )
     ?></label>
 
 
-		<label><input type="radio" name="location" v-model="location" value="page"> <?php 
+		<label :disabled="!isPremium"><input type="radio" name="location" v-model="location" value="page" :disabled="!isPremium"> <?php 
     echo  wp_kses( $wp_filesystem->get_contents( CODES_PLUGIN_DIR . '/assets/image/icon-page.svg' ), codes_svg_args() ) ;
     ?> <?php 
     esc_html_e( 'Pages', 'custom-codes' );
-    ?></label>
+    ?><span class="codes-pro-link" v-if="!isPremium"> (<a href="<?php 
+    echo  esc_url( codes_fs()->get_upgrade_url() ) ;
+    ?>" target="_blank">PRO</a>)</span></label>
 		<?php 
     ?>
 

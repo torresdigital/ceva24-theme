@@ -17,6 +17,7 @@ class SQ_Classes_HookController {
             'head' => 'admin_head',
             'footer' => 'admin_footer',
             'menu' => 'admin_menu',
+            'networkMenu' => 'network_admin_menu',
             'notices' => 'admin_notices',
         );
 

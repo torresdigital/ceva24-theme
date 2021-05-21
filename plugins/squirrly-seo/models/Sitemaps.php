@@ -246,6 +246,8 @@ class SQ_Models_Sitemaps extends SQ_Models_Abstract_Seo {
                         continue;
                     }
 
+                    $this->setPost($post); //set current sitemap post
+
                     $xml = array();
                     $xml['loc'] = esc_url($post->url);
 
@@ -270,7 +272,8 @@ class SQ_Models_Sitemaps extends SQ_Models_Abstract_Seo {
 
 
                     if (SQ_Classes_Helpers_Tools::$options['sq_sitemap_show']['images'] == 1) {
-                        if ($images = $this->getPostImages($post->ID, true)) {
+                        $this->setPost($post); //set current sitemap post
+                        if ($images = $this->getPostImages(true)) {
                             array_push($posts['contains'], 'image');
                             $xml['image:image'] = array();
                             foreach ($images as $image) {
@@ -288,28 +291,26 @@ class SQ_Models_Sitemaps extends SQ_Models_Abstract_Seo {
                     }
 
                     if (SQ_Classes_Helpers_Tools::$options['sq_sitemap_show']['videos'] == 1) {
-                        $images = $this->getPostImages($post->ID, true);
-                        if (isset($images[0]['src']) && $videos = $this->getPostVideos($post->ID)) {
+
+                        $this->setPost($post); //set current sitemap post
+                        if ($videos = $this->getPostVideos(true)) {
                             array_push($posts['contains'], 'video');
                             $xml['video:video'] = array();
-                            foreach ($videos as $video) {
-                                if ($video == '') {
-                                    continue;
-                                }
+                            foreach ($videos as $index => $video) {
+                                if ($video['src'] <> '') {
+                                    $xml['video:video'][$index] = array(
+                                        'video:player_loc' => $video['src'],
+                                        'video:thumbnail_loc' => $video['thumbnail'],
+                                        'video:title' => SQ_Classes_Helpers_Sanitize::clearTitle($post->sq->title),
+                                        'video:description' => SQ_Classes_Helpers_Sanitize::clearDescription($post->sq->description),
+                                    );
 
-
-                                $xml['video:video'][$post->ID] = array(
-                                    'video:player_loc' => $video,
-                                    'video:thumbnail_loc' => $images[0]['src'],
-                                    'video:title' => SQ_Classes_Helpers_Sanitize::clearTitle($post->sq->title),
-                                    'video:description' => SQ_Classes_Helpers_Sanitize::clearDescription($post->sq->description),
-                                );
-
-                                //set the first keyword for this video
-                                $keywords = $post->sq->keywords;
-                                $keywords = preg_split('/,/', $keywords);
-                                if (is_array($keywords)) {
-                                    $xml['video:video'][$post->ID]['video:tag'] = SQ_Classes_Helpers_Sanitize::clearKeywords($keywords[0]);
+                                    //set the first keyword for this video
+                                    $keywords = $post->sq->keywords;
+                                    $keywords = preg_split('/,/', $keywords);
+                                    if (is_array($keywords)) {
+                                        $xml['video:video'][$index]['video:tag'] = SQ_Classes_Helpers_Sanitize::clearKeywords($keywords[0]);
+                                    }
                                 }
                             }
                         }
@@ -374,7 +375,7 @@ class SQ_Models_Sitemaps extends SQ_Models_Abstract_Seo {
         if (!is_wp_error($terms) && !empty($terms)) {
             foreach ($terms AS $term) {
                 //make sure it has a language
-                if (function_exists('pll_get_post_translations')) {
+                if (function_exists('pll_get_post_translations') && function_exists('pll_get_term')) {
                     if (!$term->term_id = pll_get_term($term->term_id, $this->language)) {
                         continue;
                     }
@@ -508,6 +509,7 @@ class SQ_Models_Sitemaps extends SQ_Models_Abstract_Seo {
             return $xml;
         }
 
+
         //Prevent sitemap from braking due to & in URLs
         $xml['loc'] = esc_url($post->url);
         $xml['lastmod'] = trim(mysql2date('Y-m-d\TH:i:s+00:00', $this->lastModified($post), false));
@@ -516,7 +518,9 @@ class SQ_Models_Sitemaps extends SQ_Models_Abstract_Seo {
 
         //Get Post Images
         if ((int)$post->ID > 0 && SQ_Classes_Helpers_Tools::$options['sq_sitemap_show']['images'] == 1) {
-            if ($images = $this->getPostImages($post->ID, true)) {
+
+            $this->setPost($post); //set current sitemap post
+            if ($images = $this->getPostImages(true)) {
                 $xml['image:image'] = array();
                 foreach ($images as $image) {
                     if (empty($image['src'])) {
@@ -533,28 +537,30 @@ class SQ_Models_Sitemaps extends SQ_Models_Abstract_Seo {
         }
         //Get Post Video
         if ((int)$post->ID > 0 && SQ_Classes_Helpers_Tools::$options['sq_sitemap_show']['videos'] == 1) {
-            $images = $this->getPostImages($post->ID, true);
-            if (isset($images[0]['src']) && $videos = $this->getPostVideos($post->ID)) {
+
+            $this->setPost($post); //set current sitemap post
+            if ($videos = $this->getPostVideos(true)) {
+
                 $xml['video:video'] = array();
-                foreach ($videos as $video) {
-                    if ($video == '') {
-                        continue;
-                    }
+                foreach ($videos as $index =>  $video) {
 
-                    $xml['video:video'][$post->ID] = array(
-                        'video:player_loc' => esc_url($video),
-                        'video:thumbnail_loc' => $images[0]['src'],
-                        'video:title' => SQ_Classes_Helpers_Sanitize::clearTitle($post->sq->title),
-                        'video:description' => SQ_Classes_Helpers_Sanitize::clearDescription($post->sq->description),
-                    );
+                    if ($video['src'] <> '') {
+                        $xml['video:video'][$index] = array(
+                            'video:player_loc' => $video['src'],
+                            'video:thumbnail_loc' => $video['thumbnail'],
+                            'video:title' => SQ_Classes_Helpers_Sanitize::clearTitle($post->sq->title),
+                            'video:description' => SQ_Classes_Helpers_Sanitize::clearDescription($post->sq->description),
+                        );
 
-                    //set the first keyword for this video
-                    $keywords = $post->sq->keywords;
-                    $keywords = preg_split('/,/', $keywords);
-                    if (is_array($keywords)) {
-                        $xml['video:video'][$post->ID]['video:tag'] = SQ_Classes_Helpers_Sanitize::clearKeywords($keywords[0]);
+                        //set the first keyword for this video
+                        $keywords = $post->sq->keywords;
+                        $keywords = preg_split('/,/', $keywords);
+                        if (is_array($keywords)) {
+                            $xml['video:video'][$index]['video:tag'] = SQ_Classes_Helpers_Sanitize::clearKeywords($keywords[0]);
+                        }
                     }
                 }
+
             }
         }
 

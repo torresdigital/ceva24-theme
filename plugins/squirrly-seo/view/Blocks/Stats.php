@@ -77,7 +77,7 @@
                             <div class="card-title-description m-0 p-0 ">
                                 <a href="<?php echo SQ_Classes_Helpers_Tools::getAdminUrl('sq_features') ?>"><?php echo esc_html__("See All Tools", _SQ_PLUGIN_NAME_); ?> >></a>
                             </div>
-                            <?php if (current_user_can('sq_manage_snippets')) { ?>
+                            <?php if (SQ_Classes_Helpers_Tools::userCan('sq_manage_snippets')) { ?>
                                 <?php if (SQ_Classes_Helpers_Tools::getMenuVisible('show_seogoals')) { ?>
                                     <button type="button" class="btn btn-warning m-0 mt-4 py-1 px-4 center-block sq_seocheck_submit">
                                     <?php echo esc_html__("Run SEO Test", _SQ_PLUGIN_NAME_) ?> >>

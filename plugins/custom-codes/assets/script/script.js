@@ -33,8 +33,6 @@ var customCodes;
 			includes: customCodesData.postIncludes || [],
 
 			
-/* Premium Code Stripped by Freemius */
-
 
 			theme: customCodesData.userTheme,
 			fontSize: customCodesData.userFontSize,
@@ -137,8 +135,6 @@ var customCodes;
 			},
 
 			
-/* Premium Code Stripped by Freemius */
-
 		},
 		methods: {
 			switchEditor(editorID) {
@@ -306,8 +302,6 @@ var customCodes;
 				}
 
 				
-/* Premium Code Stripped by Freemius */
-
 
 				this.$nextTick(() => {
 
@@ -471,8 +465,6 @@ var customCodes;
 			},
 
 			
-/* Premium Code Stripped by Freemius */
-
 		},
 		mounted() {
 

@@ -36,6 +36,8 @@ class SQ_Models_Focuspages_Snippet extends SQ_Models_Abstract_Assistant {
                 if (isset($image['src'])) {
                     $this->_post->sq->og_media = $image['src'];
                 }
+            }elseif (SQ_Classes_Helpers_Tools::getOption('sq_og_image')) {
+                $this->_post->sq->og_media = SQ_Classes_Helpers_Tools::getOption('sq_og_image');
             }
         }
 
@@ -54,6 +56,8 @@ class SQ_Models_Focuspages_Snippet extends SQ_Models_Abstract_Assistant {
                 if (isset($image['src'])) {
                     $this->_post->sq->tw_media = $image['src'];
                 }
+            }elseif (SQ_Classes_Helpers_Tools::getOption('sq_tc_image')) {
+                $this->_post->sq->tw_media = SQ_Classes_Helpers_Tools::getOption('sq_tc_image');
             }
         }
         $this->_twitter_card = json_decode(json_encode(

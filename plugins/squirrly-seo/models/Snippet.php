@@ -18,8 +18,8 @@ class SQ_Models_Snippet {
         $search_all = false;
 
         //Set publish post status for Focus Pages and Audit Pages
-        $page = apply_filters('sq_page', SQ_Classes_Helpers_Tools::getValue('page',false));
-        if(in_array($page,array('sq_focuspages','sq_audits'))) {
+        $page = apply_filters('sq_page', SQ_Classes_Helpers_Tools::getValue('page', false));
+        if (in_array($page, array('sq_focuspages', 'sq_audits'))) {
             $post_status = SQ_Classes_Helpers_Tools::getValue('sstatus', 'publish');
         }
 
@@ -30,7 +30,7 @@ class SQ_Models_Snippet {
         if ($search <> '') {
             if (strpos($search, '#all') !== false) {
                 $search_all = true;
-                $search = trim(str_replace('#all','',$search));
+                $search = trim(str_replace('#all', '', $search));
             }
             $post_per_page = 50;
         } else {
@@ -105,7 +105,7 @@ class SQ_Models_Snippet {
                                 }
 
                                 //Don't let other post types to pass
-                                if(!$search_all) {
+                                if (!$search_all) {
                                     if (!$post_id && isset($page->post_type) && $page->post_type <> $post_type) {
                                         continue;
                                     }
@@ -128,7 +128,7 @@ class SQ_Models_Snippet {
         if (strpos($post_type, 'tax-') !== false) $post_type = str_replace('tax-', '', $post_type);
 
         if (in_array($post_type, $taxonomies) || $search_all) {
-            if(!$search_all) {
+            if (!$search_all) {
                 $pages = array();
             }
 
@@ -260,8 +260,8 @@ class SQ_Models_Snippet {
             $taxonomy = SQ_Classes_Helpers_Tools::getValue('taxonomy', $taxonomy);
             $post_type = SQ_Classes_Helpers_Tools::getValue('post_type', $post_type);
 
-            if (!current_user_can('sq_manage_snippets')) {
-                if (!current_user_can('edit_post', $post_id)) {
+            if (!SQ_Classes_Helpers_Tools::userCan('sq_manage_snippets')) {
+                if (!SQ_Classes_Helpers_Tools::userCan('edit_post', $post_id)) {
                     $json['error'] = 1;
                     $json['error_message'] = esc_html__("You don't have enough pemission to edit this article", _SQ_PLUGIN_NAME_);
                     exit();
@@ -278,6 +278,7 @@ class SQ_Models_Snippet {
             $sq->description = SQ_Classes_Helpers_Tools::getValue('sq_description', '');
             $sq->keywords = SQ_Classes_Helpers_Tools::getValue('sq_keywords', '');
             $sq->canonical = SQ_Classes_Helpers_Tools::getValue('sq_canonical', '');
+            $sq->redirect = SQ_Classes_Helpers_Tools::getValue('sq_redirect', '');
             if (SQ_Classes_Helpers_Tools::getIsset('sq_noindex')) $sq->noindex = SQ_Classes_Helpers_Tools::getValue('sq_noindex', 0);
             if (SQ_Classes_Helpers_Tools::getIsset('sq_nofollow')) $sq->nofollow = SQ_Classes_Helpers_Tools::getValue('sq_nofollow', 0);
             if (SQ_Classes_Helpers_Tools::getIsset('sq_nositemap')) $sq->nositemap = SQ_Classes_Helpers_Tools::getValue('sq_nositemap', 0);
@@ -311,8 +312,8 @@ class SQ_Models_Snippet {
             } else {
                 $sq->jsonld = '';
             }
-            $sq->jsonld_types = SQ_Classes_Helpers_Tools::getValue('sq_jsonld_types', array());
-
+            $sq->jsonld_types = array_filter(SQ_Classes_Helpers_Tools::getValue('sq_jsonld_types', array()));
+            $sq->primary_category = SQ_Classes_Helpers_Tools::getValue('sq_primary_category', '');
 
             if (SQ_Classes_Helpers_Tools::getValue('sq_fpixel_code_type', 'auto') == 'custom') {
                 if (isset($_POST['sq_fpixel'])) {
@@ -326,16 +327,20 @@ class SQ_Models_Snippet {
                 $sq->fpixel = '';
             }
 
+            //Filter the SQ before save
+            // Send SQ_Models_Domain_Sq object
+            $sq = apply_filters('sq_seo_before_save', $sq, $post_id);
+            //Filter the URL before save
+            $url = apply_filters('sq_url_before_save', $url, $sq_hash);
+
             //Prevent broken url in canonical link
             if (strpos($sq->canonical, '//') === false) {
                 $sq->canonical = '';
             }
 
-            //Filter the SQ before save
-            // Send SQ_Models_Domain_Sq object
-            $sq = apply_filters('sq_seo_before_save', $sq);
-            //Filter the URL before save
-            $url = apply_filters('sq_url_before_save', $url, $sq_hash);
+            if (strpos($sq->redirect, '//') === false || $sq->redirect === $url) {
+                $sq->redirect = '';
+            }
 
             try {
 
@@ -387,11 +392,26 @@ class SQ_Models_Snippet {
                 }
             }
 
-        } elseif ($post_type <> '') {
+        }elseif ($post_type <> '') {
             $post = SQ_Classes_ObjController::getDomain('SQ_Models_Domain_Post');
             $post->post_type = $post_type;
             $post->hash = md5($post_type);
-            $post->url = get_post_type_archive_link($post_type);
+            //$post->url = get_post_type_archive_link($post_type);
+
+            if (!$post->url = get_post_type_archive_link($post_type)) {
+                if ($url = SQ_Classes_Helpers_Tools::getValue('sq_url', false)) {
+                    if($path = parse_url($url,PHP_URL_PATH)) {
+                        preg_match('/([0-9]{4})\/([0-9]{1,2})/', $path, $dates);
+
+                        if (!empty($dates) && isset($dates[1])&& isset($dates[2])) {
+                            $post->hash = md5($post_type . (int)$dates[1] . '-' . (int)$dates[2]);
+                            $post->post_date = date(get_option('date_format'), strtotime($dates[1] . '-' . $dates[2]));
+                        }
+                    }
+
+                    $post->url = $url;
+                }
+            }
 
             $post = SQ_Classes_ObjController::getClass('SQ_Models_Frontend')->setPost($post)->getPost();
         } else {

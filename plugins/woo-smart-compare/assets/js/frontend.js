@@ -201,12 +201,13 @@
 
   // open button
   if (wooscpVars.open_button != '') {
-    $(document).on('click touch', wooscpVars.open_button, function() {
+    $(document).on('click touch', wooscpVars.open_button, function(e) {
       if ((wooscpVars.open_button_action == 'open_page') &&
-          (wooscpVars.page_url != '')) {
+          (wooscpVars.page_url != '') && (wooscpVars.page_url != '#')) {
         // open compare page
         window.location.href = wooscpVars.page_url;
       } else {
+        e.preventDefault();
         // open compare popup
         wooscpToggleCompare();
       }
@@ -224,11 +225,9 @@
 
   // menu item
   $(document).on('click touch', '.wooscp-menu-item a', function(e) {
-    if ((wooscpVars.menu_action == 'open_page') &&
-        (wooscpVars.page_url != '')) {
-      // open compare page
-      window.location.href = wooscpVars.page_url;
-    } else {
+    if (wooscpVars.menu_action == 'open_popup') {
+      e.preventDefault();
+
       // open compare popup
       if ($('.wooscp-bar-items').hasClass('wooscp-bar-items-loaded')) {
         wooscpOpenCompareBar();
@@ -242,7 +241,6 @@
 
       wooscpOpenCompareTable();
     }
-    e.preventDefault();
   });
 
   function wooscpAjaxSearch() {

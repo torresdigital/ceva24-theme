@@ -1,12 +1,12 @@
 ﻿=== Checkout Field Editor and Manager for WooCommerce ===
 Author: Acowebs
 Author URI: https://acowebs.com
-Contributors: acowebs
+Contributors: acowebs, acowebssupport, saneshacodez
 Donate link:
 Tags: WooCommerce custom checkout fields, WooCommerce Checkout field editor, WooCommerce Checkout Manager, WooCommerce Checkout Field Manager
 Requires at least: 4.0
-Tested up to: 5.7.0
-Stable tag: 2.1.12
+Tested up to: 5.7.1
+Stable tag: 2.1.13
 
 WooCommerce checkout field editor and manager helps to manage checkout fields in WooCommerce
 
@@ -119,6 +119,8 @@ Yes it is possible with pro version of our plugin, but not with free version.
 
 
 == Changelog ==
+= 2.1.13 =
+* Added support for WooCommerce 5.2.2
 = 2.1.12 =
 * Added support for WooCommerce 5.1.0 and WordPress 5.7.0
 = 2.1.11 =
