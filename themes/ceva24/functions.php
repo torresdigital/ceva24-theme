@@ -25,3 +25,4 @@ add_action( 'wp_enqueue_scripts', 'chld_thm_cfg_parent_css', 10 );
 
 /*https://pt.stealthsettings.com/cum-debifam-implicit-ship-different-address-din-pagina-de-checkout-woocommerce.html*/
 add_filter( 'woocommerce_ship_to_different_address_checked', '__return_false' );
+
