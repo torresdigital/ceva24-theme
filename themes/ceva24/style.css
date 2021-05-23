@@ -84,6 +84,10 @@ html .woocommerce-cart .cart-collaterals .cart_totals tr th {
     padding: 5px;
     line-height: 30px;
 }
+.woocommerce #order_review table.shop_table tfoot th {
+    font-weight: 600;
+    width: 20%;
+}
 #add_payment_method .cart-collaterals .shipping-calculator-form, .woocommerce-cart .cart-collaterals .shipping-calculator-form, .woocommerce-checkout .cart-collaterals .shipping-calculator-form {width: 100%}
 
 .select2-container--default .select2-selection--single {
@@ -97,7 +101,7 @@ html .woocommerce-cart .cart-collaterals .cart_totals tr th {
 html #shipping_method {font-size: 20px;text-align: center;font-family: "Roboto-Bold", sans-serif;/*background: #ee3e80;*/color: #fff;text-shadow: 0px 1px 2px #000; border-radius: 5px}
 
 .woocommerce ul#shipping_method li input {
-    top: 5px;
+    top: 2px;
     position: relative;
     width: 18px;
     height: 18px;
@@ -126,6 +130,14 @@ html .woocommerce ul#shipping_method li {
 .added_to_cart.wc-forward {color: red;font-family: "Roboto-Bold", sans-serif;font-size: 20px;}
 
 /*Lista*/
+#thnk-quick-view-content div.summary {
+    margin: 0;
+    padding: 10px 5px 0;
+    padding-bottom: 0px;
+    width: 50%;
+    text-align: center;
+}
+
 /*hover lista*/
 .button.product_type_simple.add_to_cart_button.ajax_add_to_cart {text-align: center;}
 html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;cursor: pointer;box-shadow: 0 0 0 rgba(204,169,44, 0.4);}
@@ -157,6 +169,11 @@ html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;
 
 /*preço pagina do produto*/
 .woocommerce div.product p.price, .woocommerce div.product span.price {color: #1c1d1e;}
+
+/* Checkout */
+.page-template-default.page.page-id-8 .woocommerce-form.woocommerce-form-login.login {
+    width: 100%;
+}
 
 /* cetegoty slider number on home*/
 
