@@ -173,11 +173,9 @@ html .page-template-default.page.page-id-8 .woocommerce #order_review table.shop
     width: 100%;
     display: flex;
     position: relative;
+    font-family: "Roboto-Bold", sans-serif;
+    font-size: 14px;
 }
-/*html .page-template-default.page.page-id-8 .woocommerce #order_review table.shop_table tfoot th {
-    font-weight: 600;
-    width: 14%;
-}*/
 
 html .page-template-default.page.page-id-8 .product-total {
     width: 10%;
