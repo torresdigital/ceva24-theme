@@ -166,6 +166,24 @@ html .woosw-btn:hover::before {color: #fff; animation: shadow-pulse 1s infinite;
 
 /*Woocommerce*/
 
+/*DEZEMBRO 2021*/
+html .page-template-default.page.page-id-8 .woocommerce #order_review table.shop_table tbody td.product-name {
+    max-width: 100%;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    position: relative;
+    font-family: "Roboto-Bold", sans-serif;
+    font-size: 14px;
+}
+
+html .page-template-default.page.page-id-8 .product-total {
+    width: 10%;
+}
+
+
+
+
 
 /*preço pagina do produto*/
 .woocommerce div.product p.price, .woocommerce div.product span.price {color: #1c1d1e;}
